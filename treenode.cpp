@@ -2,8 +2,8 @@
 
 #include <QStringList>
 
-TreeNode::TreeNode(const QList<QVariant> &data, TreeNode *parent)
-    : m_nodeData(data), m_parentNode(parent)
+TreeNode::TreeNode(TreeNode *parent, const QVariant name)
+    : m_name(name), m_parentNode(parent)
 {
 }
 
@@ -32,16 +32,6 @@ int TreeNode::childCount() const
     return m_childNodes.count();
 }
 
-int TreeNode::columnCount() const
-{
-    return m_nodeData.count();
-}
-
-QVariant TreeNode::data(int column) const
-{
-    return m_nodeData.value(column);
-}
-
 TreeNode *TreeNode::parentNode() const
 {
     return m_parentNode;
@@ -59,4 +49,14 @@ void TreeNode::insertChild(int pos, TreeNode *child)
 {
     m_childNodes.insert(pos, child);
     child->m_parentNode = this;
+}
+
+
+QVariant TreeNode::getData(dataFunction df) const
+{
+    if(df == dfName){
+        return m_name;
+    }else{
+        return QVariant();
+    }
 }

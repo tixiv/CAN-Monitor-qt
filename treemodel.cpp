@@ -10,12 +10,16 @@
 TreeModel::TreeModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
-    QList<QVariant> rootData;
-    rootData << "Name";
-    rootData << "ID";
-    rootData << "Foobar";
 
-    m_rootNode = new TreeNode(rootData, 0);
+    m_rootNode = new TreeNode(0);
+
+    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfName,        "Name"));
+    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfID,          "ID"));
+    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfDLC,         "DLC"));
+    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfCount,       "Count"));
+    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfRawData,     "Raw Data"));
+    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfDataDecoded, "Decoded Data"));
+    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfFormat,      "Format String"));
 }
 
 TreeModel::~TreeModel()
@@ -30,7 +34,8 @@ TreeNode * TreeModel::rootNode() const
 
 int TreeModel::columnCount(const QModelIndex &parent) const
 {
-    return nodeForIndex(parent)->columnCount();
+    (void)parent;
+    return m_columnFunctions.count();
 }
 
 static const char s_treeNodeMimeType[] = "application/x-treenode";
@@ -139,7 +144,8 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     TreeNode *node = nodeForIndex(index);
-    return node->data(index.column());
+
+    return node->getData(m_columnFunctions.value(index.column()).first);
 }
 
 Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
@@ -153,8 +159,9 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation,
                                int role) const
 {
-    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return m_rootNode->data(section);
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole){
+        return m_columnFunctions.value(section).second;
+    }
 
     return QVariant();
 }

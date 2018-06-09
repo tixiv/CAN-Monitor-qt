@@ -36,6 +36,8 @@ private:
     void setupModelData(const QStringList &lines, TreeNode *parent);
 
     TreeNode *m_rootNode;
+
+    QList<QPair<enum dataFunction,QVariant>> m_columnFunctions;
 };
 
 #endif // TREEMODEL_H

@@ -20,24 +20,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
     TreeModel *model = new TreeModel();
 
-    QList<QVariant> columnData;
-    columnData << "foo";
-    columnData << "bar";
-
-    TreeNode *ti = new TreeNode(columnData, model->rootNode());
+    TreeNode *ti = new TreeNode(model->rootNode(), "Test1");
 
     model->rootNode()->appendChild(ti);
-    ti->appendChild(new TreeNode(columnData, ti));
-    ti->appendChild(new TreeNode(columnData, ti));
-    ti->appendChild(new TreeNode(columnData, ti));
-    ti->appendChild(new TreeNode(columnData, ti));
+    ti->appendChild(new TreeNode(ti, "foo1"));
+    ti->appendChild(new TreeNode(ti, "foo2"));
+    ti->appendChild(new TreeNode(ti, "foo3"));
+    ti->appendChild(new TreeNode(ti, "foo4"));
 
-    model->rootNode()->appendChild(new TreeNode(columnData, model->rootNode()));
-    model->rootNode()->appendChild(new TreeNode(columnData, model->rootNode()));
-    model->rootNode()->appendChild(new TreeNode(columnData, model->rootNode()));
-    model->rootNode()->appendChild(new TreeNode(columnData, model->rootNode()));
-    model->rootNode()->appendChild(new TreeNode(columnData, model->rootNode()));
-    model->rootNode()->appendChild(new TreeNode(columnData, model->rootNode()));
+    model->rootNode()->appendChild(new TreeNode(model->rootNode(), "bar1"));
+    model->rootNode()->appendChild(new TreeNode(model->rootNode(), "bar1"));
+    model->rootNode()->appendChild(new TreeNode(model->rootNode(), "bar1"));
+    model->rootNode()->appendChild(new TreeNode(model->rootNode(), "bar1"));
+    model->rootNode()->appendChild(new TreeNode(model->rootNode(), "bar1"));
+    model->rootNode()->appendChild(new TreeNode(model->rootNode(), "bar1"));
+    model->rootNode()->appendChild(new TreeNode(model->rootNode(), "bar1"));
+    model->rootNode()->appendChild(new TreeNode(model->rootNode(), "bar1"));
 
 
      ui->treeView->setModel(model);
