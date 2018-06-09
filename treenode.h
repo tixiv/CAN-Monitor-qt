@@ -30,7 +30,7 @@ public:
     void insertChild(int pos, TreeNode *child);
 
 
-
+    virtual bool dropAllowed() const;
     virtual QVariant getData(dataFunction df) const;
 
 private:

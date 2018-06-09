@@ -15,10 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     treemodel.cpp \
-    treenode.cpp
+    treenode.cpp \
+    headertreenode.cpp \
+    messagetreenode.cpp
 
 HEADERS  += mainwindow.h \
     treemodel.h \
-    treenode.h
+    treenode.h \
+    headertreenode.h \
+    messagetreenode.h
 
 FORMS    += mainwindow.ui

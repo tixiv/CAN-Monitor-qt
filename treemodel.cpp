@@ -1,4 +1,4 @@
-#include "TreeNode.h"
+#include "headertreenode.h"
 #include "TreeModel.h"
 
 #include <QCoreApplication>
@@ -11,7 +11,7 @@ TreeModel::TreeModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
 
-    m_rootNode = new TreeNode(0);
+    m_rootNode = new HeaderTreeNode(0);
 
     m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfName,        "Name"));
     m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfID,          "ID"));
@@ -74,6 +74,11 @@ QMimeData *TreeModel::mimeData(const QModelIndexList &indexes) const
     return mimeData;
 }
 
+bool TreeModel::canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const
+{
+    return nodeForIndex(parent)->dropAllowed();
+}
+
 bool TreeModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
     Q_ASSERT(action == Qt::MoveAction);
@@ -122,12 +127,17 @@ bool TreeModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction action, i
 
         // Insert at new position
         //qDebug() << "Inserting into" << parent << row;
-        beginInsertRows(parent, row, row);
-        parentNode->insertChild(row, node);
-        endInsertRows();
+        insertNode(parentNode, row, node);
         ++row;
     }
     return true;
+}
+
+void TreeModel::insertNode(TreeNode *parentNode, int row, TreeNode *node){
+    const QModelIndex parent = indexForNode(parentNode);
+    beginInsertRows(parent, row, row);
+    parentNode->insertChild(row, node);
+    endInsertRows();
 }
 
 Qt::DropActions TreeModel::supportedDropActions() const
@@ -173,6 +183,12 @@ TreeNode * TreeModel::nodeForIndex(const QModelIndex &index) const
         return m_rootNode;
     else
         return static_cast<TreeNode*>(index.internalPointer());
+}
+
+QModelIndex TreeModel::indexForNode(TreeNode * node) const
+{
+    const int row = node->row();
+    return createIndex(row, 0, node);
 }
 
 void TreeModel::removeNode(TreeNode *node)

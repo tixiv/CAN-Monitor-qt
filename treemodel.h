@@ -27,10 +27,14 @@ public:
     Qt::DropActions supportedDropActions() const Q_DECL_OVERRIDE;
     QStringList mimeTypes() const Q_DECL_OVERRIDE;
     QMimeData *mimeData(const QModelIndexList &indexes) const Q_DECL_OVERRIDE;
+    bool canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const Q_DECL_OVERRIDE;
     bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex & parent);
+
+    void insertNode(TreeNode *parentNode, int row, TreeNode *node);
 
     TreeNode * rootNode() const;
 private:
+    QModelIndex TreeModel::indexForNode(TreeNode * node) const;
     TreeNode * nodeForIndex(const QModelIndex &index) const;
     void removeNode(TreeNode *node);
     void setupModelData(const QStringList &lines, TreeNode *parent);

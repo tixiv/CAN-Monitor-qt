@@ -51,6 +51,10 @@ void TreeNode::insertChild(int pos, TreeNode *child)
     child->m_parentNode = this;
 }
 
+bool TreeNode::dropAllowed() const
+{
+    return false;
+}
 
 QVariant TreeNode::getData(dataFunction df) const
 {
