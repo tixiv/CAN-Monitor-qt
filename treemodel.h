@@ -5,7 +5,7 @@
 #include <QModelIndex>
 #include <QVariant>
 
-class TreeNode;
+#include "treenode.h"
 
 class TreeModel : public QAbstractItemModel
 {
@@ -34,7 +34,7 @@ public:
 
     TreeNode * rootNode() const;
 private:
-    QModelIndex TreeModel::indexForNode(TreeNode * node) const;
+    QModelIndex indexForNode(TreeNode * node) const;
     TreeNode * nodeForIndex(const QModelIndex &index) const;
     void removeNode(TreeNode *node);
     void setupModelData(const QStringList &lines, TreeNode *parent);
