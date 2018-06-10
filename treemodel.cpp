@@ -74,8 +74,12 @@ QMimeData *TreeModel::mimeData(const QModelIndexList &indexes) const
     return mimeData;
 }
 
-bool TreeModel::canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const
+bool TreeModel::canDropMimeData(const QMimeData *mimeData, Qt::DropAction action, int row, int column, const QModelIndex &parent) const
 {
+    Q_UNUSED(column); Q_UNUSED(row);
+    if (!mimeData->hasFormat(s_treeNodeMimeType) || action != Qt::MoveAction) {
+        return false;
+    }
     return nodeForIndex(parent)->dropAllowed();
 }
 
@@ -83,7 +87,6 @@ bool TreeModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction action, i
 {
     Q_ASSERT(action == Qt::MoveAction);
     Q_UNUSED(column);
-    //test if the data type is the good one
     if (!mimeData->hasFormat(s_treeNodeMimeType)) {
         return false;
     }
@@ -135,6 +138,19 @@ bool TreeModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction action, i
 
 void TreeModel::insertNode(TreeNode *parentNode, int row, TreeNode *node){
     const QModelIndex parent = indexForNode(parentNode);
+    if(row < 0)
+        // insert at end
+        row = rowCount(parent);
+    beginInsertRows(parent, row, row);
+    parentNode->insertChild(row, node);
+    endInsertRows();
+}
+
+void TreeModel::insertNode(const QModelIndex parent, int row, TreeNode *node){
+    TreeNode *parentNode = nodeForIndex(parent);
+    if(row < 0)
+        // insert at end
+        row = rowCount(parent);
     beginInsertRows(parent, row, row);
     parentNode->insertChild(row, node);
     endInsertRows();
@@ -187,6 +203,8 @@ TreeNode * TreeModel::nodeForIndex(const QModelIndex &index) const
 
 QModelIndex TreeModel::indexForNode(TreeNode * node) const
 {
+    if(node == m_rootNode)
+        return QModelIndex();
     const int row = node->row();
     return createIndex(row, 0, node);
 }

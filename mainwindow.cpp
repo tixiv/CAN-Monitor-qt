@@ -55,9 +55,9 @@ void MainWindow::onCustomContextMenu(const QPoint &point)
     contextMenu.addAction(ui->actionAdd_Group);
 
     QModelIndex index = ui->treeView->indexAt(point);
-    if (index.isValid() && index.row() % 2 == 0) {
-        contextMenu.exec(ui->treeView->mapToGlobal(point));
-    }
+    m_contextMenuContext.index = index;
+    contextMenu.exec(ui->treeView->mapToGlobal(point));
+
 }
 
 void MainWindow::clicked(const QModelIndex &index)
@@ -74,10 +74,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    model->insertNode(model->rootNode(),0,new HeaderTreeNode(model->rootNode(), "Foobar"));
+    model->insertNode(model->rootNode(), -1, new HeaderTreeNode(model->rootNode(), "Foobar"));
 }
 
 void MainWindow::on_actionAdd_Group_triggered()
 {
-
+    model->insertNode(m_contextMenuContext.index, -1, new HeaderTreeNode(0, "New Group"));
 }

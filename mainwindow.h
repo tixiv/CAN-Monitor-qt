@@ -25,8 +25,11 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-
     TreeModel *model;
+
+    struct{
+        QModelIndex index;
+    }m_contextMenuContext;
 };
 
 #endif // MAINWINDOW_H
