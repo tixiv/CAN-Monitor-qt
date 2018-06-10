@@ -45,8 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(clicked(QModelIndex)));
-
-
 }
 
 void MainWindow::onCustomContextMenu(const QPoint &point)

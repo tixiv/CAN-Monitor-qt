@@ -163,10 +163,7 @@ Qt::DropActions TreeModel::supportedDropActions() const
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
-        return QVariant();
-
-    if (role != Qt::DisplayRole)
+    if (!index.isValid() || role != Qt::DisplayRole)
         return QVariant();
 
     TreeNode *node = nodeForIndex(index);
@@ -174,12 +171,27 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
     return node->getData(m_columnFunctions.value(index.column()).first);
 }
 
+bool TreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (!index.isValid() || role != Qt::EditRole)
+        return false;
+
+    TreeNode *node = nodeForIndex(index);
+
+    return node->setData(m_columnFunctions.value(index.column()).first, value);
+}
+
 Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
         return Qt::ItemIsDropEnabled;
 
-    return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
+    Qt::ItemFlags flags = 0;
+    switch(m_columnFunctions.value(index.column()).first){
+        case dfName: flags = Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable ; break;
+    }
+
+    return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation,

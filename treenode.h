@@ -32,6 +32,7 @@ public:
 
     virtual bool dropAllowed() const;
     virtual QVariant getData(dataFunction df) const;
+    virtual bool setData(dataFunction df, const QVariant &value);
 
 private:
     QList<TreeNode*> m_childNodes;

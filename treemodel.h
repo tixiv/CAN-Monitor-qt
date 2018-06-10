@@ -29,9 +29,11 @@ public:
     QMimeData *mimeData(const QModelIndexList &indexes) const Q_DECL_OVERRIDE;
     bool canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const Q_DECL_OVERRIDE;
     bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex & parent);
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     void insertNode(TreeNode *parentNode, int row, TreeNode *node);
     void insertNode(const QModelIndex parent, int row, TreeNode *node);
+
 
     TreeNode * rootNode() const;
 private:

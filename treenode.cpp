@@ -12,11 +12,6 @@ TreeNode::~TreeNode()
     qDeleteAll(m_childNodes);
 }
 
-void TreeNode::appendChild(TreeNode *node)
-{
-    m_childNodes.append(node);
-}
-
 void TreeNode::removeChild(int row)
 {
     m_childNodes.removeAt(row);
@@ -45,6 +40,12 @@ int TreeNode::row() const
     return 0;
 }
 
+void TreeNode::appendChild(TreeNode *child)
+{
+    m_childNodes.append(child);
+    child->m_parentNode = this;
+}
+
 void TreeNode::insertChild(int pos, TreeNode *child)
 {
     m_childNodes.insert(pos, child);
@@ -62,5 +63,15 @@ QVariant TreeNode::getData(dataFunction df) const
         return m_name;
     }else{
         return QVariant();
+    }
+}
+
+bool TreeNode::setData(dataFunction df, const QVariant &value)
+{
+    if(df == dfName){
+        m_name = value;
+        return true;
+    }else{
+        return false;
     }
 }
