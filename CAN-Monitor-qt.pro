@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     messagetreenode.cpp \
     CanAdapter.cpp \
     CanAdapterLawicel.cpp \
-    lawicel.c
+    lawicel.c \
+    CanTreeModel.cpp
 
 HEADERS  += mainwindow.h \
     treemodel.h \
@@ -31,6 +32,7 @@ HEADERS  += mainwindow.h \
     CanAdapter.h \
     can_message.h \
     CanAdapterLawicel.h \
-    lawicel.h
+    lawicel.h \
+    CanTreeModel.h
 
 FORMS    += mainwindow.ui

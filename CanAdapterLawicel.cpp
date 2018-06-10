@@ -1,8 +1,6 @@
 #include "CanAdapterLawicel.h"
 
 #include <QThread>
-
-#include <iostream>
 #include "lawicel.h"
 
 CanAdapterLawicel::CanAdapterLawicel()
@@ -77,8 +75,6 @@ bool CanAdapterLawicel::receive(can_message_t * cmsg)
     // remove that part and get it to line
     QString line = m_buffer.left(r);
     m_buffer.remove(0, r+1);
-
-    std::cout << line.toStdString() << std::endl;
 
     return lawicel_can_message_from_string(cmsg, line.toStdString().c_str());
 }

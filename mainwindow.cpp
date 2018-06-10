@@ -12,45 +12,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    /*
-    QFileSystemModel *model = new QFileSystemModel;
-    model->setRootPath(QDir::currentPath());
+    model = new CanTreeModel();
     ui->treeView->setModel(model);
-    ui->treeView->setRootIndex(model->index(QDir::currentPath()));
-*/
 
-    model = new TreeModel();
-
-    TreeNode *ti = new TreeNode("Test1");
-
-    model->rootNode()->appendChild(ti);
-    ti->appendChild(new HeaderTreeNode("foo1"));
-    ti->appendChild(new HeaderTreeNode("foo2"));
-    ti->appendChild(new HeaderTreeNode("foo3"));
-    ti->appendChild(new HeaderTreeNode("foo4"));
-
-    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
-
-
-    ui->treeView->setModel(model);
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
-
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
+    m_canAdapter = new CanAdapterLawicel();
 
-    connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(clicked(QModelIndex)));
     connect(&m_tickTimer, SIGNAL(timeout()), this, SLOT(tickTimerTimeout()));
-
     m_tickTimer.setInterval(20);
     m_tickTimer.start();
-
-    m_canAdapter = new CanAdapterLawicel();
 }
 
 void MainWindow::onCustomContextMenu(const QPoint &point)
@@ -61,14 +33,6 @@ void MainWindow::onCustomContextMenu(const QPoint &point)
     QModelIndex index = ui->treeView->indexAt(point);
     m_contextMenuContext.index = index;
     contextMenu.exec(ui->treeView->mapToGlobal(point));
-
-}
-
-void MainWindow::clicked(const QModelIndex &index)
-{
-    (void) index;
-    //QStandardItem *item = myStandardItemModel->itemFromIndex(index);
-    // Do stuff with the item ...
 }
 
 MainWindow::~MainWindow()
@@ -90,7 +54,6 @@ void MainWindow::tickTimerTimeout()
 {
     can_message_t cmsg;
     while(m_canAdapter->receive(&cmsg)){
-        model->insertNode(QModelIndex(), -1, new HeaderTreeNode(cmsg.id));
-
+        model->inputMessage(&cmsg);
     }
 }

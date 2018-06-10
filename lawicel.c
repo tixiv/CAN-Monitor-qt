@@ -298,3 +298,18 @@ void lawicel_string_from_can_message(char * str, can_message_t *cmsg){
     *str++ = '\r';
     *str++ = 0;
 }
+
+const char * lawicel_get_baud_string(int bps){
+  switch(bps){
+  case   10000: return "S0\r";
+  case   20000: return "S1\r";
+  case   50000: return "S2\r";
+  case  100000: return "S3\r";
+  case  125000: return "S4\r";
+  case  250000: return "S5\r";
+  case  500000: return "S6\r";
+  case  800000: return "S7\r";
+  case 1000000: return "S8\r";
+  }
+  return 0;
+}

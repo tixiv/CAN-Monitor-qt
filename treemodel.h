@@ -34,11 +34,12 @@ public:
     void insertNode(TreeNode *parentNode, int row, TreeNode *node);
     void insertNode(const QModelIndex parent, int row, TreeNode *node);
 
-
     TreeNode * rootNode() const;
-private:
-    QModelIndex indexForNode(TreeNode * node) const;
+protected:
+    QModelIndex indexForNode(TreeNode * node, int coumn=0) const;
     TreeNode * nodeForIndex(const QModelIndex &index) const;
+
+private:
     void removeNode(TreeNode *node);
     void setupModelData(const QStringList &lines, TreeNode *parent);
 

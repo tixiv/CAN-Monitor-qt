@@ -49,6 +49,7 @@ void lawicel_handle_can_message(lawicel_t * lp, can_message_t *cmsg);
 // for using on PC
 bool lawicel_can_message_from_string(can_message_t * cmsg, const char * str);
 void lawicel_string_from_can_message(char * str, can_message_t *cmsg);
+const char * lawicel_get_baud_string(int bps);
 
 #ifdef __cplusplus
 }

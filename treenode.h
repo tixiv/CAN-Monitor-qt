@@ -9,6 +9,7 @@ enum dataFunction{
     dfID,
     dfDLC,
     dfCount,
+    dfPeriod,
     dfRawData,
     dfDataDecoded,
     dfFormat,
@@ -34,11 +35,11 @@ public:
     virtual QVariant getData(dataFunction df) const;
     virtual bool setData(dataFunction df, const QVariant &value);
 
+protected:
+    QVariant m_name;
 private:
     QList<TreeNode*> m_childNodes;
     TreeNode *m_parentNode;
-
-    QVariant m_name;
 };
 
 #endif // TREENODE_H

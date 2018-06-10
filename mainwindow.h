@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include "treemodel.h"
+#include "CanTreeModel.h"
 #include "CanAdapter.h"
 
 namespace Ui {
@@ -21,14 +21,13 @@ public:
 private slots:
     void onCustomContextMenu(const QPoint &point);
     void on_pushButton_clicked();
-    void clicked(const QModelIndex &index);
 
     void on_actionAdd_Group_triggered();
     void tickTimerTimeout();
 
 private:
     Ui::MainWindow *ui;
-    TreeModel *model;
+    CanTreeModel *model;
 
     struct{
         QModelIndex index;

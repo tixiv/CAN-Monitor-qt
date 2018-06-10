@@ -14,10 +14,11 @@ TreeModel::TreeModel(QObject *parent)
     m_rootNode = new HeaderTreeNode(0);
 
     m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfName,        "Name"));
-    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfID,          "ID"));
+    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfID,          "ID (HEX)"));
     m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfDLC,         "DLC"));
     m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfCount,       "Count"));
-    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfRawData,     "Raw Data"));
+    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfPeriod,      "Period (ms)"));
+    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfRawData,     "Raw Data (HEX)"));
     m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfDataDecoded, "Decoded Data"));
     m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfFormat,      "Format String"));
 }
@@ -163,7 +164,7 @@ Qt::DropActions TreeModel::supportedDropActions() const
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || role != Qt::DisplayRole)
+    if (!index.isValid() || (role != Qt::DisplayRole && role != Qt::EditRole))
         return QVariant();
 
     TreeNode *node = nodeForIndex(index);
@@ -188,7 +189,9 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
 
     Qt::ItemFlags flags = 0;
     switch(m_columnFunctions.value(index.column()).first){
-        case dfName: flags = Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable ; break;
+    case dfName:
+    case dfFormat:
+        flags = Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable ; break;
     }
 
     return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
@@ -213,12 +216,12 @@ TreeNode * TreeModel::nodeForIndex(const QModelIndex &index) const
         return static_cast<TreeNode*>(index.internalPointer());
 }
 
-QModelIndex TreeModel::indexForNode(TreeNode * node) const
+QModelIndex TreeModel::indexForNode(TreeNode * node, int column) const
 {
     if(node == m_rootNode)
         return QModelIndex();
     const int row = node->row();
-    return createIndex(row, 0, node);
+    return createIndex(row, column, node);
 }
 
 void TreeModel::removeNode(TreeNode *node)
