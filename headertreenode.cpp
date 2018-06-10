@@ -1,7 +1,7 @@
 #include "headertreenode.h"
 
-HeaderTreeNode::HeaderTreeNode(TreeNode *parent, const QVariant name)
-    :TreeNode(parent, name)
+HeaderTreeNode::HeaderTreeNode(const QVariant name)
+    :TreeNode(name)
 {
 }
 

@@ -2,8 +2,8 @@
 
 #include <QStringList>
 
-TreeNode::TreeNode(TreeNode *parent, const QVariant name)
-    : m_name(name), m_parentNode(parent)
+TreeNode::TreeNode(const QVariant name)
+    : m_name(name), m_parentNode(0)
 {
 }
 

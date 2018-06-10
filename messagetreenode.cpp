@@ -1,7 +1,7 @@
 #include "messagetreenode.h"
 
-MessageTreeNode::MessageTreeNode(TreeNode *parent, const QVariant name)
-    :TreeNode(parent, name)
+MessageTreeNode::MessageTreeNode(const QVariant name)
+    :TreeNode(name)
 {
 
 }

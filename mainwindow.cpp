@@ -20,22 +20,21 @@ MainWindow::MainWindow(QWidget *parent) :
 
     model = new TreeModel();
 
-    TreeNode *ti = new TreeNode(model->rootNode(), "Test1");
+    TreeNode *ti = new TreeNode("Test1");
 
     model->rootNode()->appendChild(ti);
-    ti->appendChild(new HeaderTreeNode(ti, "foo1"));
-    ti->appendChild(new HeaderTreeNode(ti, "foo2"));
-    ti->appendChild(new HeaderTreeNode(ti, "foo3"));
-    ti->appendChild(new HeaderTreeNode(ti, "foo4"));
+    ti->appendChild(new HeaderTreeNode("foo1"));
+    ti->appendChild(new HeaderTreeNode("foo2"));
+    ti->appendChild(new HeaderTreeNode("foo3"));
+    ti->appendChild(new HeaderTreeNode("foo4"));
 
-    model->rootNode()->appendChild(new HeaderTreeNode(model->rootNode(), "bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode(model->rootNode(), "bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode(model->rootNode(), "bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode(model->rootNode(), "bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode(model->rootNode(), "bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode(model->rootNode(), "bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode(model->rootNode(), "bar1"));
-    model->rootNode()->appendChild(new HeaderTreeNode(model->rootNode(), "bar1"));
+    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
+    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
+    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
+    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
+    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
+    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
+    model->rootNode()->appendChild(new HeaderTreeNode("bar1"));
 
 
     ui->treeView->setModel(model);
@@ -72,10 +71,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    model->insertNode(model->rootNode(), -1, new HeaderTreeNode(model->rootNode(), "Foobar"));
+    model->insertNode(model->rootNode(), -1, new HeaderTreeNode("Foobar"));
 }
 
 void MainWindow::on_actionAdd_Group_triggered()
 {
-    model->insertNode(m_contextMenuContext.index, -1, new HeaderTreeNode(0, "New Group"));
+    model->insertNode(m_contextMenuContext.index, -1, new HeaderTreeNode("New Group"));
 }

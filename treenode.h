@@ -17,7 +17,7 @@ enum dataFunction{
 class TreeNode
 {
 public:
-    explicit TreeNode(TreeNode *parentNode, const QVariant name="");
+    explicit TreeNode(const QVariant name="");
     ~TreeNode();
 
     void appendChild(TreeNode *child);

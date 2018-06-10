@@ -6,7 +6,7 @@
 class HeaderTreeNode : public TreeNode
 {
 public:
-    HeaderTreeNode(TreeNode *parent, const QVariant name="");
+    HeaderTreeNode(const QVariant name="");
     bool dropAllowed() const override;
 };
 

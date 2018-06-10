@@ -6,7 +6,7 @@
 class MessageTreeNode : public TreeNode
 {
 public:
-    MessageTreeNode(TreeNode *parent, const QVariant name="");
+    MessageTreeNode(const QVariant name="");
 };
 
 #endif // MESSAGETREENODE_H
