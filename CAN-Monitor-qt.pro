@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,12 +18,19 @@ SOURCES += main.cpp\
     treemodel.cpp \
     treenode.cpp \
     headertreenode.cpp \
-    messagetreenode.cpp
+    messagetreenode.cpp \
+    CanAdapter.cpp \
+    CanAdapterLawicel.cpp \
+    lawicel.c
 
 HEADERS  += mainwindow.h \
     treemodel.h \
     treenode.h \
     headertreenode.h \
-    messagetreenode.h
+    messagetreenode.h \
+    CanAdapter.h \
+    can_message.h \
+    CanAdapterLawicel.h \
+    lawicel.h
 
 FORMS    += mainwindow.ui

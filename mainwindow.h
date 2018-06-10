@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
 #include "treemodel.h"
+#include "CanAdapter.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +24,7 @@ private slots:
     void clicked(const QModelIndex &index);
 
     void on_actionAdd_Group_triggered();
+    void tickTimerTimeout();
 
 private:
     Ui::MainWindow *ui;
@@ -30,6 +33,10 @@ private:
     struct{
         QModelIndex index;
     }m_contextMenuContext;
+
+    CanAdapter * m_canAdapter;
+    QTimer m_tickTimer;
+
 };
 
 #endif // MAINWINDOW_H
