@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>CAN Monitor 3000</string>
   </property>
+  <property name="windowIcon">
+   <iconset theme="foo"/>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>

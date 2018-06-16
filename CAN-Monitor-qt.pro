@@ -39,6 +39,4 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-DISTFILES += \
-    ../Downloads/favicon.ico \
-    favicon.ico
+RC_ICONS = canMonitoricon.ico
