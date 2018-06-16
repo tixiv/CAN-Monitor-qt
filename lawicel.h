@@ -54,4 +54,5 @@ const char * lawicel_get_baud_string(int bps);
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* LAWICEL_H_ */

@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     CanAdapter.cpp \
     CanAdapterLawicel.cpp \
     lawicel.c \
-    CanTreeModel.cpp
+    CanTreeModel.cpp \
+    SerialPortComboBox.cpp
 
 HEADERS  += mainwindow.h \
     treemodel.h \
@@ -33,6 +34,11 @@ HEADERS  += mainwindow.h \
     can_message.h \
     CanAdapterLawicel.h \
     lawicel.h \
-    CanTreeModel.h
+    CanTreeModel.h \
+    SerialPortComboBox.h
 
 FORMS    += mainwindow.ui
+
+DISTFILES += \
+    ../Downloads/favicon.ico \
+    favicon.ico
