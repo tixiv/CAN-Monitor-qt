@@ -2,6 +2,7 @@
 
 #include <QThread>
 #include "lib-slcan/slcan.h"
+#include "SlcanControlWidget.h"
 
 CanAdapterLawicel::CanAdapterLawicel()
     : m_portName("COM4"), m_uartBaudRate(1000000), m_openState(osClosed)
@@ -9,19 +10,14 @@ CanAdapterLawicel::CanAdapterLawicel()
     connect(&m_openTimer, &QTimer::timeout, this, &CanAdapterLawicel::openTimerTimeout);
 }
 
-/*
-void CanAdapterLawicel::configure()
-{
-
+CanAdapterLawicel::~CanAdapterLawicel(){
+    if(m_controlWidget) delete m_controlWidget;
 }
-*/
 
-bool CanAdapterLawicel::open(int baudrate)
+bool CanAdapterLawicel::open()
 {
     if(m_openState != osClosed)
         return false;
-
-    m_canBaudRate = baudrate;
 
     m_port.setPortName(m_portName);
     m_port.setBaudRate(m_uartBaudRate);
@@ -43,14 +39,18 @@ bool CanAdapterLawicel::open(int baudrate)
 
 void CanAdapterLawicel::openTimerTimeout()
 {
-    m_port.write("S4\rO\r");
+    m_port.write(slcan_get_baud_string(m_canBaudRate));
+    m_port.write("O\r");
     m_openState = osOpen;
+
+    emit openOperationEnded(true);
 }
 
 void CanAdapterLawicel::close()
 {
     m_openTimer.stop();
-    m_port.write("C");
+    m_port.write("C\r");
+    m_port.waitForBytesWritten(100);
     m_port.close();
     m_openState = osClosed;
 }
@@ -82,4 +82,27 @@ bool CanAdapterLawicel::receive(can_message_t * cmsg)
 bool CanAdapterLawicel::isOpen()
 {
     return m_openState == osOpen;
+}
+
+QWidget * CanAdapterLawicel::getControlWidget(QWidget *parent){
+    if(!m_controlWidget)
+    {
+        m_controlWidget = new SlcanControlWidget(parent);
+        connect(m_controlWidget, SIGNAL(openClicked(QString, QString, int)), this, SLOT(openClicked(QString, QString, int)));
+        connect(m_controlWidget, SIGNAL(closeClicked()), this, SLOT(closeClicked()));
+        connect(this, SIGNAL(openOperationEnded(bool)), m_controlWidget, SLOT(openOperationEnded(bool)));
+
+    }
+    return m_controlWidget;
+}
+
+void CanAdapterLawicel::openClicked(QString portName, QString mode, int baud){
+    m_portName = portName;
+    m_canBaudRate = baud;
+
+    open();
+}
+
+void CanAdapterLawicel::closeClicked(){
+    close();
 }

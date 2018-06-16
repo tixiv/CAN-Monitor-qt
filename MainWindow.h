@@ -20,7 +20,6 @@ public:
 
 private slots:
     void onCustomContextMenu(const QPoint &point);
-    void on_pushButton_clicked();
 
     void on_actionAdd_Group_triggered();
     void tickTimerTimeout();

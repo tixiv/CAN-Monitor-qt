@@ -22,9 +22,9 @@ SOURCES += main.cpp\
     CanTree/MessageTreeNode.cpp \
     CanAdapter/CanAdapter.cpp \
     CanAdapter/CanAdapterLawicel.cpp \
+    CanAdapter/SlcanControlWidget.cpp \
     lib-slcan/slcan.c \
-    SerialPortComboBox.cpp \
-    SlcanControlWidget.cpp
+    SerialPortComboBox.cpp
 
 HEADERS  += MainWindow.h \
     CanTree/TreeModel.h \
@@ -34,12 +34,13 @@ HEADERS  += MainWindow.h \
     CanTree/MessageTreeNode.h \
     CanAdapter/CanAdapter.h \
     CanAdapter/CanAdapterLawicel.h \
+    CanAdapter/SlcanControlWidget.h \
     lib-slcan/can_message.h \
     lib-slcan/slcan.h \
-    SerialPortComboBox.h \
-    SlcanControlWidget.h
+    SerialPortComboBox.h
+
 
 FORMS    += MainWindow.ui \
-    SlcanControlWidget.ui
+    CanAdapter/SlcanControlWidget.ui
 
 RC_ICONS = canMonitorIcon.ico

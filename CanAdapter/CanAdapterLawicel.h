@@ -8,10 +8,13 @@
 
 class CanAdapterLawicel : public CanAdapter
 {
+    Q_OBJECT
+
 public:
     CanAdapterLawicel();
+    ~CanAdapterLawicel() override;
 
-    bool open(int baudrate) override;
+    bool open() override;
     void close() override;
 
     bool transmit(const can_message_t * cmsg) override;
@@ -19,8 +22,16 @@ public:
 
     bool isOpen() override;
 
+    QWidget * getControlWidget(QWidget *parent = 0) override;
+
+signals:
+    void openOperationEnded(bool success);
+
 private slots:
     void openTimerTimeout();
+
+    void openClicked(QString portName, QString mode, int baud);
+    void closeClicked();
 
 private:
     QSerialPort m_port;
@@ -38,6 +49,8 @@ private:
     }m_openState;
 
     QString m_buffer;
+
+    QWidget * m_controlWidget=0;
 
 };
 

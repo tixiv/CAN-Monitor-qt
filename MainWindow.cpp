@@ -5,18 +5,11 @@
 #include "CanTree/HeaderTreeNode.h"
 #include "CanAdapter/CanAdapterLawicel.h"
 
-#include "SlcanControlWidget.h"
-
-
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    auto w = new SlcanControlWidget(ui->centralWidget);
-    ui->verticalLayout->insertWidget(0,w);
-
 
     model = new CanTreeModel();
     ui->treeView->setModel(model);
@@ -25,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
     m_canAdapter = new CanAdapterLawicel();
+    auto w = m_canAdapter->getControlWidget(ui->centralWidget);
+    ui->verticalLayout->insertWidget(0,w);
+
 
     connect(&m_tickTimer, SIGNAL(timeout()), this, SLOT(tickTimerTimeout()));
     m_tickTimer.setInterval(20);
@@ -45,11 +41,6 @@ void MainWindow::onCustomContextMenu(const QPoint &point)
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    m_canAdapter->open(125000);
 }
 
 void MainWindow::on_actionAdd_Group_triggered()
