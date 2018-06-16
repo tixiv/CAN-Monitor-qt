@@ -5,33 +5,18 @@
 #include "CanTree/HeaderTreeNode.h"
 #include "CanAdapter/CanAdapterLawicel.h"
 
-void populateCanBaudComboBox(QComboBox * cb){
-    cb->addItem("10");
-    cb->addItem("20");
-    cb->addItem("50");
-    cb->addItem("100");
-    cb->addItem("125");
-    cb->addItem("250");
-    cb->addItem("500");
-    cb->addItem("800");
-    cb->addItem("1000");
+#include "SlcanControlWidget.h"
 
-    cb->setCurrentIndex(4);
-}
 
-void populateModeComboBox(QComboBox * cb){
-    cb->addItem("Normal");
-    cb->addItem("Listen only");
-    cb->addItem("Loopback");
-}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    populateCanBaudComboBox(ui->canBaudComboBox);
-    populateModeComboBox(ui->modeComboBox);
+    auto w = new SlcanControlWidget(ui->centralWidget);
+    ui->verticalLayout->insertWidget(0,w);
+
 
     model = new CanTreeModel();
     ui->treeView->setModel(model);

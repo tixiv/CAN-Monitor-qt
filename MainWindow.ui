@@ -19,26 +19,6 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="SerialPortComboBox" name="comPortComboBox"/>
-      </item>
-      <item>
-       <widget class="QComboBox" name="canBaudComboBox"/>
-      </item>
-      <item>
-       <widget class="QComboBox" name="modeComboBox"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Open</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
      <widget class="QTreeView" name="treeView">
       <property name="editTriggers">
        <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
@@ -94,13 +74,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>SerialPortComboBox</class>
-   <extends>QComboBox</extends>
-   <header location="global">SerialPortComboBox.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

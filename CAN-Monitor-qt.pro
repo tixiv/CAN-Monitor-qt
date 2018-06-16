@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     CanAdapter/CanAdapter.cpp \
     CanAdapter/CanAdapterLawicel.cpp \
     lib-slcan/slcan.c \
-    SerialPortComboBox.cpp
+    SerialPortComboBox.cpp \
+    SlcanControlWidget.cpp
 
 HEADERS  += MainWindow.h \
     CanTree/TreeModel.h \
@@ -35,8 +36,10 @@ HEADERS  += MainWindow.h \
     CanAdapter/CanAdapterLawicel.h \
     lib-slcan/can_message.h \
     lib-slcan/slcan.h \
-    SerialPortComboBox.h
+    SerialPortComboBox.h \
+    SlcanControlWidget.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    SlcanControlWidget.ui
 
 RC_ICONS = canMonitorIcon.ico
