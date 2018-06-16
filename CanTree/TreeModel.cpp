@@ -192,6 +192,7 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
     case dfName:
     case dfFormat:
         flags = Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable ; break;
+    default: break;
     }
 
     return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable;

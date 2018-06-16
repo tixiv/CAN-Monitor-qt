@@ -17,11 +17,11 @@ public:
     void update(const can_message_t * cmsg);
 
 private:
-    uint32_t IDE:1;
-    uint32_t RTR:1;
-    uint32_t id:29;
-    uint32_t dlc:4;
-    uint8_t data[8];
+    bool IDE = false;
+    bool RTR = false;
+    uint32_t id = 0;
+    uint8_t dlc = 0;
+    uint8_t data[8] = {0};
 
     QElapsedTimer m_timer;
     int m_count = 0;

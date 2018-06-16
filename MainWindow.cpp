@@ -2,7 +2,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "CanTree/TreeModel.h"
-#include "CanTree/HeaderTreenode.h"
+#include "CanTree/HeaderTreeNode.h"
 #include "CanAdapter/CanAdapterLawicel.h"
 
 void populateCanBaudComboBox(QComboBox * cb){

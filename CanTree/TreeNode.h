@@ -19,7 +19,7 @@ class TreeNode
 {
 public:
     explicit TreeNode(const QVariant name="");
-    ~TreeNode();
+    virtual ~TreeNode();
 
     void appendChild(TreeNode *child);
     void removeChild(int row);

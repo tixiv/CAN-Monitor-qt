@@ -1,13 +1,13 @@
 #include "MessageTreeNode.h"
 
 MessageTreeNode::MessageTreeNode(const QVariant name, int id, bool IDE, bool RTR)
-    :TreeNode(name) ,id(id), IDE(IDE), RTR(RTR)
+    :TreeNode(name) ,IDE(IDE), RTR(RTR), id(id)
 {
 
 }
 
 MessageTreeNode::MessageTreeNode(const can_message_t * cmsg)
-    :id(cmsg->id), IDE(cmsg->IDE), RTR(cmsg->RTR)
+    :IDE(cmsg->IDE), RTR(cmsg->RTR), id(cmsg->id)
 {
     if(IDE) m_idString += "E";
     if(RTR) m_idString += "R";
