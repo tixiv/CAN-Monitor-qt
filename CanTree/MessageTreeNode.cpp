@@ -1,4 +1,4 @@
-#include "messagetreenode.h"
+#include "MessageTreeNode.h"
 
 MessageTreeNode::MessageTreeNode(const QVariant name, int id, bool IDE, bool RTR)
     :TreeNode(name) ,id(id), IDE(IDE), RTR(RTR)

@@ -1,9 +1,9 @@
 #include <QSerialPortInfo>
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include  "treemodel.h"
-#include "headertreenode.h"
-#include "CanAdapterLawicel.h"
+#include "MainWindow.h"
+#include "ui_MainWindow.h"
+#include "CanTree/TreeModel.h"
+#include "CanTree/HeaderTreenode.h"
+#include "CanAdapter/CanAdapterLawicel.h"
 
 void populateCanBaudComboBox(QComboBox * cb){
     cb->addItem("10");

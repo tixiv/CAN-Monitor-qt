@@ -2,7 +2,7 @@
 #define CANADAPTER_H
 
 #include <QObject>
-#include "can_message.h"
+#include "lib-slcan/can_message.h"
 
 class CanAdapter : public QObject
 {

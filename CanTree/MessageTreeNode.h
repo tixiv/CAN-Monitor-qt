@@ -2,8 +2,8 @@
 #define MESSAGETREENODE_H
 
 #include <QElapsedTimer>
-#include "treenode.h"
-#include "can_message.h"
+#include "TreeNode.h"
+#include "lib-slcan/can_message.h"
 
 class MessageTreeNode : public TreeNode
 {

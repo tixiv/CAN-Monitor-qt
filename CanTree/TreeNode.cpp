@@ -1,4 +1,4 @@
-#include "treenode.h"
+#include "TreeNode.h"
 
 #include <QStringList>
 

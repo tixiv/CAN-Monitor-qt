@@ -1,4 +1,4 @@
-#include "headertreenode.h"
+#include "HeaderTreeNode.h"
 
 HeaderTreeNode::HeaderTreeNode(const QVariant name)
     :TreeNode(name)

@@ -1,5 +1,5 @@
-#include "headertreenode.h"
-#include "treemodel.h"
+#include "HeaderTreeNode.h"
+#include "TreeModel.h"
 
 #include <QCoreApplication>
 #include <QStringList>

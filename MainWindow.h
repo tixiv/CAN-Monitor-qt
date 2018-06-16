@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include "CanTreeModel.h"
-#include "CanAdapter.h"
+#include "CanTree/CanTreeModel.h"
+#include "CanAdapter/CanAdapter.h"
 
 namespace Ui {
 class MainWindow;

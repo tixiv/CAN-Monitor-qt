@@ -1,0 +1,3 @@
+[submodule "lib-slcan"]
+	path = lib-slcan
+	url = git@github.com:tixiv/lib-slcan.git

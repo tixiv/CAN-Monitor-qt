@@ -5,7 +5,7 @@
 #include <QModelIndex>
 #include <QVariant>
 
-#include "treenode.h"
+#include "TreeNode.h"
 
 class TreeModel : public QAbstractItemModel
 {

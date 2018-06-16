@@ -1,10 +1,10 @@
 #ifndef CANTREEMODEL_H
 #define CANTREEMODEL_H
 
-#include "treemodel.h"
+#include "TreeModel.h"
 #include <QHash>
-#include "can_message.h"
-#include "messagetreenode.h"
+#include "lib-slcan/can_message.h"
+#include "MessageTreeNode.h"
 
 struct CanUniqueID
 {

@@ -14,29 +14,29 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    treemodel.cpp \
-    treenode.cpp \
-    headertreenode.cpp \
-    messagetreenode.cpp \
-    CanAdapter.cpp \
-    CanAdapterLawicel.cpp \
-    lawicel.c \
-    CanTreeModel.cpp \
+    MainWindow.cpp \
+    CanTree/TreeModel.cpp \
+    CanTree/CanTreeModel.cpp \
+    CanTree/TreeNode.cpp \
+    CanTree/HeaderTreeNode.cpp \
+    CanTree/MessageTreeNode.cpp \
+    CanAdapter/CanAdapter.cpp \
+    CanAdapter/CanAdapterLawicel.cpp \
+    lib-slcan/slcan.c \
     SerialPortComboBox.cpp
 
-HEADERS  += mainwindow.h \
-    treemodel.h \
-    treenode.h \
-    headertreenode.h \
-    messagetreenode.h \
-    CanAdapter.h \
-    can_message.h \
-    CanAdapterLawicel.h \
-    lawicel.h \
-    CanTreeModel.h \
+HEADERS  += MainWindow.h \
+    CanTree/TreeModel.h \
+    CanTree/CanTreeModel.h \
+    CanTree/TreeNode.h \
+    CanTree/HeaderTreeNode.h \
+    CanTree/MessageTreeNode.h \
+    CanAdapter/CanAdapter.h \
+    CanAdapter/CanAdapterLawicel.h \
+    lib-slcan/can_message.h \
+    lib-slcan/slcan.h \
     SerialPortComboBox.h
 
-FORMS    += mainwindow.ui
+FORMS    += MainWindow.ui
 
-RC_ICONS = canMonitoricon.ico
+RC_ICONS = canMonitorIcon.ico

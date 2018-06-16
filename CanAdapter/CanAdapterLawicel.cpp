@@ -1,7 +1,7 @@
 #include "CanAdapterLawicel.h"
 
 #include <QThread>
-#include "lawicel.h"
+#include "lib-slcan/slcan.h"
 
 CanAdapterLawicel::CanAdapterLawicel()
     : m_portName("COM4"), m_uartBaudRate(1000000), m_openState(osClosed)
@@ -76,7 +76,7 @@ bool CanAdapterLawicel::receive(can_message_t * cmsg)
     QString line = m_buffer.left(r);
     m_buffer.remove(0, r+1);
 
-    return lawicel_can_message_from_string(cmsg, line.toStdString().c_str());
+    return slcan_can_message_from_string(cmsg, line.toStdString().c_str());
 }
 
 bool CanAdapterLawicel::isOpen()
