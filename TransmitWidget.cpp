@@ -16,8 +16,8 @@ static CustomLineEdit * addField(QHBoxLayout * hb, const QString &label, int min
     le->setFont(font);
 
     int charWidth = le->fontMetrics().width("DDDDDDDD", maxStringLen-1);
-    QSize sz = le->minimumSizeHint();
-    le->setFixedWidth(sz.width() + charWidth);
+    //int frameSize = le->minimumSizeHint().width();
+    le->setFixedWidth(30 + charWidth);
 
     auto idLabel = new QLabel(label);
     idLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
