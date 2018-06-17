@@ -26,6 +26,7 @@ public:
 
 private:
     void initIdString();
+    void updateDataDecoded();
     QVariant m_name;
 
     bool IDE = false;

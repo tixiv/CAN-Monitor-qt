@@ -173,6 +173,11 @@ static QString format(const QString &format, const uint8_t data[8])
     return str;
 }
 
+void MessageTreeNode::updateDataDecoded()
+{
+    m_dataDecodedString = format(m_formatString, data);
+}
+
 void MessageTreeNode::update(const can_message_t * cmsg)
 {
     if(m_timer.isValid()){
@@ -193,7 +198,7 @@ void MessageTreeNode::update(const can_message_t * cmsg)
 
     m_count++;
     m_countString = QString::number(m_count);
-    m_dataDecodedString = format(m_formatString, cmsg->data);
+    updateDataDecoded();
 }
 
 QVariant MessageTreeNode::getData(dataFunction df) const
@@ -219,6 +224,7 @@ bool MessageTreeNode::setData(dataFunction df, const QVariant &value)
         return true;
     }else if(df == dfFormat){
         m_formatString = value.toString();
+        updateDataDecoded();
         return true;
     }else{
         return false;
