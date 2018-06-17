@@ -25,6 +25,7 @@ SOURCES += main.cpp\
     CanAdapter/SlcanControlWidget.cpp \
     CanAdapter/SerialPortComboBox.cpp \
     Widgetutils/HexStringValidator.cpp \
+    Widgetutils/CustomLineEdit.cpp \
     lib-slcan/slcan.c \
     TransmitWidget.cpp \
 
@@ -39,6 +40,7 @@ HEADERS  += MainWindow.h \
     CanAdapter/SlcanControlWidget.h \
     CanAdapter/SerialPortComboBox.h \
     Widgetutils/HexStringValidator.h \
+    Widgetutils/CustomLineEdit.h \
     lib-slcan/can_message.h \
     lib-slcan/slcan.h \
     TransmitWidget.h \

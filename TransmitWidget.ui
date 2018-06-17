@@ -38,16 +38,16 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QCheckBox" name="checkBox_2">
+         <widget class="QCheckBox" name="IDEcheckBox">
           <property name="text">
-           <string>CheckBox</string>
+           <string>Ext Identifier</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox">
+         <widget class="QCheckBox" name="RTRcheckBox">
           <property name="text">
-           <string>CheckBox</string>
+           <string>RTR</string>
           </property>
          </widget>
         </item>
@@ -65,7 +65,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="transmitButton">
           <property name="text">
            <string>Transmit</string>
           </property>
