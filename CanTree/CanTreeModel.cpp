@@ -97,6 +97,7 @@ bool CanTreeModel::linkMessageNode(MessageTreeNode * node)
         return false;
 
     map[uid] = node;
+    return true;
 }
 
 static void writeNodeToXml(QXmlStreamWriter &writer, const TreeNode * node){
