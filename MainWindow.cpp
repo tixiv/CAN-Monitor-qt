@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_tickTimer, SIGNAL(timeout()), this, SLOT(tickTimerTimeout()));
     m_tickTimer.setInterval(20);
     m_tickTimer.start();
+
+    connect(ui->transmitWidget, SIGNAL(onTransmit(can_message_t)), this, SLOT(onTransmit(can_message_t)));
 }
 
 
@@ -54,4 +56,9 @@ void MainWindow::tickTimerTimeout()
     while(m_canAdapter->receive(&cmsg)){
         model->inputMessage(&cmsg);
     }
+}
+
+void MainWindow::onTransmit(can_message_t cmsg)
+{
+    m_canAdapter->transmit(&cmsg);
 }

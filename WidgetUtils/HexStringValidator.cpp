@@ -1,7 +1,7 @@
 #include "HexStringValidator.h"
 #include <cctype>
 
-HexStringValidator::HexStringValidator(int minimum, int maximum)
+HexStringValidator::HexStringValidator(uint32_t minimum, uint32_t maximum)
     : m_minimum(minimum), m_maximum(maximum), QValidator()
 {
     m_maxLen = QString().sprintf("%X", m_maximum).length();
@@ -12,7 +12,10 @@ void HexStringValidator::fixup(QString &input) const
     if(input.length() == 0)
         input = QString().sprintf("%X", m_minimum);
 
-    int num = input.toInt(0, 16);
+    if(input.length() > m_maxLen)
+        input.remove(0, input.length() - m_maxLen);
+
+    uint32_t num = input.toUInt(0, 16);
     if(num > m_maximum)
         input = QString().sprintf("%X", m_maximum);
 
@@ -40,7 +43,7 @@ QValidator::State HexStringValidator::validate(QString &input, int &pos) const
         input.remove(0,input.length()-m_maxLen);
     }
 
-    int num = input.toInt(0, 16);
+    uint32_t num = input.toUInt(0, 16);
     if(num > m_maximum)
         return QValidator::Intermediate;
 

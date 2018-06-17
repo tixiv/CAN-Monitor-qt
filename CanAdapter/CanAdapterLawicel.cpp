@@ -40,7 +40,14 @@ bool CanAdapterLawicel::open()
 void CanAdapterLawicel::openTimerTimeout()
 {
     m_port.write(slcan_get_baud_string(m_canBaudRate));
-    m_port.write("O\r");
+    switch(m_mode){
+    case om_normal:
+        m_port.write("O\r"); break;
+    case om_listeOnly:
+        m_port.write("L\r"); break;
+    case om_loopback:
+        m_port.write("l\r"); break;
+    }
     m_openState = osOpen;
 
     emit openOperationEnded(true);
@@ -57,6 +64,9 @@ void CanAdapterLawicel::close()
 
 bool CanAdapterLawicel::transmit(const can_message_t * cmsg)
 {
+    char str [50];
+    slcan_string_from_can_message(str, cmsg);
+    m_port.write(str);
     return true;
 }
 
@@ -67,7 +77,6 @@ bool CanAdapterLawicel::receive(can_message_t * cmsg)
 
     m_buffer.append(m_port.readAll());
 
-    // find \r
     int r = m_buffer.indexOf('\r');
     if(r < 0)
         return false;
@@ -88,7 +97,7 @@ QWidget * CanAdapterLawicel::getControlWidget(QWidget *parent){
     if(!m_controlWidget)
     {
         m_controlWidget = new SlcanControlWidget(parent);
-        connect(m_controlWidget, SIGNAL(openClicked(QString, QString, int)), this, SLOT(openClicked(QString, QString, int)));
+        connect(m_controlWidget, SIGNAL(openClicked(QString, CanAdapterLawicel::OpenMode, int)), this, SLOT(openClicked(QString, CanAdapterLawicel::OpenMode, int)));
         connect(m_controlWidget, SIGNAL(closeClicked()), this, SLOT(closeClicked()));
         connect(this, SIGNAL(openOperationEnded(bool)), m_controlWidget, SLOT(openOperationEnded(bool)));
 
@@ -96,10 +105,10 @@ QWidget * CanAdapterLawicel::getControlWidget(QWidget *parent){
     return m_controlWidget;
 }
 
-void CanAdapterLawicel::openClicked(QString portName, QString mode, int baud){
+void CanAdapterLawicel::openClicked(QString portName, CanAdapterLawicel::OpenMode mode, int baud){
     m_portName = portName;
     m_canBaudRate = baud;
-
+    m_mode = mode;
     open();
 }
 

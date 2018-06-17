@@ -53,6 +53,7 @@ void SlcanControlWidget::on_openButton_clicked()
         emit closeClicked();
     } else {
         ui->openButton->setEnabled(false);
-        emit openClicked(ui->comPortComboBox->currentText(), ui->modeComboBox->currentText(), ui->canBaudComboBox->currentText().toInt() * 1000);
+        CanAdapterLawicel::OpenMode om = (CanAdapterLawicel::OpenMode) ui->modeComboBox->currentIndex();
+        emit openClicked(ui->comPortComboBox->currentText(), om, ui->canBaudComboBox->currentText().toInt() * 1000);
     }
 }

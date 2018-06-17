@@ -24,13 +24,19 @@ public:
 
     QWidget * getControlWidget(QWidget *parent = 0) override;
 
+    enum OpenMode{
+        om_normal,
+        om_listeOnly,
+        om_loopback,
+    };
+
 signals:
     void openOperationEnded(bool success);
 
 private slots:
     void openTimerTimeout();
 
-    void openClicked(QString portName, QString mode, int baud);
+    void openClicked(QString portName, CanAdapterLawicel::OpenMode mode, int baud);
     void closeClicked();
 
 private:
@@ -41,6 +47,7 @@ private:
     int m_uartBaudRate;
 
     int m_canBaudRate;
+    OpenMode m_mode;
 
     enum{
         osClosed,

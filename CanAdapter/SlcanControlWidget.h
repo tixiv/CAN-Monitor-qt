@@ -1,10 +1,11 @@
 #ifndef SLCANCONTROLWIDGET_H
 #define SLCANCONTROLWIDGET_H
 
+#include "CanAdapterLawicel.h"
 #include <QWidget>
 
 namespace Ui {
-class SlcanControlWidget;
+    class SlcanControlWidget;
 }
 
 class SlcanControlWidget : public QWidget
@@ -16,7 +17,7 @@ public:
     ~SlcanControlWidget();
 
 signals:
-    void openClicked(QString portName, QString mode, int baud);
+    void openClicked(QString portName, CanAdapterLawicel::OpenMode om, int baud);
     void closeClicked();
 
 public slots:

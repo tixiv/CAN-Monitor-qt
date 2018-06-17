@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QList>
 #include "WidgetUtils/CustomLineEdit.h"
+#include "lib-slcan/can_message.h"
 
 namespace Ui {
 class TransmitWidget;
@@ -17,8 +18,13 @@ public:
     explicit TransmitWidget(QWidget *parent = 0);
     ~TransmitWidget();
 
+signals:
+    void onTransmit(can_message_t cmsg);
+
 private slots:
     void on_transmitButton_clicked();
+
+    void on_IDEcheckBox_toggled(bool checked);
 
 private:
     Ui::TransmitWidget *ui;

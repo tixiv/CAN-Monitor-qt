@@ -23,6 +23,7 @@ private slots:
 
     void on_actionAdd_Group_triggered();
     void tickTimerTimeout();
+    void onTransmit(can_message_t cmsg);
 
 private:
     Ui::MainWindow *ui;
