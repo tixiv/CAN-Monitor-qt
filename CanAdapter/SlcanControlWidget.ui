@@ -51,7 +51,7 @@
   <customwidget>
    <class>SerialPortComboBox</class>
    <extends>QComboBox</extends>
-   <header location="global">SerialPortComboBox.h</header>
+   <header>CanAdapter/SerialPortComboBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

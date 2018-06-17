@@ -23,8 +23,10 @@ SOURCES += main.cpp\
     CanAdapter/CanAdapter.cpp \
     CanAdapter/CanAdapterLawicel.cpp \
     CanAdapter/SlcanControlWidget.cpp \
+    CanAdapter/SerialPortComboBox.cpp \
+    Widgetutils/HexStringValidator.cpp \
     lib-slcan/slcan.c \
-    SerialPortComboBox.cpp
+    TransmitWidget.cpp \
 
 HEADERS  += MainWindow.h \
     CanTree/TreeModel.h \
@@ -35,12 +37,16 @@ HEADERS  += MainWindow.h \
     CanAdapter/CanAdapter.h \
     CanAdapter/CanAdapterLawicel.h \
     CanAdapter/SlcanControlWidget.h \
+    CanAdapter/SerialPortComboBox.h \
+    Widgetutils/HexStringValidator.h \
     lib-slcan/can_message.h \
     lib-slcan/slcan.h \
-    SerialPortComboBox.h
+    TransmitWidget.h \
+
 
 
 FORMS    += MainWindow.ui \
-    CanAdapter/SlcanControlWidget.ui
+    CanAdapter/SlcanControlWidget.ui \
+    TransmitWidget.ui
 
 RC_ICONS = canMonitorIcon.ico

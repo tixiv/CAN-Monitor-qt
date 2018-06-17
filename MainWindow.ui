@@ -14,12 +14,22 @@
    <string>CAN Monitor 3000</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="foo"/>
+   <iconset theme="foo">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTreeView" name="treeView">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustIgnored</enum>
+      </property>
       <property name="editTriggers">
        <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
       </property>
@@ -36,15 +46,27 @@
        <enum>Qt::MoveAction</enum>
       </property>
       <property name="selectionMode">
-       <enum>QAbstractItemView::MultiSelection</enum>
+       <enum>QAbstractItemView::ContiguousSelection</enum>
       </property>
       <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectItems</enum>
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="uniformRowHeights">
+       <bool>true</bool>
       </property>
       <property name="sortingEnabled">
        <bool>true</bool>
       </property>
+      <attribute name="headerShowSortIndicator" stdset="0">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="headerStretchLastSection">
+       <bool>true</bool>
+      </attribute>
      </widget>
+    </item>
+    <item>
+     <widget class="TransmitWidget" name="transmitWidget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -74,6 +96,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TransmitWidget</class>
+   <extends>QWidget</extends>
+   <header>TransmitWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
