@@ -79,6 +79,14 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionLoad_Tree"/>
+    <addaction name="actionSave_Tree"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -92,6 +100,16 @@
   <action name="actionAdd_Group">
    <property name="text">
     <string>Add Group</string>
+   </property>
+  </action>
+  <action name="actionLoad_Tree">
+   <property name="text">
+    <string>Load Tree</string>
+   </property>
+  </action>
+  <action name="actionSave_Tree">
+   <property name="text">
+    <string>Save Tree</string>
    </property>
   </action>
  </widget>

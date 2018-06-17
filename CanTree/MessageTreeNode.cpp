@@ -1,4 +1,7 @@
 #include "MessageTreeNode.h"
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
+
 
 MessageTreeNode::MessageTreeNode(const QVariant &name, int id, bool IDE, bool RTR)
     :TreeNode(), m_name(name), IDE(IDE), RTR(RTR), id(id)
@@ -69,4 +72,15 @@ bool MessageTreeNode::setData(dataFunction df, const QVariant &value)
     }else{
         return false;
     }
+}
+
+void MessageTreeNode::writeDataToXml(QXmlStreamWriter &writer) const
+{
+    writer.writeAttribute("name", m_name.toString());
+    writer.writeAttribute("id", m_idString);
+}
+
+void MessageTreeNode::readDataFromXml(QXmlStreamReader &reader)
+{
+
 }

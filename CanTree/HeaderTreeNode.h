@@ -12,6 +12,9 @@ public:
     QVariant getData(dataFunction df) const override;
     bool setData(dataFunction df, const QVariant &value) override;
 
+    void writeDataToXml(QXmlStreamWriter &writer) const override;
+    void readDataFromXml(QXmlStreamReader &reader) override;
+
 private:
     QVariant m_name;
 };

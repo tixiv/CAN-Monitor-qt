@@ -1,5 +1,7 @@
 #include "CanTreeModel.h"
 
+#include "HeaderTreeNode.h"
+#include "MessageTreeNode.h"
 
 
 CanTreeModel::CanTreeModel()
@@ -87,11 +89,29 @@ void CanTreeModel::inputMessage(const can_message_t * cmsg){
     }
 }
 
+
+static void writeNodeToXml(QXmlStreamWriter &writer, const TreeNode * node){
+    if(dynamic_cast<const HeaderTreeNode *>(node)){
+        writer.writeStartElement("HeaderTreeNode");
+    }else if(dynamic_cast<const MessageTreeNode *>(node)){
+        writer.writeStartElement("MessageTreeNode");
+    }else
+        return;
+
+    node->writeDataToXml(writer);
+    for(int i = 0; i < node->childCount(); i++){
+        writeNodeToXml(writer, node->child(i));
+    }
+    writer.writeEndElement();
+}
+
 void CanTreeModel::writeTreeToXml(QXmlStreamWriter &writer)
 {
     writer.writeStartDocument();
     writer.writeStartElement("CanTree");
-
+    writeNodeToXml(writer, rootNode());
+    writer.writeEndElement();
+    writer.writeEndDocument();
 }
 
 void CanTreeModel::readTreeFromXml(QXmlStreamReader &reader)

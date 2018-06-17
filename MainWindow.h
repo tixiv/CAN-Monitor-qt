@@ -25,6 +25,8 @@ private slots:
     void tickTimerTimeout();
     void onTransmit(can_message_t cmsg);
 
+    void on_actionSave_Tree_triggered();
+
 private:
     Ui::MainWindow *ui;
     CanTreeModel *model;

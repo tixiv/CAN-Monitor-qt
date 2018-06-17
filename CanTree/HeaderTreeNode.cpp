@@ -1,5 +1,8 @@
 #include "HeaderTreeNode.h"
 
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
+
 HeaderTreeNode::HeaderTreeNode(const QVariant &name)
     : TreeNode(), m_name(name)
 {
@@ -27,4 +30,14 @@ bool HeaderTreeNode::setData(dataFunction df, const QVariant &value)
     }else{
         return false;
     }
+}
+
+void HeaderTreeNode::writeDataToXml(QXmlStreamWriter &writer) const
+{
+    writer.writeAttribute("name", m_name.toString());
+}
+
+void HeaderTreeNode::readDataFromXml(QXmlStreamReader &reader)
+{
+
 }

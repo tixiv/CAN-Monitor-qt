@@ -16,6 +16,9 @@ public:
 
     void update(const can_message_t * cmsg);
 
+    void writeDataToXml(QXmlStreamWriter &writer) const override;
+    void readDataFromXml(QXmlStreamReader &reader) override;
+
 private:
     QVariant m_name;
 

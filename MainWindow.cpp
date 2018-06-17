@@ -1,4 +1,5 @@
 #include <QSerialPortInfo>
+#include <QFileDialog>
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "CanTree/TreeModel.h"
@@ -66,4 +67,17 @@ void MainWindow::tickTimerTimeout()
 void MainWindow::onTransmit(can_message_t cmsg)
 {
     m_canAdapter->transmit(&cmsg);
+}
+
+void MainWindow::on_actionSave_Tree_triggered()
+{
+    QString filename = QFileDialog::getSaveFileName(this,
+                                           tr("Save Xml"), ".",
+                                           tr("Xml files (*.xml)"));
+    QFile file(filename);
+    file.open(QIODevice::WriteOnly);
+    QXmlStreamWriter xmlWriter(&file);
+    xmlWriter.setAutoFormatting(true);
+    model->writeTreeToXml(xmlWriter);
+    file.close();
 }
