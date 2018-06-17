@@ -5,11 +5,15 @@
 #include <QLabel>
 
 static CustomLineEdit * addField(QHBoxLayout * hb, const QString &label, int minimum, int maximum, const QString &str, int maxStringLen){
+    QFont font("Monospace");
+    font.setStyleHint(QFont::TypeWriter);
+    font.setPointSizeF(12);
+
     CustomLineEdit * le = new CustomLineEdit();
-    auto vbl = new QVBoxLayout();
     le->setAlignment(Qt::AlignRight);
     le->setValidator(new HexStringValidator(minimum, maximum));
     le->setText(str);
+    le->setFont(font);
 
     int charWidth = le->fontMetrics().width("DDDDDDDD", maxStringLen-1);
     QSize sz = le->minimumSizeHint();
@@ -18,6 +22,7 @@ static CustomLineEdit * addField(QHBoxLayout * hb, const QString &label, int min
     auto idLabel = new QLabel(label);
     idLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
+    auto vbl = new QVBoxLayout();
     vbl->addWidget(idLabel);
     vbl->addWidget(le);
     hb->addLayout(vbl);
