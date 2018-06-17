@@ -87,9 +87,25 @@ void CanTreeModel::inputMessage(const can_message_t * cmsg){
     }
 }
 
+void CanTreeModel::writeTreeToXml(QXmlStreamWriter &writer)
+{
+    writer.writeStartDocument();
+    writer.writeStartElement("CanTree");
+
+}
+
+void CanTreeModel::readTreeFromXml(QXmlStreamReader &reader)
+{
+
+}
+
+
+
 CanUniqueID::CanUniqueID(const can_message_t * cmsg)
 {
     val = cmsg->id & 0x1fffffff;
     val |= cmsg->IDE << 31;
     val |= cmsg->RTR << 30;
 }
+
+

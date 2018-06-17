@@ -1,7 +1,7 @@
 #include "MessageTreeNode.h"
 
-MessageTreeNode::MessageTreeNode(const QVariant name, int id, bool IDE, bool RTR)
-    :TreeNode(name) ,IDE(IDE), RTR(RTR), id(id)
+MessageTreeNode::MessageTreeNode(const QVariant &name, int id, bool IDE, bool RTR)
+    :TreeNode(), m_name(name), IDE(IDE), RTR(RTR), id(id)
 {
 
 }

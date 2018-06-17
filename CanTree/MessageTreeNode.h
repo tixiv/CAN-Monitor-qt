@@ -8,7 +8,7 @@
 class MessageTreeNode : public TreeNode
 {
 public:
-    MessageTreeNode(const QVariant name, int id, bool IDE, bool RTR);
+    MessageTreeNode(const QVariant& name, int id, bool IDE, bool RTR);
     MessageTreeNode(const can_message_t * cmsg);
 
     QVariant getData(dataFunction df) const override;
@@ -17,6 +17,8 @@ public:
     void update(const can_message_t * cmsg);
 
 private:
+    QVariant m_name;
+
     bool IDE = false;
     bool RTR = false;
     uint32_t id = 0;

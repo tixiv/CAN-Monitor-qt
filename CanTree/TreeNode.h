@@ -4,6 +4,9 @@
 #include <QList>
 #include <QVariant>
 
+class QXmlStreamWriter;
+class QXmlStreamReader;
+
 enum dataFunction{
     dfName,
     dfID,
@@ -18,7 +21,7 @@ enum dataFunction{
 class TreeNode
 {
 public:
-    explicit TreeNode(const QVariant name="");
+    TreeNode();
     virtual ~TreeNode();
 
     void appendChild(TreeNode *child);
@@ -32,11 +35,12 @@ public:
 
 
     virtual bool dropAllowed() const;
-    virtual QVariant getData(dataFunction df) const;
-    virtual bool setData(dataFunction df, const QVariant &value);
+    virtual QVariant getData(dataFunction df) const = 0;
+    virtual bool setData(dataFunction df, const QVariant &value) = 0;
 
-protected:
-    QVariant m_name;
+    //virtual void writeDataToXml(QXmlStreamWriter &writer) = 0;
+    //virtual void readDataFromXml(QXmlStreamReader &reader) = 0;
+
 private:
     QList<TreeNode*> m_childNodes;
     TreeNode *m_parentNode;
