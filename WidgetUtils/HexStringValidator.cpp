@@ -2,7 +2,7 @@
 #include <cctype>
 
 HexStringValidator::HexStringValidator(uint32_t minimum, uint32_t maximum)
-    : m_minimum(minimum), m_maximum(maximum), QValidator()
+    : QValidator(), m_minimum(minimum), m_maximum(maximum)
 {
     m_maxLen = QString().sprintf("%X", m_maximum).length();
 }
@@ -25,6 +25,8 @@ void HexStringValidator::fixup(QString &input) const
 
 QValidator::State HexStringValidator::validate(QString &input, int &pos) const
 {
+    (void) pos;
+
     {
         QString temp;
         foreach(QChar ch, input) {
