@@ -11,6 +11,7 @@
 struct CanUniqueID
 {
     CanUniqueID(const can_message_t * cmsg);
+    CanUniqueID(uint32_t id, bool IDE, bool RTR);
     uint32_t val;
 };
 
@@ -28,14 +29,13 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
 
     void writeTreeToXml(QXmlStreamWriter &writer);
-    void readTreeFromXml(QXmlStreamReader &reader);
-
+    bool readTreeFromXml(QXmlStreamReader &reader);
 private:
     QList<QPair<enum dataFunction,QVariant>> m_columnFunctions;
-
-
     QHash<uint32_t, MessageTreeNode *> map;
 
+    void readXmlToNode(TreeNode * parent, QXmlStreamReader &reader);
+    bool linkMessageNode(MessageTreeNode * node);
 };
 
 #endif // CANTREEMODEL_H

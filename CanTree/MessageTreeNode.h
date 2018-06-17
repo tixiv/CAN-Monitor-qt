@@ -10,6 +10,7 @@ class MessageTreeNode : public TreeNode
 public:
     MessageTreeNode(const QVariant& name, int id, bool IDE, bool RTR);
     MessageTreeNode(const can_message_t * cmsg);
+    MessageTreeNode();
 
     QVariant getData(dataFunction df) const override;
     bool setData(dataFunction df, const QVariant &value) override;
@@ -19,7 +20,12 @@ public:
     void writeDataToXml(QXmlStreamWriter &writer) const override;
     void readDataFromXml(QXmlStreamReader &reader) override;
 
+    uint32_t getId(){ return id;}
+    bool getIDE(){return IDE;}
+    bool getRTR(){return RTR;}
+
 private:
+    void initIdString();
     QVariant m_name;
 
     bool IDE = false;

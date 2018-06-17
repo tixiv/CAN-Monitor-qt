@@ -89,6 +89,15 @@ void CanTreeModel::inputMessage(const can_message_t * cmsg){
     }
 }
 
+bool CanTreeModel::linkMessageNode(MessageTreeNode * node)
+{
+    uint32_t uid = CanUniqueID(node->getId(), node->getIDE(), node->getRTR()).val;
+
+    if(map.contains(uid))
+        return false;
+
+    map[uid] = node;
+}
 
 static void writeNodeToXml(QXmlStreamWriter &writer, const TreeNode * node){
     if(dynamic_cast<const HeaderTreeNode *>(node)){
@@ -105,6 +114,29 @@ static void writeNodeToXml(QXmlStreamWriter &writer, const TreeNode * node){
     writer.writeEndElement();
 }
 
+void CanTreeModel::readXmlToNode(TreeNode * parent, QXmlStreamReader &reader)
+{
+    while(reader.readNextStartElement())
+    {
+        if(reader.name() == "HeaderTreeNode"){
+            HeaderTreeNode * htn = new HeaderTreeNode();
+            htn->readDataFromXml(reader);
+            insertNode(parent, -1, htn);
+            readXmlToNode(htn, reader);
+            reader.readElementText();
+        }else if(reader.name() == "MessageTreeNode"){
+            MessageTreeNode * mtn = new MessageTreeNode();
+            mtn->readDataFromXml(reader);
+            if(linkMessageNode(mtn))
+                insertNode(parent, -1, mtn);
+            else
+                delete mtn;
+            reader.readElementText();
+        }else
+            reader.skipCurrentElement();
+    }
+}
+
 void CanTreeModel::writeTreeToXml(QXmlStreamWriter &writer)
 {
     writer.writeStartDocument();
@@ -114,9 +146,20 @@ void CanTreeModel::writeTreeToXml(QXmlStreamWriter &writer)
     writer.writeEndDocument();
 }
 
-void CanTreeModel::readTreeFromXml(QXmlStreamReader &reader)
+bool CanTreeModel::readTreeFromXml(QXmlStreamReader &reader)
 {
+    if (!reader.readNextStartElement())
+        return false;
+    if (reader.name() != "CanTree")
+        return false;
+    if (!reader.readNextStartElement())
+        return false;
+    if (reader.name() != "HeaderTreeNode") // the root node
+        return false;
 
+    readXmlToNode(rootNode(), reader);
+
+    return true;
 }
 
 
@@ -128,4 +171,9 @@ CanUniqueID::CanUniqueID(const can_message_t * cmsg)
     val |= cmsg->RTR << 30;
 }
 
-
+CanUniqueID::CanUniqueID(uint32_t id, bool IDE, bool RTR)
+{
+    val = id & 0x1fffffff;
+    val |= (IDE?1:0) << 31;
+    val |= (RTR?1:0) << 30;
+}

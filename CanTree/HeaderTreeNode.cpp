@@ -39,5 +39,5 @@ void HeaderTreeNode::writeDataToXml(QXmlStreamWriter &writer) const
 
 void HeaderTreeNode::readDataFromXml(QXmlStreamReader &reader)
 {
-
+    m_name = reader.attributes().value("name").toString();
 }

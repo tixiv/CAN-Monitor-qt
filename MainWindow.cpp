@@ -72,12 +72,24 @@ void MainWindow::onTransmit(can_message_t cmsg)
 void MainWindow::on_actionSave_Tree_triggered()
 {
     QString filename = QFileDialog::getSaveFileName(this,
-                                           tr("Save Xml"), ".",
+                                           tr("Save Tree"), ".",
                                            tr("Xml files (*.xml)"));
     QFile file(filename);
     file.open(QIODevice::WriteOnly);
     QXmlStreamWriter xmlWriter(&file);
     xmlWriter.setAutoFormatting(true);
     model->writeTreeToXml(xmlWriter);
+    file.close();
+}
+
+void MainWindow::on_actionLoad_Tree_triggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this,
+                                           tr("Load Tree"), ".",
+                                           tr("Xml files (*.xml)"));
+    QFile file(filename);
+    file.open(QIODevice::ReadOnly);
+    QXmlStreamReader xmlReader(&file);
+    model->readTreeFromXml(xmlReader);
     file.close();
 }

@@ -2,15 +2,27 @@
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 
+MessageTreeNode::MessageTreeNode()
+    :TreeNode(), IDE(false), RTR(false), id(0)
+{
+}
 
 MessageTreeNode::MessageTreeNode(const QVariant &name, int id, bool IDE, bool RTR)
     :TreeNode(), m_name(name), IDE(IDE), RTR(RTR), id(id)
 {
-
 }
 
 MessageTreeNode::MessageTreeNode(const can_message_t * cmsg)
     :IDE(cmsg->IDE), RTR(cmsg->RTR), id(cmsg->id)
+{
+    initIdString();
+
+    m_name = "ID " + m_idString;
+
+    update(cmsg);
+}
+
+void MessageTreeNode::initIdString()
 {
     if(IDE) m_idString += "E";
     if(RTR) m_idString += "R";
@@ -20,11 +32,8 @@ MessageTreeNode::MessageTreeNode(const can_message_t * cmsg)
         m_idString += QString().sprintf("%08X", id);
     else
         m_idString += QString().sprintf("%03X", id);
-
-    m_name = "ID " + m_idString;
-
-    update(cmsg);
 }
+
 
 void MessageTreeNode::update(const can_message_t * cmsg)
 {
@@ -77,10 +86,16 @@ bool MessageTreeNode::setData(dataFunction df, const QVariant &value)
 void MessageTreeNode::writeDataToXml(QXmlStreamWriter &writer) const
 {
     writer.writeAttribute("name", m_name.toString());
-    writer.writeAttribute("id", m_idString);
+    writer.writeAttribute("id", QString().sprintf("%X", id));
+    writer.writeAttribute("IDE", IDE ? "true":"false");
+    writer.writeAttribute("RTR", RTR ? "true":"false");
 }
 
 void MessageTreeNode::readDataFromXml(QXmlStreamReader &reader)
 {
-
+    m_name = reader.attributes().value("name").toString();
+    id = reader.attributes().value("id").toString().toUInt(0,16);
+    IDE = reader.attributes().value("IDE").toString() == "true";
+    RTR = reader.attributes().value("RTR").toString() == "true";
+    initIdString();
 }
