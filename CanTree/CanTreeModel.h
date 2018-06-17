@@ -30,12 +30,15 @@ public:
 
     void writeTreeToXml(QXmlStreamWriter &writer);
     bool readTreeFromXml(QXmlStreamReader &reader);
+
+    void deleteNode(const QModelIndex nodeIdx);
 private:
     QList<QPair<enum dataFunction,QVariant>> m_columnFunctions;
     QHash<uint32_t, MessageTreeNode *> map;
 
     void readXmlToNode(TreeNode * parent, QXmlStreamReader &reader);
     bool linkMessageNode(MessageTreeNode * node);
+    void unlinkNodes(TreeNode * node);
 };
 
 #endif // CANTREEMODEL_H

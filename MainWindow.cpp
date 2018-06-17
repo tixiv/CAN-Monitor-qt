@@ -38,11 +38,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::onCustomContextMenu(const QPoint &point)
 {
-    QMenu contextMenu(this);
-    contextMenu.addAction(ui->actionAdd_Group);
-
     QModelIndex index = ui->treeView->indexAt(point);
     m_contextMenuContext.index = index;
+
+    QMenu contextMenu(this);
+    contextMenu.addAction(ui->actionAdd_Group);
+    if(index.isValid())
+        contextMenu.addAction(ui->actionDelete_Node);
+
     contextMenu.exec(ui->treeView->mapToGlobal(point));
 }
 
@@ -54,6 +57,11 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionAdd_Group_triggered()
 {
     model->insertNode(m_contextMenuContext.index, -1, new HeaderTreeNode("New Group"));
+}
+
+void MainWindow::on_actionDelete_Node_triggered()
+{
+    model->deleteNode(m_contextMenuContext.index);
 }
 
 void MainWindow::tickTimerTimeout()

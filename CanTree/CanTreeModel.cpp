@@ -69,6 +69,12 @@ Qt::ItemFlags CanTreeModel::flags(const QModelIndex &index) const
     return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
+void CanTreeModel::deleteNode(const QModelIndex nodeIdx){
+    TreeNode *node = nodeForIndex(nodeIdx);
+    removeNode(node);
+    unlinkNodes(node);
+    delete node;
+}
 
 void CanTreeModel::inputMessage(const can_message_t * cmsg){
     uint32_t uid = CanUniqueID(cmsg).val;
@@ -98,6 +104,22 @@ bool CanTreeModel::linkMessageNode(MessageTreeNode * node)
 
     map[uid] = node;
     return true;
+}
+
+void CanTreeModel::unlinkNodes(TreeNode * node)
+{
+    MessageTreeNode *mtn = dynamic_cast<MessageTreeNode *>(node);
+
+    if(mtn){
+        uint32_t uid = CanUniqueID(mtn->getId(), mtn->getIDE(), mtn->getRTR()).val;
+        if(map.contains(uid))
+            map.remove(uid);
+    }
+
+    for(int i=0; i<node->childCount(); i++)
+    {
+        unlinkNodes(node->child(i));
+    }
 }
 
 static void writeNodeToXml(QXmlStreamWriter &writer, const TreeNode * node){

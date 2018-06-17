@@ -112,6 +112,11 @@
     <string>Save Tree</string>
    </property>
   </action>
+  <action name="actionDelete_Node">
+   <property name="text">
+    <string>Delete Node</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

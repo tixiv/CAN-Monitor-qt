@@ -29,6 +29,8 @@ private slots:
 
     void on_actionLoad_Tree_triggered();
 
+    void on_actionDelete_Node_triggered();
+
 private:
     Ui::MainWindow *ui;
     CanTreeModel *model;
