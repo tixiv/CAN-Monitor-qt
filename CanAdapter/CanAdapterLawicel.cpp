@@ -1,6 +1,7 @@
 #include "CanAdapterLawicel.h"
 
 #include <QThread>
+#include <QMessageBox>
 #include "lib-slcan/slcan.h"
 #include "SlcanControlWidget.h"
 
@@ -28,11 +29,18 @@ bool CanAdapterLawicel::open()
 
     if(m_port.open(QIODevice::ReadWrite)){
         m_openState = osOpening;
-    }
+        m_openTimer.setInterval(2000);
+        m_openTimer.setSingleShot(true);
+        m_openTimer.start();
 
-    m_openTimer.setInterval(2000);
-    m_openTimer.setSingleShot(true);
-    m_openTimer.start();
+    }else{
+        int ret = QMessageBox::warning(0, tr("CAN Monitor"),
+                                       tr("The serial port could not be opened.\n"
+                                          "The errormessage was:\n")
+                                       +m_port.errorString(),
+                                       QMessageBox::Ok);
+        emit openOperationEnded(false);
+    }
 
     return true;
 }
