@@ -17,6 +17,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
+    ui->treeView->setColumnWidth(0,150);
+    ui->treeView->setColumnWidth(5,200);
+    ui->treeView->setColumnWidth(6,160);
+
+
     m_canAdapter = new CanAdapterLawicel();
     auto w = m_canAdapter->getControlWidget(ui->centralWidget);
     ui->verticalLayout->insertWidget(0,w);

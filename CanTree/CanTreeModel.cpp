@@ -15,7 +15,6 @@ CanTreeModel::CanTreeModel()
     m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfFormat,      "Format String"));
 }
 
-
 int CanTreeModel::columnCount(const QModelIndex &parent) const
 {
     (void)parent;
