@@ -42,6 +42,8 @@ private:
     QString m_dataString;
     QString m_countString;
     QString m_periodString;
+    QString m_formatString;
+    QString m_dataDecodedString;
 };
 
 #endif // MESSAGETREENODE_H

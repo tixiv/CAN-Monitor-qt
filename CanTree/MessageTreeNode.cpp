@@ -66,8 +66,8 @@ QVariant MessageTreeNode::getData(dataFunction df) const
     case dfCount:       return m_countString;
     case dfPeriod:      return m_periodString;
     case dfRawData:     return m_dataString;
-    case dfDataDecoded: return "";
-    case dfFormat:      return "";
+    case dfDataDecoded: return m_dataDecodedString;
+    case dfFormat:      return m_formatString;
     }
 
     return QVariant();
@@ -77,6 +77,9 @@ bool MessageTreeNode::setData(dataFunction df, const QVariant &value)
 {
     if(df == dfName){
         m_name = value;
+        return true;
+    }else if(df == dfFormat){
+        m_formatString = value.toString();
         return true;
     }else{
         return false;
@@ -89,6 +92,8 @@ void MessageTreeNode::writeDataToXml(QXmlStreamWriter &writer) const
     writer.writeAttribute("id", QString().sprintf("%X", id));
     writer.writeAttribute("IDE", IDE ? "true":"false");
     writer.writeAttribute("RTR", RTR ? "true":"false");
+    writer.writeAttribute("format", m_formatString);
+
 }
 
 void MessageTreeNode::readDataFromXml(QXmlStreamReader &reader)
@@ -97,5 +102,6 @@ void MessageTreeNode::readDataFromXml(QXmlStreamReader &reader)
     id = reader.attributes().value("id").toString().toUInt(0,16);
     IDE = reader.attributes().value("IDE").toString() == "true";
     RTR = reader.attributes().value("RTR").toString() == "true";
+    m_formatString = reader.attributes().value("format").toString();
     initIdString();
 }
