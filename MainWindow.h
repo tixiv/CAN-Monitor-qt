@@ -33,13 +33,13 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    CanTreeModel *model;
+    CanTreeModel *m_model = 0;
 
     struct{
         QModelIndex index;
     }m_contextMenuContext;
 
-    CanAdapter * m_canAdapter;
+    CanAdapter * m_canAdapter = 0;
     QTimer m_tickTimer;
 
 };

@@ -12,7 +12,7 @@ CanAdapterLawicel::CanAdapterLawicel()
 }
 
 CanAdapterLawicel::~CanAdapterLawicel(){
-    if(m_controlWidget) delete m_controlWidget;
+    close();
 }
 
 bool CanAdapterLawicel::open()
@@ -34,12 +34,13 @@ bool CanAdapterLawicel::open()
         m_openTimer.start();
 
     }else{
-        int ret = QMessageBox::warning(0, tr("CAN Monitor"),
-                                       tr("The serial port could not be opened.\n"
-                                          "The errormessage was:\n")
-                                       +m_port.errorString(),
-                                       QMessageBox::Ok);
+        QMessageBox::warning(0, tr("CAN Monitor"),
+                             tr("The serial port could not be opened.\n"
+                             "The errormessage was:\n")
+                             +m_port.errorString(),
+                             QMessageBox::Ok);
         emit openOperationEnded(false);
+        return false;
     }
 
     return true;
@@ -63,11 +64,14 @@ void CanAdapterLawicel::openTimerTimeout()
 
 void CanAdapterLawicel::close()
 {
-    m_openTimer.stop();
-    m_port.write("C\r");
-    m_port.waitForBytesWritten(100);
-    m_port.close();
-    m_openState = osClosed;
+    if(m_openState != osClosed)
+    {
+        m_openTimer.stop();
+        m_port.write("C\r");
+        m_port.waitForBytesWritten(100);
+        m_port.close();
+        m_openState = osClosed;
+    }
 }
 
 bool CanAdapterLawicel::transmit(const can_message_t * cmsg)
@@ -102,15 +106,12 @@ bool CanAdapterLawicel::isOpen()
 }
 
 QWidget * CanAdapterLawicel::getControlWidget(QWidget *parent){
-    if(!m_controlWidget)
-    {
-        m_controlWidget = new SlcanControlWidget(parent);
-        connect(m_controlWidget, SIGNAL(openClicked(QString, CanAdapterLawicel::OpenMode, int)), this, SLOT(openClicked(QString, CanAdapterLawicel::OpenMode, int)));
-        connect(m_controlWidget, SIGNAL(closeClicked()), this, SLOT(closeClicked()));
-        connect(this, SIGNAL(openOperationEnded(bool)), m_controlWidget, SLOT(openOperationEnded(bool)));
+    auto controlWidget = new SlcanControlWidget(parent);
+    connect(controlWidget, SIGNAL(openClicked(QString, CanAdapterLawicel::OpenMode, int)), this, SLOT(openClicked(QString, CanAdapterLawicel::OpenMode, int)));
+    connect(controlWidget, SIGNAL(closeClicked()), this, SLOT(closeClicked()));
+    connect(this, SIGNAL(openOperationEnded(bool)), controlWidget, SLOT(openOperationEnded(bool)));
 
-    }
-    return m_controlWidget;
+    return controlWidget;
 }
 
 void CanAdapterLawicel::openClicked(QString portName, CanAdapterLawicel::OpenMode mode, int baud){

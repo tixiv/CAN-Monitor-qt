@@ -56,9 +56,6 @@ private:
     }m_openState;
 
     QString m_buffer;
-
-    QWidget * m_controlWidget=0;
-
 };
 
 #endif // CANADAPTERLAWICEL_H

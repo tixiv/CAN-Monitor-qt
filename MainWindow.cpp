@@ -12,8 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    model = new CanTreeModel();
-    ui->treeView->setModel(model);
+    m_model = new CanTreeModel();
+    ui->treeView->setModel(m_model);
 
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
@@ -51,24 +51,28 @@ void MainWindow::onCustomContextMenu(const QPoint &point)
 
 MainWindow::~MainWindow()
 {
+    if(m_canAdapter)
+        delete m_canAdapter;
     delete ui;
+    if(m_model)
+        delete m_model;
 }
 
 void MainWindow::on_actionAdd_Group_triggered()
 {
-    model->insertNode(m_contextMenuContext.index, -1, new HeaderTreeNode("New Group"));
+    m_model->insertNode(m_contextMenuContext.index, -1, new HeaderTreeNode("New Group"));
 }
 
 void MainWindow::on_actionDelete_Node_triggered()
 {
-    model->deleteNode(m_contextMenuContext.index);
+    m_model->deleteNode(m_contextMenuContext.index);
 }
 
 void MainWindow::tickTimerTimeout()
 {
     can_message_t cmsg;
     while(m_canAdapter->receive(&cmsg)){
-        model->inputMessage(&cmsg);
+        m_model->inputMessage(&cmsg);
     }
 }
 
@@ -86,7 +90,7 @@ void MainWindow::on_actionSave_Tree_triggered()
     file.open(QIODevice::WriteOnly);
     QXmlStreamWriter xmlWriter(&file);
     xmlWriter.setAutoFormatting(true);
-    model->writeTreeToXml(xmlWriter);
+    m_model->writeTreeToXml(xmlWriter);
     file.close();
 }
 
@@ -98,6 +102,6 @@ void MainWindow::on_actionLoad_Tree_triggered()
     QFile file(filename);
     file.open(QIODevice::ReadOnly);
     QXmlStreamReader xmlReader(&file);
-    model->readTreeFromXml(xmlReader);
+    m_model->readTreeFromXml(xmlReader);
     file.close();
 }
