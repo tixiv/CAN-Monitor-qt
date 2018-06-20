@@ -51,6 +51,7 @@ bool CanTreeModel::setData(const QModelIndex &index, const QVariant &value, int 
     TreeNode *node = nodeForIndex(index);
 
     return node->setData(m_columnFunctions.value(index.column()).first, value);
+    isUserModified = true;
 }
 
 Qt::ItemFlags CanTreeModel::flags(const QModelIndex &index) const
@@ -70,10 +71,13 @@ Qt::ItemFlags CanTreeModel::flags(const QModelIndex &index) const
 }
 
 void CanTreeModel::deleteNode(const QModelIndex nodeIdx){
+    if(!nodeIdx.isValid())
+        return;
     TreeNode *node = nodeForIndex(nodeIdx);
     removeNode(node);
     unlinkNodes(node);
     delete node;
+    isUserModified = true;
 }
 
 void CanTreeModel::inputMessage(const can_message_t * cmsg){

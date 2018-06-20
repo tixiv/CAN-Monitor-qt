@@ -118,10 +118,11 @@ bool TreeModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction action, i
         insertNode(parentNode, row, node);
         ++row;
     }
+    isUserModified = true;
     return true;
 }
 
-void TreeModel::insertNode(TreeNode *parentNode, int row, TreeNode *node){
+void TreeModel::insertNode(TreeNode *parentNode, int row, TreeNode *node, bool byUser){
     const QModelIndex parent = indexForNode(parentNode);
     if(row < 0)
         // insert at end
@@ -129,9 +130,10 @@ void TreeModel::insertNode(TreeNode *parentNode, int row, TreeNode *node){
     beginInsertRows(parent, row, row);
     parentNode->insertChild(row, node);
     endInsertRows();
+    if(byUser) isUserModified = true;
 }
 
-void TreeModel::insertNode(const QModelIndex parent, int row, TreeNode *node){
+void TreeModel::insertNode(const QModelIndex parent, int row, TreeNode *node, bool byUser){
     TreeNode *parentNode = nodeForIndex(parent);
     if(row < 0)
         // insert at end
@@ -139,6 +141,7 @@ void TreeModel::insertNode(const QModelIndex parent, int row, TreeNode *node){
     beginInsertRows(parent, row, row);
     parentNode->insertChild(row, node);
     endInsertRows();
+    if(byUser) isUserModified = true;
 }
 
 Qt::DropActions TreeModel::supportedDropActions() const

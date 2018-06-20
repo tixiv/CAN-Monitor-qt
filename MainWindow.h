@@ -33,6 +33,9 @@ private slots:
 
     void on_canAdapterComboBox_currentTextChanged(const QString &arg1);
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private:
     Ui::MainWindow *ui;
     CanTreeModel *m_model = 0;
@@ -51,6 +54,7 @@ private:
     void changeCanAdpapter(CanAdapter * ca);
 
     void loadTree(QString &filename);
+    bool saveTreeInteractive();
 };
 
 #endif // MAINWINDOW_H

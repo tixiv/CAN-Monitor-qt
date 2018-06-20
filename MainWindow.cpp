@@ -2,6 +2,7 @@
 #include <QFileDialog>
 #include <QSettings>
 #include <QMessageBox>
+#include <QCloseEvent>
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "CanTree/TreeModel.h"
@@ -64,7 +65,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAdd_Group_triggered()
 {
-    m_model->insertNode(m_contextMenuContext.index, -1, new HeaderTreeNode("New Group"));
+    m_model->insertNode(m_contextMenuContext.index, -1, new HeaderTreeNode("New Group"), true);
 }
 
 void MainWindow::on_actionDelete_Node_triggered()
@@ -88,7 +89,7 @@ void MainWindow::onTransmit(can_message_t cmsg)
     m_canAdapter->transmit(&cmsg);
 }
 
-void MainWindow::on_actionSave_Tree_triggered()
+bool MainWindow::saveTreeInteractive()
 {
     QString path = QSettings().value("main/lastTreeFile").toString();
     QString filename = QFileDialog::getSaveFileName(this,
@@ -96,7 +97,7 @@ void MainWindow::on_actionSave_Tree_triggered()
                                            tr("Xml files (*.xml)"));
 
     if(filename == "")
-        return;
+        return false;
 
     QFile file(filename);
     if(file.open(QIODevice::WriteOnly))
@@ -105,16 +106,22 @@ void MainWindow::on_actionSave_Tree_triggered()
         xmlWriter.setAutoFormatting(true);
         m_model->writeTreeToXml(xmlWriter);
         file.close();
+        m_model->isUserModified = false;
         QSettings().setValue("main/lastTreeFile", filename);
+        return true;
     }else{
         QMessageBox::warning(0, tr("CAN Monitor"),
                              tr("The file\"") + filename + tr("\"could not be opened.\n") +
                              tr("The error message was: ") + file.errorString(),
                              QMessageBox::Ok);
+        return false;
     }
-
 }
 
+void MainWindow::on_actionSave_Tree_triggered()
+{
+    saveTreeInteractive();
+}
 
 void MainWindow::loadTree(QString &filename)
 {
@@ -142,6 +149,36 @@ void MainWindow::on_actionLoad_Tree_triggered()
         return;
 
     loadTree(filename);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+ {
+    if(!m_model->isUserModified){
+        event->accept();
+        return;
+    }
+
+    QMessageBox msgBox;
+    msgBox.setText("The tree has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    int ret = msgBox.exec();
+
+    switch (ret) {
+        case QMessageBox::Save:
+            if (saveTreeInteractive())
+                event->accept();
+            else
+                event->ignore();
+            break;
+        case QMessageBox::Discard:
+            event->accept();
+            break;
+        case QMessageBox::Cancel:
+            event->ignore();
+            break;
+    }
 }
 
 void  MainWindow::changeCanAdpapter(CanAdapter * ca)
