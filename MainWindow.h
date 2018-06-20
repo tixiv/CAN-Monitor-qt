@@ -49,6 +49,8 @@ private:
     QList<CanAdapter *>m_canAdapters;
 
     void changeCanAdpapter(CanAdapter * ca);
+
+    void loadTree(QString &filename);
 };
 
 #endif // MAINWINDOW_H

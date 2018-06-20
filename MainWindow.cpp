@@ -1,6 +1,7 @@
 #include <QSerialPortInfo>
 #include <QFileDialog>
 #include <QSettings>
+#include <QMessageBox>
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "CanTree/TreeModel.h"
@@ -25,6 +26,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->treeView->setColumnWidth(6,160);
 
     ui->canAdapterComboBox->addItems(CanAdapterFactory::getAdapterNames());
+
+    QSettings settings;
+    QString path = settings.value("main/lastTreeFile").toString();
+    if(path != "")
+        loadTree(path);
 
     connect(&m_tickTimer, SIGNAL(timeout()), this, SLOT(tickTimerTimeout()));
     m_tickTimer.setInterval(20);
@@ -84,8 +90,7 @@ void MainWindow::onTransmit(can_message_t cmsg)
 
 void MainWindow::on_actionSave_Tree_triggered()
 {
-    QSettings settings;
-    QString path = settings.value("main/lastTreeFile").toString();
+    QString path = QSettings().value("main/lastTreeFile").toString();
     QString filename = QFileDialog::getSaveFileName(this,
                                            tr("Save Tree"), path,
                                            tr("Xml files (*.xml)"));
@@ -94,38 +99,49 @@ void MainWindow::on_actionSave_Tree_triggered()
         return;
 
     QFile file(filename);
-    file.open(QIODevice::WriteOnly);
+    if(file.open(QIODevice::WriteOnly))
+    {
+        QXmlStreamWriter xmlWriter(&file);
+        xmlWriter.setAutoFormatting(true);
+        m_model->writeTreeToXml(xmlWriter);
+        file.close();
+        QSettings().setValue("main/lastTreeFile", filename);
+    }else{
+        QMessageBox::warning(0, tr("CAN Monitor"),
+                             tr("The file\"") + filename + tr("\"could not be opened.\n") +
+                             tr("The error message was: ") + file.errorString(),
+                             QMessageBox::Ok);
+    }
 
-    QXmlStreamWriter xmlWriter(&file);
-    xmlWriter.setAutoFormatting(true);
+}
 
-    m_model->writeTreeToXml(xmlWriter);
 
-    file.close();
-
-    settings.setValue("main/lastTreeFile", filename);
+void MainWindow::loadTree(QString &filename)
+{
+    QFile file(filename);
+    if(file.open(QIODevice::ReadOnly)){
+        QXmlStreamReader xmlReader(&file);
+        m_model->readTreeFromXml(xmlReader);
+        file.close();
+        QSettings().setValue("main/lastTreeFile", filename);
+    }else{
+        QMessageBox::warning(0, tr("CAN Monitor"),
+                             tr("The file\"") + filename + tr("\"could not be opened.\n") +
+                             tr("The error message was: ") + file.errorString(),
+                             QMessageBox::Ok);
+    }
 }
 
 void MainWindow::on_actionLoad_Tree_triggered()
 {
-    QSettings settings;
-    QString path = settings.value("main/lastTreeFile").toString();
+    QString path = QSettings().value("main/lastTreeFile").toString();
     QString filename = QFileDialog::getOpenFileName(this,
                                            tr("Load Tree"), path,
                                            tr("Xml files (*.xml)"));
     if(filename == "")
         return;
 
-    QFile file(filename);
-    file.open(QIODevice::ReadOnly);
-
-    QXmlStreamReader xmlReader(&file);
-
-    m_model->readTreeFromXml(xmlReader);
-
-    file.close();
-
-    settings.setValue("main/lastTreeFile", filename);
+    loadTree(filename);
 }
 
 void  MainWindow::changeCanAdpapter(CanAdapter * ca)
