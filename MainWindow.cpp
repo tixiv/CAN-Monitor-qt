@@ -4,7 +4,8 @@
 #include "ui_MainWindow.h"
 #include "CanTree/TreeModel.h"
 #include "CanTree/HeaderTreeNode.h"
-#include "CanAdapter/CanAdapterLawicel.h"
+#include "CanAdapter/CanAdapter.h"
+#include "CanAdapter/CanAdapterFactory.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,11 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->treeView->setColumnWidth(5,200);
     ui->treeView->setColumnWidth(6,160);
 
-
-    m_canAdapter = new CanAdapterLawicel();
-    auto w = m_canAdapter->getControlWidget(ui->centralWidget);
-    ui->verticalLayout->insertWidget(0,w);
-
+    ui->canAdapterComboBox->addItems(CanAdapterFactory::getAdapterNames());
 
     connect(&m_tickTimer, SIGNAL(timeout()), this, SLOT(tickTimerTimeout()));
     m_tickTimer.setInterval(20);
@@ -70,6 +67,9 @@ void MainWindow::on_actionDelete_Node_triggered()
 
 void MainWindow::tickTimerTimeout()
 {
+    if(!m_canAdapter)
+        return;
+
     can_message_t cmsg;
     while(m_canAdapter->receive(&cmsg)){
         m_model->inputMessage(&cmsg);
@@ -104,4 +104,31 @@ void MainWindow::on_actionLoad_Tree_triggered()
     QXmlStreamReader xmlReader(&file);
     m_model->readTreeFromXml(xmlReader);
     file.close();
+}
+
+void  MainWindow::changeCanAdpapter(CanAdapter * ca)
+{
+    QBoxLayout * layout = ui->horizontalLayout;
+    int layoutIndex = 2;
+
+    if(m_canAdapter)
+        delete m_canAdapter;
+    if(m_canAdpterControlWidget)
+    {
+        layout->removeWidget(m_canAdpterControlWidget);
+        delete m_canAdpterControlWidget;
+    }
+    m_canAdapter = ca;
+    auto w = m_canAdapter->getControlWidget(ui->centralWidget);
+    m_canAdpterControlWidget = w;
+    if(w)
+        layout->insertWidget(layoutIndex,w);
+
+}
+
+void MainWindow::on_canAdapterComboBox_currentTextChanged(const QString &adapterName)
+{
+    CanAdapter * ca = CanAdapterFactory::createAdapter(adapterName);
+    if(ca)
+        changeCanAdpapter(ca);
 }

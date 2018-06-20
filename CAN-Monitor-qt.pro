@@ -28,6 +28,8 @@ SOURCES += main.cpp\
     WidgetUtils/CustomLineEdit.cpp \
     lib-slcan/slcan.c \
     TransmitWidget.cpp \
+    CanAdapter/CanAdapterLoopback.cpp \
+    CanAdapter/CanAdapterFactory.cpp
 
 HEADERS  += MainWindow.h \
     CanTree/TreeModel.h \
@@ -44,6 +46,8 @@ HEADERS  += MainWindow.h \
     lib-slcan/can_message.h \
     lib-slcan/slcan.h \
     TransmitWidget.h \
+    CanAdapter/CanAdapterLoopback.h \
+    CanAdapter/CanAdapterFactory.h
 
 
 

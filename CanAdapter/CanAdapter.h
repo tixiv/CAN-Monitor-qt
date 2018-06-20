@@ -3,7 +3,8 @@
 
 #include <QObject>
 #include "lib-slcan/can_message.h"
-#include <QWidget>
+
+class QWidget;
 
 class CanAdapter : public QObject
 {
@@ -21,7 +22,6 @@ public:
     virtual bool isOpen() = 0;
 
     virtual QWidget * getControlWidget(QWidget *parent = 0) = 0;
-
 signals:
     void received();
 

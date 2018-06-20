@@ -31,6 +31,8 @@ private slots:
 
     void on_actionDelete_Node_triggered();
 
+    void on_canAdapterComboBox_currentTextChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     CanTreeModel *m_model = 0;
@@ -40,8 +42,13 @@ private:
     }m_contextMenuContext;
 
     CanAdapter * m_canAdapter = 0;
+    QWidget * m_canAdpterControlWidget = 0;
+
     QTimer m_tickTimer;
 
+    QList<CanAdapter *>m_canAdapters;
+
+    void changeCanAdpapter(CanAdapter * ca);
 };
 
 #endif // MAINWINDOW_H
