@@ -1,5 +1,6 @@
 #include <QSerialPortInfo>
 #include <QFileDialog>
+#include <QSettings>
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "CanTree/TreeModel.h"
@@ -83,27 +84,48 @@ void MainWindow::onTransmit(can_message_t cmsg)
 
 void MainWindow::on_actionSave_Tree_triggered()
 {
+    QSettings settings;
+    QString path = settings.value("main/lastTreeFile").toString();
     QString filename = QFileDialog::getSaveFileName(this,
-                                           tr("Save Tree"), ".",
+                                           tr("Save Tree"), path,
                                            tr("Xml files (*.xml)"));
+
+    if(filename == "")
+        return;
+
     QFile file(filename);
     file.open(QIODevice::WriteOnly);
+
     QXmlStreamWriter xmlWriter(&file);
     xmlWriter.setAutoFormatting(true);
+
     m_model->writeTreeToXml(xmlWriter);
+
     file.close();
+
+    settings.setValue("main/lastTreeFile", filename);
 }
 
 void MainWindow::on_actionLoad_Tree_triggered()
 {
+    QSettings settings;
+    QString path = settings.value("main/lastTreeFile").toString();
     QString filename = QFileDialog::getOpenFileName(this,
-                                           tr("Load Tree"), ".",
+                                           tr("Load Tree"), path,
                                            tr("Xml files (*.xml)"));
+    if(filename == "")
+        return;
+
     QFile file(filename);
     file.open(QIODevice::ReadOnly);
+
     QXmlStreamReader xmlReader(&file);
+
     m_model->readTreeFromXml(xmlReader);
+
     file.close();
+
+    settings.setValue("main/lastTreeFile", filename);
 }
 
 void  MainWindow::changeCanAdpapter(CanAdapter * ca)
