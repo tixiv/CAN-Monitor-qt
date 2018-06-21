@@ -39,6 +39,7 @@ private:
         QString name;
     };
     QVector<ColumnRole> m_columnFunctions;
+    int m_columnCount;
     QHash<uint32_t, MessageTreeNode *> map;
 
     void readXmlToNode(TreeNode * parent, QXmlStreamReader &reader);

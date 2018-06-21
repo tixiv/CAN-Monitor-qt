@@ -18,12 +18,13 @@ CanTreeModel::CanTreeModel()
         ColumnRole(dfDataDecoded, "Decoded Data"),
         ColumnRole(dfFormat,      "Format String"),
     };
+    m_columnCount = m_columnFunctions.count();
 }
 
 int CanTreeModel::columnCount(const QModelIndex &parent) const
 {
     (void)parent;
-    return m_columnFunctions.count();
+    return m_columnCount;
 }
 
 QVariant CanTreeModel::headerData(int section, Qt::Orientation orientation,
@@ -91,7 +92,7 @@ void CanTreeModel::inputMessage(const can_message_t * cmsg){
         node->update(cmsg);
 
         QModelIndex miLeft = indexForNode(node, 2);
-        QModelIndex miRight = indexForNode(node, columnCount()-1);
+        QModelIndex miRight = indexForNode(node, columnCount()-2);
         emit dataChanged(miLeft, miRight);
     }
     else
