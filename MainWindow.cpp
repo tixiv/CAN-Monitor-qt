@@ -65,7 +65,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAdd_Group_triggered()
 {
-    m_model->insertNode(m_contextMenuContext.index, -1, new HeaderTreeNode("New Group"), true);
+    m_model->addNode(m_contextMenuContext.index, new HeaderTreeNode("New Group"));
 }
 
 void MainWindow::on_actionDelete_Node_triggered()

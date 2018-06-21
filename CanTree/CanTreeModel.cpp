@@ -84,6 +84,19 @@ void CanTreeModel::deleteNode(const QModelIndex nodeIdx){
     isUserModified = true;
 }
 
+void CanTreeModel::addNode(const QModelIndex parent, TreeNode *node)
+{
+    TreeNode * parentNode = nodeForIndex(parent);
+    int row = -1;
+    // new nodes can only be added to root or Headers
+    while(parentNode != rootNode() && !dynamic_cast<const HeaderTreeNode *>(parentNode))
+    {
+        row = parentNode->row(); // we want to insert the new node at this row
+        parentNode = parentNode->parentNode(); // find the parent of parent
+    }
+    insertNode(parentNode, row, node, true);
+}
+
 void CanTreeModel::inputMessage(const can_message_t * cmsg){
     uint32_t uid = CanUniqueID(cmsg).val;
 

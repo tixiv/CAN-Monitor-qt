@@ -32,6 +32,8 @@ public:
     bool readTreeFromXml(QXmlStreamReader &reader);
 
     void deleteNode(const QModelIndex nodeIdx);
+
+    void addNode(const QModelIndex parent, TreeNode *node);
 private:
     struct ColumnRole {
         ColumnRole(dataFunction df, const char * name):df(df), name(name){}
