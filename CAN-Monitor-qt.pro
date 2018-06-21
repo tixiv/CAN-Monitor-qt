@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     lib-slcan/slcan.c \
     TransmitWidget.cpp \
     CanAdapter/CanAdapterLoopback.cpp \
-    CanAdapter/CanAdapterFactory.cpp
+    CanAdapter/CanAdapterFactory.cpp \
+    CanAdapter/CanAdapterTesting.cpp
 
 HEADERS  += MainWindow.h \
     CanTree/TreeModel.h \
@@ -47,7 +48,8 @@ HEADERS  += MainWindow.h \
     lib-slcan/slcan.h \
     TransmitWidget.h \
     CanAdapter/CanAdapterLoopback.h \
-    CanAdapter/CanAdapterFactory.h
+    CanAdapter/CanAdapterFactory.h \
+    CanAdapter/CanAdapterTesting.h
 
 
 

@@ -48,10 +48,10 @@ bool CanTreeModel::setData(const QModelIndex &index, const QVariant &value, int 
     if (!index.isValid() || role != Qt::EditRole)
         return false;
 
-    TreeNode *node = nodeForIndex(index);
-
-    return node->setData(m_columnFunctions.value(index.column()).first, value);
     isUserModified = true;
+
+    TreeNode *node = nodeForIndex(index);
+    return node->setData(m_columnFunctions.value(index.column()).first, value);
 }
 
 Qt::ItemFlags CanTreeModel::flags(const QModelIndex &index) const
