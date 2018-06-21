@@ -19,11 +19,13 @@ void CanAdapterTesting::close()
 
 bool CanAdapterTesting::transmit(const can_message_t * cmsg)
 {
+    (void) cmsg;
     return true;
 }
 
 
-static void randomFillCanMessage(can_message_t * cmsg){
+static void randomFillCanMessage(can_message_t * cmsg)
+{
     uint16_t * x = (uint16_t*)cmsg;
 
     for(int i=0; i < sizeof(can_message_t)/2; i++)
@@ -54,6 +56,8 @@ bool CanAdapterTesting::isOpen()
     return true;
 }
 
-QWidget * CanAdapterTesting::getControlWidget(QWidget *parent){
+QWidget * CanAdapterTesting::getControlWidget(QWidget *parent)
+{
+    (void)parent;
     return 0;
 }

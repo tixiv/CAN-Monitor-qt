@@ -238,7 +238,6 @@ void MessageTreeNode::writeDataToXml(QXmlStreamWriter &writer) const
     writer.writeAttribute("IDE", IDE ? "true":"false");
     writer.writeAttribute("RTR", RTR ? "true":"false");
     writer.writeAttribute("format", m_formatString);
-
 }
 
 void MessageTreeNode::readDataFromXml(QXmlStreamReader &reader)

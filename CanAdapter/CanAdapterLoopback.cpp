@@ -39,5 +39,6 @@ bool CanAdapterLoopback::isOpen()
 }
 
 QWidget * CanAdapterLoopback::getControlWidget(QWidget *parent){
+    (void) parent;
     return 0;
 }
