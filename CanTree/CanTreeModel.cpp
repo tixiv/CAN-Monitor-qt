@@ -7,14 +7,17 @@
 CanTreeModel::CanTreeModel()
     : TreeModel()
 {
-    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfName,        "Name"));
-    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfID,          "ID (HEX)"));
-    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfDLC,         "DLC"));
-    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfCount,       "Count"));
-    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfPeriod,      "Period (ms)"));
-    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfRawData,     "Raw Data (HEX)"));
-    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfDataDecoded, "Decoded Data"));
-    m_columnFunctions.append(QPair<enum dataFunction,QVariant>(dfFormat,      "Format String"));
+    m_columnFunctions = {
+        ColumnRole(dfName,        "Name"),
+        ColumnRole(dfID,          "ID (HEX)"),
+        ColumnRole(dfID,          "ID (HEX)"),
+        ColumnRole(dfDLC,         "DLC"),
+        ColumnRole(dfCount,       "Count"),
+        ColumnRole(dfPeriod,      "Period (ms)"),
+        ColumnRole(dfRawData,     "Raw Data (HEX)"),
+        ColumnRole(dfDataDecoded, "Decoded Data"),
+        ColumnRole(dfFormat,      "Format String"),
+    };
 }
 
 int CanTreeModel::columnCount(const QModelIndex &parent) const
@@ -27,7 +30,7 @@ QVariant CanTreeModel::headerData(int section, Qt::Orientation orientation,
                                int role) const
 {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole){
-        return m_columnFunctions.value(section).second;
+        return m_columnFunctions.at(section).name;
     }
 
     return QVariant();
@@ -40,7 +43,7 @@ QVariant CanTreeModel::data(const QModelIndex &index, int role) const
 
     TreeNode *node = nodeForIndex(index);
 
-    return node->getData(m_columnFunctions.value(index.column()).first);
+    return node->getData(m_columnFunctions.at(index.column()).df);
 }
 
 bool CanTreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -51,7 +54,7 @@ bool CanTreeModel::setData(const QModelIndex &index, const QVariant &value, int 
     isUserModified = true;
 
     TreeNode *node = nodeForIndex(index);
-    return node->setData(m_columnFunctions.value(index.column()).first, value);
+    return node->setData(m_columnFunctions.at(index.column()).df, value);
 }
 
 Qt::ItemFlags CanTreeModel::flags(const QModelIndex &index) const
@@ -60,7 +63,7 @@ Qt::ItemFlags CanTreeModel::flags(const QModelIndex &index) const
         return Qt::ItemIsDropEnabled;
 
     Qt::ItemFlags flags = 0;
-    switch(m_columnFunctions.value(index.column()).first){
+    switch(m_columnFunctions.at(index.column()).df){
     case dfName:
     case dfFormat:
         flags = Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable ; break;

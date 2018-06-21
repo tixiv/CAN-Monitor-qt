@@ -33,7 +33,12 @@ public:
 
     void deleteNode(const QModelIndex nodeIdx);
 private:
-    QList<QPair<enum dataFunction,QVariant>> m_columnFunctions;
+    struct ColumnRole {
+        ColumnRole(dataFunction df, const char * name):df(df), name(name){}
+        dataFunction df;
+        QString name;
+    };
+    QVector<ColumnRole> m_columnFunctions;
     QHash<uint32_t, MessageTreeNode *> map;
 
     void readXmlToNode(TreeNode * parent, QXmlStreamReader &reader);
