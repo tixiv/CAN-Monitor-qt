@@ -8,7 +8,7 @@ MessageTreeNode::MessageTreeNode()
 {
 }
 
-MessageTreeNode::MessageTreeNode(const QVariant &name, int id, bool IDE, bool RTR)
+MessageTreeNode::MessageTreeNode(const QString &name, int id, bool IDE, bool RTR)
     :TreeNode(), m_name(name), IDE(IDE), RTR(RTR), id(id)
 {
 }
@@ -220,7 +220,7 @@ QVariant MessageTreeNode::getData(dataFunction df) const
 bool MessageTreeNode::setData(dataFunction df, const QVariant &value)
 {
     if(df == dfName){
-        m_name = value;
+        m_name = value.toString();
         return true;
     }else if(df == dfFormat){
         m_formatString = value.toString();
@@ -233,7 +233,7 @@ bool MessageTreeNode::setData(dataFunction df, const QVariant &value)
 
 void MessageTreeNode::writeDataToXml(QXmlStreamWriter &writer) const
 {
-    writer.writeAttribute("name", m_name.toString());
+    writer.writeAttribute("name", m_name);
     writer.writeAttribute("id", QString().sprintf("%X", id));
     writer.writeAttribute("IDE", IDE ? "true":"false");
     writer.writeAttribute("RTR", RTR ? "true":"false");

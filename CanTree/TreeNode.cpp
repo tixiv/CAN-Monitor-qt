@@ -19,7 +19,7 @@ void TreeNode::removeChild(int row)
 
 TreeNode *TreeNode::child(int row) const
 {
-    return m_childNodes.value(row);
+    return m_childNodes.at(row);
 }
 
 int TreeNode::childCount() const

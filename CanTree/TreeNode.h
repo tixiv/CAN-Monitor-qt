@@ -1,7 +1,7 @@
 #ifndef TREENODE_H
 #define TREENODE_H
 
-#include <QList>
+#include <QVector>
 #include <QVariant>
 
 class QXmlStreamWriter;
@@ -42,7 +42,7 @@ public:
     virtual void readDataFromXml(QXmlStreamReader &reader) = 0;
 
 private:
-    QList<TreeNode*> m_childNodes;
+    QVector<TreeNode*> m_childNodes;
     TreeNode *m_parentNode;
 };
 
