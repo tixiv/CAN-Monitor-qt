@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
         m_proxyModel->setSourceModel(m_model);
         m_proxyModel->setSortRole(Qt::UserRole);
         ui->treeView->setModel(m_proxyModel);
+        ui->treeView->sortByColumn(-1);
+        ui->treeView->setSortingEnabled(true);
     }else{
         ui->treeView->setModel(m_model);
     }
@@ -49,22 +51,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->transmitWidget, SIGNAL(onTransmit(can_message_t)), this, SLOT(onTransmit(can_message_t)));
 }
 
-
-void MainWindow::onCustomContextMenu(const QPoint &point)
-{
-
-    QModelIndexList selectedIndexes = ui->treeView->selectionModel()->selectedIndexes();
-    QModelIndex clickedIndex = ui->treeView->indexAt(point);
-    m_contextMenuContext.clickedIndex = clickedIndex;
-
-    QMenu contextMenu(this);
-    contextMenu.addAction(ui->actionAdd_Group);
-    if(!selectedIndexes.empty())
-        contextMenu.addAction(ui->actionDeleteTreeNodes);
-
-    contextMenu.exec(ui->treeView->mapToGlobal(point));
-}
-
 MainWindow::~MainWindow()
 {
     if(m_canAdapter)
@@ -73,6 +59,23 @@ MainWindow::~MainWindow()
     if(m_model)
         delete m_model;
 }
+
+void MainWindow::onCustomContextMenu(const QPoint &point)
+{
+
+    QModelIndexList selectedIndexes = ui->treeView->selectionModel()->selectedIndexes();
+    m_contextMenuContext.clickedIndex = ui->treeView->indexAt(point);
+
+    QMenu contextMenu(this);
+    contextMenu.addAction(ui->actionAdd_Group);
+    if(!selectedIndexes.empty())
+        contextMenu.addAction(ui->actionDeleteTreeNodes);
+
+    contextMenu.addAction(ui->actionEnable_Sorting);
+
+    contextMenu.exec(ui->treeView->mapToGlobal(point));
+}
+
 
 void MainWindow::on_actionAdd_Group_triggered()
 {
@@ -96,6 +99,11 @@ void MainWindow::on_actionDeleteTreeNodes_triggered()
         list = originalList;
 
     m_model->deleteNodes(list);
+}
+
+void MainWindow::on_actionEnable_Sorting_triggered()
+{
+    ui->treeView->sortByColumn(-1);
 }
 
 void MainWindow::tickTimerTimeout()

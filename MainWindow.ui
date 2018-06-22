@@ -94,7 +94,7 @@
        <bool>true</bool>
       </property>
       <property name="sortingEnabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="animated">
        <bool>true</bool>
@@ -103,7 +103,7 @@
        <bool>true</bool>
       </attribute>
       <attribute name="headerShowSortIndicator" stdset="0">
-       <bool>true</bool>
+       <bool>false</bool>
       </attribute>
       <attribute name="headerStretchLastSection">
        <bool>true</bool>
@@ -160,6 +160,14 @@
   <action name="actionDeleteTreeNodes">
    <property name="text">
     <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionEnable_Sorting">
+   <property name="text">
+    <string>Disable Sorting</string>
+   </property>
+   <property name="toolTip">
+    <string>Disable Sorting</string>
    </property>
   </action>
  </widget>

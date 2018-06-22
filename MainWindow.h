@@ -37,6 +37,8 @@ private slots:
 
     void on_actionDeleteTreeNodes_triggered();
 
+    void on_actionEnable_Sorting_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
