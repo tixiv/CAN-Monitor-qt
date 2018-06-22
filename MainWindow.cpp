@@ -105,13 +105,6 @@ void MainWindow::on_actionDeleteTreeNodes_triggered()
     m_model->deleteNodes(list);
 }
 
-static int m_lastSortIndex = -1;
-enum SortEnum{
-    sortNone = 0,
-    sortAscending = 1,
-    sortDescending = 2,
-} m_nextSortMode = sortAscending;
-
 void MainWindow::headerSectionClicked(int index)
 {
     ui->treeView->header()->setSortIndicatorShown(true);

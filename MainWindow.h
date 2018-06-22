@@ -60,6 +60,13 @@ private:
         QModelIndex clickedIndex;
     }m_contextMenuContext;
 
+    int m_lastSortIndex = -1;
+    enum SortEnum{
+        sortNone = 0,
+        sortAscending = 1,
+        sortDescending = 2,
+    } m_nextSortMode = sortAscending;
+
     CanAdapter * m_canAdapter = 0;
     QWidget * m_canAdpterControlWidget = 0;
 
