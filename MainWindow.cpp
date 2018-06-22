@@ -10,12 +10,16 @@
 #include "CanTree/HeaderTreeNode.h"
 #include "CanAdapter/CanAdapter.h"
 #include "CanAdapter/CanAdapterFactory.h"
+#include "WidgetUtils/MenuOpenKeeper.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    MenuOpenKeeper * menuOpenKepper = new MenuOpenKeeper(this);
+    ui->menuEnable_Columns->installEventFilter(menuOpenKepper);
 
     m_model = new CanTreeModel();
     if(useProxyModel)

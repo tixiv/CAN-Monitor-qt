@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     TransmitWidget.cpp \
     CanAdapter/CanAdapterLoopback.cpp \
     CanAdapter/CanAdapterFactory.cpp \
-    CanAdapter/CanAdapterTesting.cpp
+    CanAdapter/CanAdapterTesting.cpp \
+    WidgetUtils/MenuOpenKeeper.cpp
 
 HEADERS  += MainWindow.h \
     CanTree/TreeModel.h \
@@ -49,7 +50,8 @@ HEADERS  += MainWindow.h \
     TransmitWidget.h \
     CanAdapter/CanAdapterLoopback.h \
     CanAdapter/CanAdapterFactory.h \
-    CanAdapter/CanAdapterTesting.h
+    CanAdapter/CanAdapterTesting.h \
+    WidgetUtils/MenuOpenKeeper.h
 
 
 
