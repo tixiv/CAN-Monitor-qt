@@ -39,6 +39,8 @@ private slots:
 
     void on_actionEnable_Sorting_triggered();
 
+    void on_actionAbout_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

@@ -240,3 +240,11 @@ void MainWindow::on_canAdapterComboBox_currentTextChanged(const QString &adapter
     if(ca)
         changeCanAdpapter(ca);
 }
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox::information(0, tr("CAN Monitor 3000"),
+                         tr("Version 0.5 alpha\n\n") +
+                         tr("A versatile and simple CAN bus diagnostic tool by Peter Fuhrmann"),
+                         QMessageBox::Ok);
+}
