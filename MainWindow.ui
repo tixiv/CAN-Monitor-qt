@@ -87,10 +87,16 @@
       <property name="selectionBehavior">
        <enum>QAbstractItemView::SelectRows</enum>
       </property>
+      <property name="autoExpandDelay">
+       <number>3</number>
+      </property>
       <property name="uniformRowHeights">
        <bool>true</bool>
       </property>
       <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="animated">
        <bool>true</bool>
       </property>
       <attribute name="headerHighlightSections">
