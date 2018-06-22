@@ -29,9 +29,9 @@ private slots:
 
     void on_actionLoad_Tree_triggered();
 
-    void on_actionDelete_Node_triggered();
-
     void on_canAdapterComboBox_currentTextChanged(const QString &arg1);
+
+    void on_actionDeleteTreeNodes_triggered();
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -41,7 +41,7 @@ private:
     CanTreeModel *m_model = 0;
 
     struct{
-        QModelIndex index;
+        QModelIndex clickedIndex;
     }m_contextMenuContext;
 
     CanAdapter * m_canAdapter = 0;

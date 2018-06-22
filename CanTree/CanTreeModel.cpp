@@ -74,14 +74,36 @@ Qt::ItemFlags CanTreeModel::flags(const QModelIndex &index) const
     return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-void CanTreeModel::deleteNode(const QModelIndex nodeIdx){
-    if(!nodeIdx.isValid())
-        return;
-    TreeNode *node = nodeForIndex(nodeIdx);
+void CanTreeModel::deleteNode(TreeNode *node)
+{
     removeNode(node);
     unlinkNodes(node);
     delete node;
     isUserModified = true;
+}
+
+void CanTreeModel::deleteNode(const QModelIndex nodeIdx)
+{
+    if(!nodeIdx.isValid())
+        return;
+    TreeNode *node = nodeForIndex(nodeIdx);
+    deleteNode(node);
+}
+
+void CanTreeModel::deleteNodes(const QModelIndexList indexes)
+{
+    QList<TreeNode*> nodesToDelete;
+    foreach (auto index, indexes) {
+        if(index.isValid()){
+            auto node = nodeForIndex(index);
+            if(!nodesToDelete.contains(node))
+                nodesToDelete.append(node);
+        }
+    }
+
+    foreach (auto node, nodesToDelete) {
+        deleteNode(node);
+    }
 }
 
 void CanTreeModel::addNode(const QModelIndex parent, TreeNode *node)

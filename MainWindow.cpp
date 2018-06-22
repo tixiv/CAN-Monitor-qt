@@ -43,13 +43,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::onCustomContextMenu(const QPoint &point)
 {
-    QModelIndex index = ui->treeView->indexAt(point);
-    m_contextMenuContext.index = index;
+
+    QModelIndexList selectedIndexes = ui->treeView->selectionModel()->selectedIndexes();
+    QModelIndex clickedIndex = ui->treeView->indexAt(point);
+    m_contextMenuContext.clickedIndex = clickedIndex;
 
     QMenu contextMenu(this);
     contextMenu.addAction(ui->actionAdd_Group);
-    if(index.isValid())
-        contextMenu.addAction(ui->actionDelete_Node);
+    if(!selectedIndexes.empty())
+        contextMenu.addAction(ui->actionDeleteTreeNodes);
 
     contextMenu.exec(ui->treeView->mapToGlobal(point));
 }
@@ -65,12 +67,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAdd_Group_triggered()
 {
-    m_model->addNode(m_contextMenuContext.index, new HeaderTreeNode("New Group"));
+    m_model->addNode(m_contextMenuContext.clickedIndex, new HeaderTreeNode("New Group"));
 }
 
-void MainWindow::on_actionDelete_Node_triggered()
+void MainWindow::on_actionDeleteTreeNodes_triggered()
 {
-    m_model->deleteNode(m_contextMenuContext.index);
+    m_model->deleteNodes(ui->treeView->selectionModel()->selectedIndexes());
 }
 
 void MainWindow::tickTimerTimeout()

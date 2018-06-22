@@ -148,9 +148,9 @@
     <string>Save Tree</string>
    </property>
   </action>
-  <action name="actionDelete_Node">
+  <action name="actionDeleteTreeNodes">
    <property name="text">
-    <string>Delete Node</string>
+    <string>Delete</string>
    </property>
   </action>
  </widget>
