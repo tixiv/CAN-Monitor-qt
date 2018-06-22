@@ -34,8 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
     ui->treeView->setColumnWidth(0,150);
+    ui->treeView->setColumnWidth(2,50);
+    ui->treeView->setColumnWidth(3,70);
+    ui->treeView->setColumnWidth(4,70);
     ui->treeView->setColumnWidth(5,200);
-    ui->treeView->setColumnWidth(6,160);
+    ui->treeView->setColumnWidth(6,220);
 
     ui->canAdapterComboBox->addItems(CanAdapterFactory::getAdapterNames());
 
