@@ -93,8 +93,11 @@
       <property name="sortingEnabled">
        <bool>true</bool>
       </property>
+      <attribute name="headerHighlightSections">
+       <bool>true</bool>
+      </attribute>
       <attribute name="headerShowSortIndicator" stdset="0">
-       <bool>false</bool>
+       <bool>true</bool>
       </attribute>
       <attribute name="headerStretchLastSection">
        <bool>true</bool>

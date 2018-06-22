@@ -3,9 +3,10 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QCloseEvent>
+#include <QSortFilterProxyModel>
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-#include "CanTree/TreeModel.h"
+#include "CanTree/CanTreeModel.h"
 #include "CanTree/HeaderTreeNode.h"
 #include "CanAdapter/CanAdapter.h"
 #include "CanAdapter/CanAdapterFactory.h"
@@ -17,7 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     m_model = new CanTreeModel();
-    ui->treeView->setModel(m_model);
+    if(useProxyModel)
+    {
+        m_proxyModel = new QSortFilterProxyModel(this);
+        m_proxyModel->setSourceModel(m_model);
+        ui->treeView->setModel(m_proxyModel);
+    }else{
+        ui->treeView->setModel(m_model);
+    }
 
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
@@ -67,12 +75,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAdd_Group_triggered()
 {
-    m_model->addNode(m_contextMenuContext.clickedIndex, new HeaderTreeNode("New Group"));
+    QModelIndex index;
+    if(m_proxyModel)
+        index = m_proxyModel->mapToSource(m_contextMenuContext.clickedIndex);
+    else
+        index = m_contextMenuContext.clickedIndex;
+    m_model->addNode(index, new HeaderTreeNode("New Group"));
 }
 
 void MainWindow::on_actionDeleteTreeNodes_triggered()
 {
-    m_model->deleteNodes(ui->treeView->selectionModel()->selectedIndexes());
+    QModelIndexList &originalList = ui->treeView->selectionModel()->selectedIndexes();
+    QModelIndexList list;
+    if(m_proxyModel){
+        foreach (auto index, originalList)
+            list.append(m_proxyModel->mapToSource(index));
+    }
+    else
+        list = originalList;
+
+    m_model->deleteNodes(list);
 }
 
 void MainWindow::tickTimerTimeout()

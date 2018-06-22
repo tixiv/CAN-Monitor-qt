@@ -3,12 +3,16 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include "CanTree/CanTreeModel.h"
+#include <QModelIndex>
 #include "CanAdapter/CanAdapter.h"
 
 namespace Ui {
 class MainWindow;
 }
+
+class QSortFilterProxyModel;
+class CanTreeModel;
+class CanAdapter;
 
 class MainWindow : public QMainWindow
 {
@@ -39,6 +43,8 @@ protected:
 private:
     Ui::MainWindow *ui;
     CanTreeModel *m_model = 0;
+    QSortFilterProxyModel * m_proxyModel = 0;
+    const bool useProxyModel = true;
 
     struct{
         QModelIndex clickedIndex;
