@@ -23,9 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
         m_proxyModel = new QSortFilterProxyModel(this);
         m_proxyModel->setSourceModel(m_model);
         m_proxyModel->setSortRole(Qt::UserRole);
+        m_proxyModel->setDynamicSortFilter(false);
         ui->treeView->setModel(m_proxyModel);
-        ui->treeView->sortByColumn(-1);
-        ui->treeView->setSortingEnabled(true);
     }else{
         ui->treeView->setModel(m_model);
     }
@@ -39,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->treeView->setColumnWidth(4,70);
     ui->treeView->setColumnWidth(5,200);
     ui->treeView->setColumnWidth(6,220);
+    ui->treeView->header()->setSectionsClickable(true);
+    connect(ui->treeView->header(), SIGNAL(sectionClicked(int)), this, SLOT(headerSectionClicked(int)));
 
     QString adapterName = QSettings().value("main/CanAdapter").toString();
     ui->canAdapterComboBox->addItems(CanAdapterFactory::getAdapterNames());
@@ -76,8 +77,6 @@ void MainWindow::onCustomContextMenu(const QPoint &point)
     if(!selectedIndexes.empty())
         contextMenu.addAction(ui->actionDeleteTreeNodes);
 
-    contextMenu.addAction(ui->actionEnable_Sorting);
-
     contextMenu.exec(ui->treeView->mapToGlobal(point));
 }
 
@@ -106,9 +105,37 @@ void MainWindow::on_actionDeleteTreeNodes_triggered()
     m_model->deleteNodes(list);
 }
 
-void MainWindow::on_actionEnable_Sorting_triggered()
+static int m_lastSortIndex = -1;
+enum SortEnum{
+    sortNone = 0,
+    sortAscending = 1,
+    sortDescending = 2,
+} m_nextSortMode = sortAscending;
+
+void MainWindow::headerSectionClicked(int index)
 {
-    ui->treeView->sortByColumn(-1);
+    ui->treeView->header()->setSortIndicatorShown(true);
+    if(m_lastSortIndex != index)
+    {
+        m_nextSortMode = sortAscending;
+        m_lastSortIndex = index;
+    }
+
+    switch(m_nextSortMode)
+    {
+    case sortNone:
+        ui->treeView->sortByColumn(-1);
+        m_nextSortMode = sortAscending;
+        break;
+    case sortAscending:
+        ui->treeView->sortByColumn(index, Qt::AscendingOrder);
+        m_nextSortMode = sortDescending;
+        break;
+    case sortDescending:
+        ui->treeView->sortByColumn(index, Qt::DescendingOrder);
+        m_nextSortMode = sortNone;
+        break;
+    }
 }
 
 void MainWindow::tickTimerTimeout()
@@ -255,3 +282,30 @@ void MainWindow::on_actionAbout_triggered()
                          tr("A versatile and simple CAN bus diagnostic tool by Peter Fuhrmann"),
                          QMessageBox::Ok);
 }
+
+void MainWindow::on_actionSort_Items_Live_triggered(bool checked)
+{
+    if(m_proxyModel)
+        m_proxyModel->setDynamicSortFilter(checked);
+}
+
+void MainWindow::on_actionEnableID_triggered(bool checked)
+{ ui->treeView->setColumnHidden(1,!checked); }
+
+void MainWindow::on_actionEnableDLC_triggered(bool checked)
+{ ui->treeView->setColumnHidden(2,!checked); }
+
+void MainWindow::on_actionEnableCount_triggered(bool checked)
+{ ui->treeView->setColumnHidden(3,!checked); }
+
+void MainWindow::on_actionEnablePeriod_triggered(bool checked)
+{ ui->treeView->setColumnHidden(4,!checked); }
+
+void MainWindow::on_actionEnableRaw_Data_triggered(bool checked)
+{ ui->treeView->setColumnHidden(5,!checked); }
+
+void MainWindow::on_actionEnableDecoded_Data_triggered(bool checked)
+{ ui->treeView->setColumnHidden(6,!checked); }
+
+void MainWindow::on_actionEnableFormat_triggered(bool checked)
+{ ui->treeView->setColumnHidden(7,!checked); }

@@ -100,7 +100,7 @@
        <bool>true</bool>
       </property>
       <attribute name="headerHighlightSections">
-       <bool>true</bool>
+       <bool>false</bool>
       </attribute>
       <attribute name="headerShowSortIndicator" stdset="0">
        <bool>false</bool>
@@ -137,7 +137,28 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuEnable_Columns">
+     <property name="title">
+      <string>Enable Columns</string>
+     </property>
+     <addaction name="actionEnableID"/>
+     <addaction name="actionEnableDLC"/>
+     <addaction name="actionEnableCount"/>
+     <addaction name="actionEnablePeriod"/>
+     <addaction name="actionEnableRaw_Data"/>
+     <addaction name="actionEnableDecoded_Data"/>
+     <addaction name="actionEnableFormat"/>
+    </widget>
+    <addaction name="actionSort_Items_Live"/>
+    <addaction name="separator"/>
+    <addaction name="menuEnable_Columns"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -169,17 +190,94 @@
     <string>Delete</string>
    </property>
   </action>
-  <action name="actionEnable_Sorting">
-   <property name="text">
-    <string>Disable Sorting</string>
-   </property>
-   <property name="toolTip">
-    <string>Disable Sorting</string>
-   </property>
-  </action>
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionSort_Items_Live">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Sort Items Live</string>
+   </property>
+  </action>
+  <action name="actionEnableDLC">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>DLC</string>
+   </property>
+  </action>
+  <action name="actionEnableID">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>ID</string>
+   </property>
+  </action>
+  <action name="actionEnablePeriod">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Period</string>
+   </property>
+  </action>
+  <action name="actionEnableRaw_Data">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Raw Data</string>
+   </property>
+  </action>
+  <action name="actionEnableDecoded_Data">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Decoded Data</string>
+   </property>
+  </action>
+  <action name="actionEnableFormat">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Format String</string>
+   </property>
+  </action>
+  <action name="actionEnableCount">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Count</string>
    </property>
   </action>
  </widget>
