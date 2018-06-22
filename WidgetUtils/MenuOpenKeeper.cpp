@@ -13,6 +13,7 @@ bool MenuOpenKeeper::eventFilter(QObject *obj, QEvent *event)
         QMenu *menu = dynamic_cast<QMenu *>(obj);
         if(menu && menu->activeAction())
             menu->activeAction()->trigger();
+        return true;
     } else {
         // standard event processing
         return QObject::eventFilter(obj, event);
