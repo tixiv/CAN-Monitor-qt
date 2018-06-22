@@ -12,7 +12,7 @@ public:
     MessageTreeNode(const can_message_t * cmsg);
     MessageTreeNode();
 
-    QVariant getData(dataFunction df) const override;
+    QVariant getData(dataFunction df, int role) const override;
     bool setData(dataFunction df, const QVariant &value) override;
 
     void update(const can_message_t * cmsg);
@@ -37,6 +37,8 @@ private:
 
     QElapsedTimer m_timer;
     int m_count = 0;
+    qint64 m_period = 0;
+    double m_firstDecodedNum = 0.0;
 
     QString m_idString;
     QString m_dlcString;

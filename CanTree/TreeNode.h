@@ -35,7 +35,7 @@ public:
 
 
     virtual bool dropAllowed() const;
-    virtual QVariant getData(dataFunction df) const = 0;
+    virtual QVariant getData(dataFunction df, int role) const = 0;
     virtual bool setData(dataFunction df, const QVariant &value) = 0;
 
     virtual void writeDataToXml(QXmlStreamWriter &writer) const = 0;

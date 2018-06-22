@@ -78,7 +78,7 @@ static float readFloat(const uint8_t * p)
 // "s32 0.01:0.2 Volt"
 // "f 10:Wert 0 ist %0.2 Volt"
 
-static int formatOne(QString &output, const QString &format, const uint8_t data[8], int byteIndex)
+static int formatOne(QString &output, const QString &format, const uint8_t data[8], int byteIndex, double * numOut)
 {
     QStringList parts = format.split(':');
 
@@ -152,12 +152,15 @@ static int formatOne(QString &output, const QString &format, const uint8_t data[
         }
     }
 
+    if(numOut)
+        *numOut = num;
+
     output += QString().setNum(num, 'f', numDigits);
     output += post;
     return newByteIndex;
 }
 
-static QString format(const QString &format, const uint8_t data[8])
+static QString format(const QString &format, const uint8_t data[8], double * firstNumOut)
 {
     QString str;
     QStringList formats = format.split(',');
@@ -166,8 +169,8 @@ static QString format(const QString &format, const uint8_t data[8])
     foreach (auto f, formats) {
         if(!first)
             str += ", ";
-        first = false;;
-        i = formatOne(str, f, data, i);
+        i = formatOne(str, f, data, i, first ? firstNumOut : 0);
+        first = false;
         if(i==8) break;
     }
     return str;
@@ -175,14 +178,15 @@ static QString format(const QString &format, const uint8_t data[8])
 
 void MessageTreeNode::updateDataDecoded()
 {
-    m_dataDecodedString = format(m_formatString, data);
+    m_firstDecodedNum = 0.0;
+    m_dataDecodedString = format(m_formatString, data, &m_firstDecodedNum);
 }
 
 void MessageTreeNode::update(const can_message_t * cmsg)
 {
     if(m_timer.isValid()){
-        qint64 elapsed = m_timer.restart();
-        m_periodString = QString::number(elapsed);
+        m_period = m_timer.restart();
+        m_periodString = QString::number(m_period);
     }else{
         m_timer.start();
     }
@@ -201,8 +205,17 @@ void MessageTreeNode::update(const can_message_t * cmsg)
     updateDataDecoded();
 }
 
-QVariant MessageTreeNode::getData(dataFunction df) const
+QVariant MessageTreeNode::getData(dataFunction df, int role) const
 {
+    if(role == Qt::UserRole){ // sort role
+        switch(df){
+        case dfID:          return (IDE << 30) | (RTR << 29) | id;
+        case dfCount:       return m_count;
+        case dfPeriod:      return m_period;
+        case dfDataDecoded: return m_firstDecodedNum;
+        }
+    }
+
     switch(df){
     case dfName:        return m_name;
     case dfID:          return m_idString;

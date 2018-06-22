@@ -10,7 +10,6 @@ CanTreeModel::CanTreeModel()
     m_columnFunctions = {
         ColumnRole(dfName,        "Name"),
         ColumnRole(dfID,          "ID (HEX)"),
-        ColumnRole(dfID,          "ID (HEX)"),
         ColumnRole(dfDLC,         "DLC"),
         ColumnRole(dfCount,       "Count"),
         ColumnRole(dfPeriod,      "Period (ms)"),
@@ -39,12 +38,12 @@ QVariant CanTreeModel::headerData(int section, Qt::Orientation orientation,
 
 QVariant CanTreeModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || (role != Qt::DisplayRole && role != Qt::EditRole))
+    if (!index.isValid() || (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::UserRole))
         return QVariant();
 
     TreeNode *node = nodeForIndex(index);
 
-    return node->getData(m_columnFunctions.at(index.column()).df);
+    return node->getData(m_columnFunctions.at(index.column()).df, role);
 }
 
 bool CanTreeModel::setData(const QModelIndex &index, const QVariant &value, int role)

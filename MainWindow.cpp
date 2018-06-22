@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         m_proxyModel = new QSortFilterProxyModel(this);
         m_proxyModel->setSourceModel(m_model);
+        m_proxyModel->setSortRole(Qt::UserRole);
         ui->treeView->setModel(m_proxyModel);
     }else{
         ui->treeView->setModel(m_model);
