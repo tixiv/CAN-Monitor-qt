@@ -40,7 +40,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->treeView->setColumnWidth(5,200);
     ui->treeView->setColumnWidth(6,220);
 
+    QString adapterName = QSettings().value("main/CanAdapter").toString();
     ui->canAdapterComboBox->addItems(CanAdapterFactory::getAdapterNames());
+    ui->canAdapterComboBox->setCurrentText(adapterName);
 
     QSettings settings;
     QString path = settings.value("main/lastTreeFile").toString();
@@ -240,8 +242,10 @@ void  MainWindow::changeCanAdpapter(CanAdapter * ca)
 void MainWindow::on_canAdapterComboBox_currentTextChanged(const QString &adapterName)
 {
     CanAdapter * ca = CanAdapterFactory::createAdapter(adapterName);
-    if(ca)
+    if(ca) {
         changeCanAdpapter(ca);
+        QSettings().setValue("main/CanAdapter", adapterName);
+    }
 }
 
 void MainWindow::on_actionAbout_triggered()

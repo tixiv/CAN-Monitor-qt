@@ -1,5 +1,6 @@
 #include "SlcanControlWidget.h"
 #include "ui_SlcanControlWidget.h"
+#include <QSettings>
 
 
 void populateCanBaudComboBox(QComboBox * cb){
@@ -13,13 +14,15 @@ void populateCanBaudComboBox(QComboBox * cb){
     cb->addItem("800");
     cb->addItem("1000");
 
-    cb->setCurrentIndex(4);
+    cb->setCurrentText(QSettings().value("CanAdapterSlcan/canBaud", "125").toString());
 }
 
 void populateModeComboBox(QComboBox * cb){
     cb->addItem("Normal");
     cb->addItem("Listen only");
     cb->addItem("Loopback");
+
+    cb->setCurrentIndex(QSettings().value("CanAdapterSlcan/openMode", 0).toInt());
 }
 
 SlcanControlWidget::SlcanControlWidget(QWidget *parent) :
@@ -27,6 +30,9 @@ SlcanControlWidget::SlcanControlWidget(QWidget *parent) :
     ui(new Ui::SlcanControlWidget)
 {
     ui->setupUi(this);
+
+    ui->comPortComboBox->setCurrentText(QSettings().value("CanAdapterSlcan/serialPort").toString());
+
     populateCanBaudComboBox(ui->canBaudComboBox);
     populateModeComboBox(ui->modeComboBox);
 
@@ -52,8 +58,16 @@ void SlcanControlWidget::on_openButton_clicked()
         ui->openButton->setText("Open");
         emit closeClicked();
     } else {
+        QString comportName = ui->comPortComboBox->currentText();
+        QString canKBaud = ui->canBaudComboBox->currentText();
+        int mode = ui->modeComboBox->currentIndex();
+
+        QSettings().setValue("CanAdapterSlcan/serialPort", comportName);
+        QSettings().setValue("CanAdapterSlcan/canBaud", canKBaud);
+        QSettings().setValue("CanAdapterSlcan/openMode", mode);
+
         ui->openButton->setEnabled(false);
-        CanAdapterLawicel::OpenMode om = (CanAdapterLawicel::OpenMode) ui->modeComboBox->currentIndex();
-        emit openClicked(ui->comPortComboBox->currentText(), om, ui->canBaudComboBox->currentText().toInt() * 1000);
+        CanAdapterLawicel::OpenMode om = (CanAdapterLawicel::OpenMode) mode;
+        emit openClicked(comportName, om, canKBaud.toInt() * 1000);
     }
 }
