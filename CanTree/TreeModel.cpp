@@ -88,15 +88,7 @@ bool TreeModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction action, i
     int count;
     stream >> count;
     if (row == -1) {
-        // valid index means: drop onto item. I chose that this should insert
-        // a child item, because this is the only way to create the first child of an item...
-        // This explains why Qt calls it parent: unless you just support replacing, this
-        // is really the future parent of the dropped items.
-        if (parent.isValid())
-            row = 0;
-        else
-            // invalid index means: append at bottom, after last toplevel
-            row = rowCount(parent);
+        row = rowCount(parent);
     }
     for (int i = 0; i < count; ++i) {
         // Decode data from the QMimeData
