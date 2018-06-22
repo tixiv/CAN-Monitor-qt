@@ -28,7 +28,7 @@ static void randomFillCanMessage(can_message_t * cmsg)
 {
     uint16_t * x = (uint16_t*)cmsg;
 
-    for(int i=0; i < sizeof(can_message_t)/2; i++)
+    for(unsigned int i=0; i < sizeof(can_message_t)/2; i++)
         x[i] = qrand();
 }
 

@@ -213,6 +213,7 @@ QVariant MessageTreeNode::getData(dataFunction df, int role) const
         case dfCount:       return m_count;
         case dfPeriod:      return m_period;
         case dfDataDecoded: return m_firstDecodedNum;
+        default: break;
         }
     }
 

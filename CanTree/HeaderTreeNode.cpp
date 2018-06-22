@@ -15,6 +15,7 @@ bool HeaderTreeNode::dropAllowed() const
 
 QVariant HeaderTreeNode::getData(dataFunction df, int role) const
 {
+    (void) role;
     if(df == dfName){
         return m_name;
     }else{

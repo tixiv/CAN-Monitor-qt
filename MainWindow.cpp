@@ -86,7 +86,7 @@ void MainWindow::on_actionAdd_Group_triggered()
 
 void MainWindow::on_actionDeleteTreeNodes_triggered()
 {
-    QModelIndexList &originalList = ui->treeView->selectionModel()->selectedIndexes();
+    const QModelIndexList &originalList = ui->treeView->selectionModel()->selectedIndexes();
     QModelIndexList list;
     if(m_proxyModel){
         foreach (auto index, originalList)
