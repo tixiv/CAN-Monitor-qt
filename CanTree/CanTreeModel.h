@@ -50,6 +50,8 @@ private:
     void readXmlToNode(TreeNode * parent, QXmlStreamReader &reader);
     bool linkMessageNode(MessageTreeNode * node);
     void unlinkNodes(TreeNode * node);
+
+    void emitDataChanged(TreeNode * node, int columnLeft, int columnRight);
 };
 
 #endif // CANTREEMODEL_H

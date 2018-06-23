@@ -118,16 +118,36 @@ void CanTreeModel::addNode(const QModelIndex parent, TreeNode *node)
     insertNode(parentNode, row, node, true);
 }
 
+void CanTreeModel::emitDataChanged(TreeNode * node, int columnLeft, int columnRight)
+{
+    bool emitAllAtOnce = false;
+    if(emitAllAtOnce)
+    {
+        // this would be the official Qt way to do this,
+        // but sadly Qt's implementation redraws the complete
+        // View at the moment (QT 5.11.1) if more than one cell is
+        // changed at once.
+        QModelIndex miLeft = indexForNode(node, columnLeft);
+        QModelIndex miRight = indexForNode(node, columnRight);
+        emit dataChanged(miLeft, miRight);
+    }
+    else for(int i=columnLeft; i<=columnRight; i++)
+    {
+        // emiting the signals one cell at a time actually gives a
+        // nice performance bonus as not the complete view needs
+        // to be redrawn when one message changes.
+        QModelIndex idx = indexForNode(node, i);
+        emit dataChanged(idx, idx);
+    }
+}
+
 void CanTreeModel::inputMessage(const can_message_t * cmsg){
     uint32_t uid = CanUniqueID(cmsg).val;
 
     if(map.contains(uid)){
         MessageTreeNode * node = map[uid];
         node->update(cmsg);
-
-        QModelIndex miLeft = indexForNode(node, 2);
-        QModelIndex miRight = indexForNode(node, columnCount()-2);
-        emit dataChanged(miLeft, miRight);
+        emitDataChanged(node, 2, columnCount()-2);
     }
     else
     {
