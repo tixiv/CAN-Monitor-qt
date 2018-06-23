@@ -54,7 +54,13 @@ bool CanTreeModel::setData(const QModelIndex &index, const QVariant &value, int 
     isUserModified = true;
 
     TreeNode *node = nodeForIndex(index);
-    return node->setData(m_columnFunctions.at(index.column()).df, value);
+    if(node->setData(m_columnFunctions.at(index.column()).df, value))
+    {
+        emit(dataChanged(index, index));
+        return true;
+    }
+    else
+        return false;
 }
 
 Qt::ItemFlags CanTreeModel::flags(const QModelIndex &index) const
