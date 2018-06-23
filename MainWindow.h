@@ -54,7 +54,7 @@ private:
     Ui::MainWindow *ui;
     CanTreeModel *m_model = 0;
     QSortFilterProxyModel * m_proxyModel = 0;
-    const bool useProxyModel = false;
+    const bool useProxyModel = true;
 
     struct{
         QModelIndex clickedIndex;

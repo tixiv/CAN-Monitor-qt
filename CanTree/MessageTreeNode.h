@@ -5,8 +5,6 @@
 #include "TreeNode.h"
 #include "lib-slcan/can_message.h"
 
-#define DEBUG_TREEVIEW
-
 class MessageTreeNode : public TreeNode
 {
 public:
