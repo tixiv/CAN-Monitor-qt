@@ -2,6 +2,7 @@
 #define CANADAPTERTESTING_H
 
 #include "CanAdapter.h"
+#include <QElapsedTimer>
 
 class CanAdapterTesting : public CanAdapter
 {
@@ -20,8 +21,12 @@ public:
     bool isOpen() override;
 
     QWidget * getControlWidget(QWidget *parent = 0) override;
+
+signals:
+    void updateMessagesPerSecond(QString);
 private:
 
+    QElapsedTimer m_timer;
     int m_cnt = 0;
 
 
