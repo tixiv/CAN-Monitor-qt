@@ -5,6 +5,8 @@
 #include "TreeNode.h"
 #include "lib-slcan/can_message.h"
 
+#define DEBUG_TREEVIEW
+
 class MessageTreeNode : public TreeNode
 {
 public:
@@ -27,7 +29,6 @@ public:
 private:
     void initIdString();
     void updateDataDecoded();
-    QString m_name;
 
     bool IDE = false;
     bool RTR = false;
@@ -40,13 +41,18 @@ private:
     qint64 m_period = 0;
     double m_firstDecodedNum = 0.0;
 
+    QString m_name;
     QString m_idString;
     QString m_dlcString;
-    QString m_dataString;
     QString m_countString;
     QString m_periodString;
-    QString m_formatString;
+    QString m_dataString;
     QString m_dataDecodedString;
+    QString m_formatString;
+
+#ifdef DEBUG_TREEVIEW
+    int m_debugCount[8] = {0};
+#endif
 };
 
 #endif // MESSAGETREENODE_H

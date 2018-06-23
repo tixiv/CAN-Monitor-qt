@@ -9,7 +9,7 @@ MessageTreeNode::MessageTreeNode()
 }
 
 MessageTreeNode::MessageTreeNode(const QString &name, int id, bool IDE, bool RTR)
-    :TreeNode(), m_name(name), IDE(IDE), RTR(RTR), id(id)
+    :TreeNode(), IDE(IDE), RTR(RTR), id(id), m_name(name)
 {
 }
 
@@ -205,6 +205,7 @@ void MessageTreeNode::update(const can_message_t * cmsg)
     updateDataDecoded();
 }
 
+#ifndef DEBUG_TREEVIEW
 QVariant MessageTreeNode::getData(dataFunction df, int role) const
 {
     if(role == Qt::UserRole){ // sort role
@@ -230,6 +231,16 @@ QVariant MessageTreeNode::getData(dataFunction df, int role) const
 
     return QVariant();
 }
+#else
+QVariant MessageTreeNode::getData(dataFunction df, int role) const
+{
+    int dfi = (int)df;
+
+    const_cast<int*>(m_debugCount)[dfi]++;
+
+    return m_debugCount[dfi];
+}
+#endif
 
 bool MessageTreeNode::setData(dataFunction df, const QVariant &value)
 {
