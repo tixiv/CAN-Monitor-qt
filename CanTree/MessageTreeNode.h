@@ -2,10 +2,10 @@
 #define MESSAGETREENODE_H
 
 #include <QElapsedTimer>
-#include "Tree/TreeNode.h"
+#include "CanTreeNode.h"
 #include "lib-slcan/can_message.h"
 
-class MessageTreeNode : public TreeNode
+class MessageTreeNode : public CanTreeNode
 {
 public:
     MessageTreeNode(const QString& name, int id, bool IDE, bool RTR);

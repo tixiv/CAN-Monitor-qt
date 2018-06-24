@@ -1,9 +1,9 @@
 #ifndef HEADERTREENODE_H
 #define HEADERTREENODE_H
 
-#include "Tree/TreeNode.h"
+#include "CanTreeNode.h"
 
-class HeaderTreeNode : public TreeNode
+class HeaderTreeNode : public CanTreeNode
 {
 public:
     HeaderTreeNode(const QVariant &name="");

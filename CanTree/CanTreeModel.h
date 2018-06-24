@@ -47,8 +47,7 @@ private:
     int m_columnCount;
     QHash<uint32_t, MessageTreeNode *> map;
 
-    void readXmlToNode(TreeNode * parent, QXmlStreamReader &reader);
-    bool linkMessageNode(MessageTreeNode * node);
+    bool linkNodesAndRemoveDuplicates(TreeNode * node);
     void unlinkNodes(TreeNode * node);
 
     void emitDataChanged(TreeNode * node, int columnLeft, int columnRight);

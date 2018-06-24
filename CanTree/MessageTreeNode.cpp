@@ -4,12 +4,12 @@
 #include <QRegularExpression>
 
 MessageTreeNode::MessageTreeNode()
-    :TreeNode(), IDE(false), RTR(false), id(0)
+    :CanTreeNode(), IDE(false), RTR(false), id(0)
 {
 }
 
 MessageTreeNode::MessageTreeNode(const QString &name, int id, bool IDE, bool RTR)
-    :TreeNode(), IDE(IDE), RTR(RTR), id(id), m_name(name)
+    :CanTreeNode(), IDE(IDE), RTR(RTR), id(id), m_name(name)
 {
 }
 

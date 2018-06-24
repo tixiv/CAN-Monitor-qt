@@ -33,7 +33,9 @@ SOURCES += main.cpp\
     CanAdapter/CanAdapterTesting.cpp \
     WidgetUtils/MenuOpenKeeper.cpp \
     CanAdapter/TestingControlWidget.cpp \
-    Commanders/CommanderDialog.cpp
+    Commanders/CommanderDialog.cpp \
+    Tree/XmlTreeNode.cpp \
+    CanTree/CanTreeNodeFactory.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -55,7 +57,11 @@ HEADERS  += MainWindow.h \
     CanAdapter/CanAdapterTesting.h \
     WidgetUtils/MenuOpenKeeper.h \
     CanAdapter/TestingControlWidget.h \
-    Commanders/CommanderDialog.h
+    Commanders/CommanderDialog.h \
+    Tree/XmlTreeNode.h \
+    CanTree/CanTreeNode.h \
+    Tree/XmlTreeNodeFactory.h \
+    CanTree/CanTreeNodeFactory.h
 
 
 

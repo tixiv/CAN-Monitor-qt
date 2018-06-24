@@ -2,6 +2,7 @@
 
 #include "HeaderTreeNode.h"
 #include "MessageTreeNode.h"
+#include "CanTreeNodeFactory.h"
 
 
 CanTreeModel::CanTreeModel()
@@ -41,7 +42,7 @@ QVariant CanTreeModel::data(const QModelIndex &index, int role) const
     if (!index.isValid() || (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::UserRole))
         return QVariant();
 
-    TreeNode *node = nodeForIndex(index);
+    CanTreeNode *node = static_cast<CanTreeNode*>(nodeForIndex(index));
 
     return node->getData(m_columnFunctions.at(index.column()).df, role);
 }
@@ -53,7 +54,7 @@ bool CanTreeModel::setData(const QModelIndex &index, const QVariant &value, int 
 
     isUserModified = true;
 
-    TreeNode *node = nodeForIndex(index);
+    CanTreeNode *node = static_cast<CanTreeNode*>(nodeForIndex(index));
     if(node->setData(m_columnFunctions.at(index.column()).df, value))
     {
         emit(dataChanged(index, index));
@@ -163,15 +164,28 @@ void CanTreeModel::inputMessage(const can_message_t * cmsg){
     }
 }
 
-bool CanTreeModel::linkMessageNode(MessageTreeNode * node)
+bool CanTreeModel::linkNodesAndRemoveDuplicates(TreeNode * node)
 {
-    uint32_t uid = CanUniqueID(node->getId(), node->getIDE(), node->getRTR()).val;
+    MessageTreeNode *mtn = dynamic_cast<MessageTreeNode *>(node);
 
-    if(map.contains(uid))
-        return false;
+    if(mtn){
+        uint32_t uid = CanUniqueID(mtn->getId(), mtn->getIDE(), mtn->getRTR()).val;
 
-    map[uid] = node;
-    return true;
+        if(map.contains(uid))
+            return false; // return false if this is a duplicate message node
+
+        map[uid] = mtn; // otherwise link it and return true
+        return true;
+    } else {
+        // HeaderTreeNode
+        for(int i=0; i<node->childCount(); ) {
+            if(!linkNodesAndRemoveDuplicates(node->child(i)))
+                node->removeChild(i); // remove duplicate message node from this one
+            else
+                i++;
+        }
+        return true;
+    }
 }
 
 void CanTreeModel::unlinkNodes(TreeNode * node)
@@ -190,65 +204,32 @@ void CanTreeModel::unlinkNodes(TreeNode * node)
     }
 }
 
-static void writeNodeToXml(QXmlStreamWriter &writer, const TreeNode * node){
-    if(dynamic_cast<const HeaderTreeNode *>(node)){
-        writer.writeStartElement("HeaderTreeNode");
-    }else if(dynamic_cast<const MessageTreeNode *>(node)){
-        writer.writeStartElement("MessageTreeNode");
-    }else
-        return;
-
-    node->writeDataToXml(writer);
-    for(int i = 0; i < node->childCount(); i++){
-        writeNodeToXml(writer, node->child(i));
-    }
-    writer.writeEndElement();
-}
-
-void CanTreeModel::readXmlToNode(TreeNode * parent, QXmlStreamReader &reader)
-{
-    while(reader.readNextStartElement())
-    {
-        if(reader.name() == "HeaderTreeNode"){
-            HeaderTreeNode * htn = new HeaderTreeNode();
-            htn->readDataFromXml(reader);
-            insertNode(parent, -1, htn);
-            readXmlToNode(htn, reader);
-            reader.readElementText();
-        }else if(reader.name() == "MessageTreeNode"){
-            MessageTreeNode * mtn = new MessageTreeNode();
-            mtn->readDataFromXml(reader);
-            if(linkMessageNode(mtn))
-                insertNode(parent, -1, mtn);
-            else
-                delete mtn;
-            reader.readElementText();
-        }else
-            reader.skipCurrentElement();
-    }
-}
-
 void CanTreeModel::writeTreeToXml(QXmlStreamWriter &writer)
 {
+    CanTreeNodeFactory factory;
     writer.writeStartDocument();
     writer.writeStartElement("CanTree");
-    writeNodeToXml(writer, rootNode());
+    static_cast<XmlTreeNode*>(rootNode())->writeBranchToXml(writer, factory);
     writer.writeEndElement();
     writer.writeEndDocument();
 }
 
 bool CanTreeModel::readTreeFromXml(QXmlStreamReader &reader)
 {
+
     if (!reader.readNextStartElement())
         return false;
     if (reader.name() != "CanTree")
         return false;
-    if (!reader.readNextStartElement())
-        return false;
-    if (reader.name() != "HeaderTreeNode") // the root node
-        return false;
 
-    readXmlToNode(rootNode(), reader);
+    CanTreeNodeFactory factory;
+    XmlTreeNode * loadRoot = XmlTreeNode::readBranchFromXml(reader, factory);
+
+    linkNodesAndRemoveDuplicates(loadRoot);
+    for(int i=0; i < loadRoot->childCount(); i++)
+    {
+        insertNode(rootNode(), -1, loadRoot->child(i));
+    }
 
     return true;
 }

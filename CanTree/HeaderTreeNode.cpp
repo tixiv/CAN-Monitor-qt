@@ -4,7 +4,7 @@
 #include <QXmlStreamReader>
 
 HeaderTreeNode::HeaderTreeNode(const QVariant &name)
-    : TreeNode(), m_name(name)
+    : CanTreeNode(), m_name(name)
 {
 }
 
