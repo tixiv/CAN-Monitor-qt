@@ -19,11 +19,18 @@ public:
     ~CommanderDialog();
 
 private slots:
-    void onCustomContextMenu(const QPoint &point);
+    void onTreeViewContextMenu(const QPoint &point);
+    void onButtonContextMenu(const QPoint &point);
 
     void on_actionAddParameter_triggered();
 
     void on_actionDelete_triggered();
+
+    void on_actionAddButton_triggered();
+
+    void on_actionDeleteButton_triggered();
+
+    void on_actionEditButton_triggered();
 
 private:
     Ui::CommanderDialog *ui;
@@ -32,7 +39,11 @@ private:
 
     struct{
         QModelIndex clickedIndex;
-    }m_contextMenuContext;
+    }m_TreeMenuContext;
+
+    struct{
+        QWidget * clickedWidget;
+    }m_buttonMenuContext;
 
 };
 

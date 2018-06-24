@@ -38,59 +38,59 @@
         <enum>QLayout::SetFixedSize</enum>
        </property>
        <item>
-        <widget class="QPushButton" name="readButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Transfer</string>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QPushButton" name="readButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Read all</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="autoWriteCheckBox">
+            <property name="text">
+             <string>Auto write</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="writeButton">
+            <property name="text">
+             <string>Write changed</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="customButtonGroupbox">
          <property name="minimumSize">
           <size>
-           <width>100</width>
-           <height>0</height>
+           <width>0</width>
+           <height>50</height>
           </size>
          </property>
-         <property name="text">
-          <string>Read</string>
+         <property name="title">
+          <string>Custom Buttons</string>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="autoWriteCheckBox">
-         <property name="text">
-          <string>Auto write</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="writeButton">
-         <property name="text">
-          <string>Write</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_3">
-         <property name="text">
-          <string>Save on Device</string>
-         </property>
+         <layout class="QVBoxLayout" name="customButtonVerticalLayout"/>
         </widget>
        </item>
        <item>
@@ -131,6 +131,21 @@
   <action name="actionDelete">
    <property name="text">
     <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionAddButton">
+   <property name="text">
+    <string>Add Button</string>
+   </property>
+  </action>
+  <action name="actionDeleteButton">
+   <property name="text">
+    <string>Delete Button</string>
+   </property>
+  </action>
+  <action name="actionEditButton">
+   <property name="text">
+    <string>Edit Button</string>
    </property>
   </action>
  </widget>
