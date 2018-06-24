@@ -20,7 +20,7 @@ public:
     TreeNode *parentNode() const;
     void insertChild(int pos, TreeNode *child);
 
-    virtual bool dropAllowed() const;
+    virtual bool acceptsChildren() const;
 private:
     QVector<TreeNode*> m_childNodes;
     TreeNode *m_parentNode;

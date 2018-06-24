@@ -8,7 +8,7 @@ ParameterGroupNode::ParameterGroupNode(const QVariant &name)
 {
 }
 
-bool ParameterGroupNode::dropAllowed() const
+bool ParameterGroupNode::acceptsChildren() const
 {
     return true;
 }

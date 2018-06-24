@@ -106,7 +106,7 @@ void MainWindow::on_actionDeleteTreeNodes_triggered()
     else
         list = originalList;
 
-    m_model->deleteNodes(list);
+    m_model->deleteBranches(list);
 }
 
 void MainWindow::headerSectionClicked(int index)

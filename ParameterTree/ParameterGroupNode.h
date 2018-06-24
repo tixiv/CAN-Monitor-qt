@@ -7,7 +7,7 @@ class ParameterGroupNode : public ParameterTreeNode
 {
 public:
     ParameterGroupNode(const QVariant &name="");
-    bool dropAllowed() const override;
+    bool acceptsChildren() const override;
 
     QVariant getData(parameterColumnFunction pcf, int role) const override;
     bool setData(parameterColumnFunction pcf, const QVariant &value) override;

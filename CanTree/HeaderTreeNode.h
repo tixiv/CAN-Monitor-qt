@@ -7,7 +7,7 @@ class HeaderTreeNode : public CanTreeNode
 {
 public:
     HeaderTreeNode(const QVariant &name="");
-    bool dropAllowed() const override;
+    bool acceptsChildren() const override;
 
     QVariant getData(dataFunction df, int role) const override;
     bool setData(dataFunction df, const QVariant &value) override;

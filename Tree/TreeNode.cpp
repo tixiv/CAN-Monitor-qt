@@ -52,7 +52,7 @@ void TreeNode::insertChild(int pos, TreeNode *child)
     child->m_parentNode = this;
 }
 
-bool TreeNode::dropAllowed() const
+bool TreeNode::acceptsChildren() const
 {
     return false;
 }

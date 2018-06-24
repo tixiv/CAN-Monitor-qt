@@ -80,49 +80,9 @@ Qt::ItemFlags CanTreeModel::flags(const QModelIndex &index) const
     return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-void CanTreeModel::deleteNode(TreeNode *node)
+void CanTreeModel::brancheGoingToBeDeleted(TreeNode *node)
 {
-    removeNode(node);
     unlinkNodes(node);
-    delete node;
-    isUserModified = true;
-}
-
-void CanTreeModel::deleteNode(const QModelIndex nodeIdx)
-{
-    if(!nodeIdx.isValid())
-        return;
-    TreeNode *node = nodeForIndex(nodeIdx);
-    deleteNode(node);
-}
-
-void CanTreeModel::deleteNodes(const QModelIndexList indexes)
-{
-    QList<TreeNode*> nodesToDelete;
-    foreach (auto index, indexes) {
-        if(index.isValid()){
-            auto node = nodeForIndex(index);
-            if(!nodesToDelete.contains(node))
-                nodesToDelete.append(node);
-        }
-    }
-
-    foreach (auto node, nodesToDelete) {
-        deleteNode(node);
-    }
-}
-
-void CanTreeModel::addNode(const QModelIndex parent, TreeNode *node)
-{
-    TreeNode * parentNode = nodeForIndex(parent);
-    int row = -1;
-    // new nodes can only be added to root or Headers
-    while(parentNode != rootNode() && !dynamic_cast<const HeaderTreeNode *>(parentNode))
-    {
-        row = parentNode->row(); // we want to insert the new node at this row
-        parentNode = parentNode->parentNode(); // find the parent of parent
-    }
-    insertNode(parentNode, row, node, true);
 }
 
 void CanTreeModel::emitDataChanged(TreeNode * node, int columnLeft, int columnRight)
@@ -160,7 +120,7 @@ void CanTreeModel::inputMessage(const can_message_t * cmsg){
     {
         MessageTreeNode * node = new MessageTreeNode(cmsg);
         map[uid] = node;
-        insertNode(QModelIndex(), -1, node);
+        insertBranche(rootNode(), -1, node);
     }
 }
 
@@ -228,7 +188,7 @@ bool CanTreeModel::readTreeFromXml(QXmlStreamReader &reader)
     linkNodesAndRemoveDuplicates(loadRoot);
     for(int i=0; i < loadRoot->childCount(); i++)
     {
-        insertNode(rootNode(), -1, loadRoot->child(i));
+        insertBranche(rootNode(), -1, loadRoot->child(i));
     }
 
     return true;

@@ -110,6 +110,16 @@
     </widget>
    </item>
   </layout>
+  <action name="actionAddParameter">
+   <property name="text">
+    <string>Add Parameter</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

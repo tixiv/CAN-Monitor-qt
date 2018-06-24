@@ -62,10 +62,7 @@ QMimeData *TreeModel::mimeData(const QModelIndexList &indexes) const
 bool TreeModel::canDropMimeData(const QMimeData *mimeData, Qt::DropAction action, int row, int column, const QModelIndex &parent) const
 {
     Q_UNUSED(column); Q_UNUSED(row);
-    if (!mimeData->hasFormat(s_treeNodeMimeType) || action != Qt::MoveAction) {
-        return false;
-    }
-    return nodeForIndex(parent)->dropAllowed();
+    return (mimeData->hasFormat(s_treeNodeMimeType) && action == Qt::MoveAction);
 }
 
 bool TreeModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction action, int row, int column, const QModelIndex &parent)
@@ -85,11 +82,27 @@ bool TreeModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction action, i
     }
     TreeNode *parentNode = nodeForIndex(parent);
     Q_ASSERT(parentNode);
+
+    if (row == -1) {
+        // qDebug("Drop on node");
+        if(parentNode->acceptsChildren()) {
+            row = parentNode->childCount(); // insert at end of parent
+        } else {
+            // if node dropped onto does not accept children we intrepret
+            // it as moving the nodes to that position in it's parent
+            while(parentNode != 0 && !parentNode->acceptsChildren())
+            {
+                row = parentNode->row(); // we want to insert the new node at this row
+                parentNode = parentNode->parentNode(); // find the parent of parent
+            }
+            Q_ASSERT(parentNode);
+        }
+    }else {
+        // qDebug("Drop into node");
+    }
+
     int count;
     stream >> count;
-    if (row == -1) {
-        row = rowCount(parent);
-    }
     for (int i = 0; i < count; ++i) {
         // Decode data from the QMimeData
         qlonglong nodePtr;
@@ -103,37 +116,78 @@ bool TreeModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction action, i
             --row;
 
         // Remove from old position
-        removeNode(node);
+        removeBranche(node);
 
         // Insert at new position
-        //qDebug() << "Inserting into" << parent << row;
-        insertNode(parentNode, row, node);
+        // qDebug() << "Inserting into" << parent << row;
+        insertBranche(parentNode, row, node);
         ++row;
     }
     isUserModified = true;
     return true;
 }
 
-void TreeModel::insertNode(TreeNode *parentNode, int row, TreeNode *node, bool byUser){
+void TreeModel::insertBranche(TreeNode *parentNode, int row, TreeNode *node){
     const QModelIndex parent = indexForNode(parentNode);
-    if(row < 0)
-        // insert at end
+    if(row < 0) // row < 0 means insert at end
         row = rowCount(parent);
     beginInsertRows(parent, row, row);
     parentNode->insertChild(row, node);
     endInsertRows();
-    if(byUser) isUserModified = true;
 }
 
-void TreeModel::insertNode(const QModelIndex parent, int row, TreeNode *node, bool byUser){
-    TreeNode *parentNode = nodeForIndex(parent);
-    if(row < 0)
-        // insert at end
-        row = rowCount(parent);
-    beginInsertRows(parent, row, row);
-    parentNode->insertChild(row, node);
-    endInsertRows();
-    if(byUser) isUserModified = true;
+void TreeModel::brancheGoingToBeDeleted(TreeNode *node)
+{
+    (void) node;// Default implementation does nothing.
+}
+
+void TreeModel::deleteBranche(TreeNode *node)
+{
+    brancheGoingToBeDeleted(node);
+    removeBranche(node);
+    delete node;
+    isUserModified = true;
+}
+
+void TreeModel::deleteBranche(const QModelIndex nodeIdx)
+{
+    if(!nodeIdx.isValid())
+        return;
+    deleteBranche(nodeForIndex(nodeIdx));
+}
+
+void TreeModel::deleteBranches(const QModelIndexList indexes)
+{
+    QList<TreeNode*> nodesToDelete;
+    foreach (auto index, indexes) {
+        if(index.isValid()){
+            auto node = nodeForIndex(index);
+            if(!nodesToDelete.contains(node))
+                nodesToDelete.append(node);
+        }
+    }
+
+    foreach (auto node, nodesToDelete) {
+        deleteBranche(node);
+    }
+}
+
+void TreeModel::addNode(const QModelIndex parent, TreeNode *node)
+{
+    TreeNode * parentNode = nodeForIndex(parent);
+    int row = -1;
+    // new nodes can only be added to root or Headers
+    while(parentNode != 0 && !parentNode->acceptsChildren())
+    {
+        row = parentNode->row(); // we want to insert the new node at this row
+        parentNode = parentNode->parentNode(); // find the parent of parent
+    }
+
+    if(parentNode)
+    {
+        insertBranche(parentNode, row, node);
+        isUserModified = true;
+    }
 }
 
 Qt::DropActions TreeModel::supportedDropActions() const
@@ -166,7 +220,7 @@ QModelIndex TreeModel::indexForNode(TreeNode * node, int column) const
     return createIndex(row, column, node);
 }
 
-void TreeModel::removeNode(TreeNode *node)
+void TreeModel::removeBranche(TreeNode *node)
 {
     const int row = node->row();
     QModelIndex idx = createIndex(row, 0, node);

@@ -26,13 +26,24 @@ public:
     bool canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const Q_DECL_OVERRIDE;
     bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex & parent) Q_DECL_OVERRIDE;
 
+
+    // is called before a branch of nodes is going to be removed
+    // from the model and deleted.
+    // the user can do actions on it that need to be done before.
+    virtual void brancheGoingToBeDeleted(TreeNode * root);
+
+    void deleteBranche(TreeNode *root);
+    void deleteBranche(const QModelIndex nodeIdx);
+    void deleteBranches(const QModelIndexList indexes);
+
+    void addNode(const QModelIndex parent, TreeNode *node);
+
     TreeNode * rootNode() const;
 
     bool isUserModified = false;
 protected:
-    void insertNode(TreeNode *parentNode, int row, TreeNode *node, bool byUser = false);
-    void insertNode(const QModelIndex parent, int row, TreeNode *node, bool byUser = false);
-    void removeNode(TreeNode *node);
+    void insertBranche(TreeNode *parentNode, int row, TreeNode *node);
+    void removeBranche(TreeNode *node);
 
     QModelIndex indexForNode(TreeNode * node, int coumn=0) const;
     TreeNode * nodeForIndex(const QModelIndex &index) const;

@@ -8,7 +8,7 @@ HeaderTreeNode::HeaderTreeNode(const QVariant &name)
 {
 }
 
-bool HeaderTreeNode::dropAllowed() const
+bool HeaderTreeNode::acceptsChildren() const
 {
     return true;
 }

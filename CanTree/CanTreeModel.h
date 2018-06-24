@@ -33,11 +33,7 @@ public:
     void writeTreeToXml(QXmlStreamWriter &writer);
     bool readTreeFromXml(QXmlStreamReader &reader);
 
-    void deleteNode(TreeNode * node);
-    void deleteNode(const QModelIndex nodeIdx);
-    void deleteNodes(const QModelIndexList indexes);
-
-    void addNode(const QModelIndex parent, TreeNode *node);
+    void brancheGoingToBeDeleted(TreeNode * node) override;
 
 private:
     struct ColumnRole {
