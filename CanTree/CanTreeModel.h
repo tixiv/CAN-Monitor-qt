@@ -1,7 +1,7 @@
 #ifndef CANTREEMODEL_H
 #define CANTREEMODEL_H
 
-#include "TreeModel.h"
+#include "Tree/TreeModel.h"
 #include <QHash>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>

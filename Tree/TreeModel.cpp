@@ -1,4 +1,4 @@
-#include "HeaderTreeNode.h"
+#include "TreeNode.h"
 #include "TreeModel.h"
 
 #include <QCoreApplication>
@@ -7,10 +7,10 @@
 #include <QIODevice>
 #include <QDataStream>
 
-TreeModel::TreeModel(QObject *parent)
+TreeModel::TreeModel(TreeNode * rootNode, QObject *parent)
     : QAbstractItemModel(parent)
 {
-    m_rootNode = new HeaderTreeNode(0);
+    m_rootNode = rootNode;
 }
 
 TreeModel::~TreeModel()

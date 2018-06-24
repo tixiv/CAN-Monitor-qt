@@ -15,9 +15,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     MainWindow.cpp \
-    CanTree/TreeModel.cpp \
+    Tree/TreeModel.cpp \
+    Tree/TreeNode.cpp \
     CanTree/CanTreeModel.cpp \
-    CanTree/TreeNode.cpp \
     CanTree/HeaderTreeNode.cpp \
     CanTree/MessageTreeNode.cpp \
     CanAdapter/CanAdapter.cpp \
@@ -36,9 +36,9 @@ SOURCES += main.cpp\
     Commanders/CommanderDialog.cpp
 
 HEADERS  += MainWindow.h \
-    CanTree/TreeModel.h \
+    Tree/TreeModel.h \
+    Tree/TreeNode.h \
     CanTree/CanTreeModel.h \
-    CanTree/TreeNode.h \
     CanTree/HeaderTreeNode.h \
     CanTree/MessageTreeNode.h \
     CanAdapter/CanAdapter.h \

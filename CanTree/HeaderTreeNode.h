@@ -1,7 +1,7 @@
 #ifndef HEADERTREENODE_H
 #define HEADERTREENODE_H
 
-#include "TreeNode.h"
+#include "Tree/TreeNode.h"
 
 class HeaderTreeNode : public TreeNode
 {

@@ -5,14 +5,14 @@
 #include <QModelIndex>
 #include <QVariant>
 
-#include "TreeNode.h"
+class TreeNode;
 
 class TreeModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    explicit TreeModel(QObject *parent = 0);
+    explicit TreeModel(TreeNode * rootNode, QObject *parent=0);
     ~TreeModel();
 
     QModelIndex index(int row, int column,

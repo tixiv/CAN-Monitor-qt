@@ -5,7 +5,7 @@
 
 
 CanTreeModel::CanTreeModel()
-    : TreeModel()
+    : TreeModel(new HeaderTreeNode())
 {
     m_columnFunctions = {
         ColumnRole(dfName,        "Name"),
