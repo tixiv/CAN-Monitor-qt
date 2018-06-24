@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     CanAdapter/CanAdapterFactory.cpp \
     CanAdapter/CanAdapterTesting.cpp \
     WidgetUtils/MenuOpenKeeper.cpp \
-    CanAdapter/TestingControlWidget.cpp
+    CanAdapter/TestingControlWidget.cpp \
+    Commanders/CommanderDialog.cpp
 
 HEADERS  += MainWindow.h \
     CanTree/TreeModel.h \
@@ -53,13 +54,15 @@ HEADERS  += MainWindow.h \
     CanAdapter/CanAdapterFactory.h \
     CanAdapter/CanAdapterTesting.h \
     WidgetUtils/MenuOpenKeeper.h \
-    CanAdapter/TestingControlWidget.h
+    CanAdapter/TestingControlWidget.h \
+    Commanders/CommanderDialog.h
 
 
 
 FORMS    += MainWindow.ui \
     CanAdapter/SlcanControlWidget.ui \
     TransmitWidget.ui \
-    CanAdapter/TestingControlWidget.ui
+    CanAdapter/TestingControlWidget.ui \
+    Commanders/CommanderDialog.ui
 
 RC_ICONS = canMonitorIcon.ico

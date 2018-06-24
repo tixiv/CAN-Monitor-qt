@@ -13,6 +13,7 @@ class MainWindow;
 class QSortFilterProxyModel;
 class CanTreeModel;
 class CanAdapter;
+class QDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -47,6 +48,8 @@ private slots:
     void on_actionEnableDecoded_Data_triggered(bool checked);
     void on_actionEnableFormat_triggered(bool checked);
 
+    void on_actionPCM_Commander_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -78,6 +81,8 @@ private:
 
     void loadTree(QString &filename);
     bool saveTreeInteractive();
+
+    QDialog * m_commanderDialog = 0;
 };
 
 #endif // MAINWINDOW_H

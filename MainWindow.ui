@@ -157,9 +157,16 @@
     <addaction name="separator"/>
     <addaction name="menuEnable_Columns"/>
    </widget>
+   <widget class="QMenu" name="menuCommander">
+    <property name="title">
+     <string>Commander</string>
+    </property>
+    <addaction name="actionPCM_Commander"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuCommander"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -278,6 +285,11 @@
    </property>
    <property name="text">
     <string>Count</string>
+   </property>
+  </action>
+  <action name="actionPCM_Commander">
+   <property name="text">
+    <string>PCM Commander</string>
    </property>
   </action>
  </widget>

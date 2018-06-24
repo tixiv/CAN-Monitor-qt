@@ -11,6 +11,7 @@
 #include "CanAdapter/CanAdapter.h"
 #include "CanAdapter/CanAdapterFactory.h"
 #include "WidgetUtils/MenuOpenKeeper.h"
+#include "Commanders/CommanderDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -63,11 +64,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    if(m_canAdapter)
-        delete m_canAdapter;
+    //delete m_commanderDialog;
+    delete m_canAdapter;
     delete ui;
-    if(m_model)
-        delete m_model;
+    delete m_model;
 }
 
 void MainWindow::onCustomContextMenu(const QPoint &point)
@@ -306,3 +306,10 @@ void MainWindow::on_actionEnableDecoded_Data_triggered(bool checked)
 
 void MainWindow::on_actionEnableFormat_triggered(bool checked)
 { ui->treeView->setColumnHidden(7,!checked); }
+
+void MainWindow::on_actionPCM_Commander_triggered()
+{
+    auto dlg = new CommanderDialog(this);
+    m_commanderDialog = dlg;
+    dlg->show();
+}
