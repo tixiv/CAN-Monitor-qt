@@ -20,8 +20,13 @@ QVariant ParameterNode::getData(parameterColumnFunction pcf, int role) const
 
 bool ParameterNode::setData(parameterColumnFunction pcf, const QVariant &value)
 {
+    switch(pcf)
+    {
+        case pcf_name: m_name = value; break;
+
+    }
     if(pcf == pcf_name){
-        m_name = value;
+
         return true;
     }else{
         return false;

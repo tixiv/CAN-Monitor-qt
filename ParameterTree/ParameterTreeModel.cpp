@@ -65,8 +65,8 @@ Qt::ItemFlags ParameterTreeModel::flags(const QModelIndex &index) const
 
     Qt::ItemFlags flags = 0;
     if(m_columnFunctions.at(index.column()).df != pcf_value){
-        flags = Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable ;
+        flags = Qt::ItemIsEditable ;
     }
 
-    return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
 }

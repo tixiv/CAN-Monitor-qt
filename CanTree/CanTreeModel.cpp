@@ -73,11 +73,11 @@ Qt::ItemFlags CanTreeModel::flags(const QModelIndex &index) const
     switch(m_columnFunctions.at(index.column()).df){
     case dfName:
     case dfFormat:
-        flags = Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable ; break;
+        flags = Qt::ItemIsEditable ; break;
     default: break;
     }
 
-    return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
 }
 
 void CanTreeModel::brancheGoingToBeDeleted(TreeNode *node)
