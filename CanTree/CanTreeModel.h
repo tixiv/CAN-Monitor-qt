@@ -19,7 +19,6 @@ class CanTreeModel : public TreeModel
 {
 public:
     CanTreeModel();
-    void inputMessage(const can_message_t * cmsg);
 
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
@@ -28,6 +27,9 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
 
+
+    void inputMessage(const can_message_t * cmsg);
+
     void writeTreeToXml(QXmlStreamWriter &writer);
     bool readTreeFromXml(QXmlStreamReader &reader);
 
@@ -35,8 +37,8 @@ public:
     void deleteNode(const QModelIndex nodeIdx);
     void deleteNodes(const QModelIndexList indexes);
 
-
     void addNode(const QModelIndex parent, TreeNode *node);
+
 private:
     struct ColumnRole {
         ColumnRole(dataFunction df, const char * name):df(df), name(name){}

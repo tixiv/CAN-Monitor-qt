@@ -35,7 +35,10 @@ SOURCES += main.cpp\
     CanAdapter/TestingControlWidget.cpp \
     Commanders/CommanderDialog.cpp \
     Tree/XmlTreeNode.cpp \
-    CanTree/CanTreeNodeFactory.cpp
+    CanTree/CanTreeNodeFactory.cpp \
+    ParameterTree/ParameterTreeModel.cpp \
+    ParameterTree/ParameterGroupNode.cpp \
+    ParameterTree/ParameterNode.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -61,7 +64,11 @@ HEADERS  += MainWindow.h \
     Tree/XmlTreeNode.h \
     CanTree/CanTreeNode.h \
     Tree/XmlTreeNodeFactory.h \
-    CanTree/CanTreeNodeFactory.h
+    CanTree/CanTreeNodeFactory.h \
+    ParameterTree/ParameterTreeModel.h \
+    ParameterTree/ParameterGroupNode.h \
+    ParameterTree/ParameterTreeNode.h \
+    ParameterTree/ParameterNode.h
 
 
 

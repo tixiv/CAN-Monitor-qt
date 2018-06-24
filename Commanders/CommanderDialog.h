@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+class ParameterTreeModel;
+
 namespace Ui {
 class CommanderDialog;
 }
@@ -17,6 +19,8 @@ public:
 
 private:
     Ui::CommanderDialog *ui;
+
+    ParameterTreeModel * m_model;
 };
 
 #endif // COMMANDERDIALOG_H
