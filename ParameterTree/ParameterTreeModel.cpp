@@ -1,6 +1,8 @@
 #include "ParameterTreeModel.h"
-
 #include "ParameterGroupNode.h"
+#include "ParameterTreeNodeFactory.h"
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 
 ParameterTreeModel::ParameterTreeModel()
     : TreeModel(new ParameterGroupNode())
@@ -69,4 +71,33 @@ Qt::ItemFlags ParameterTreeModel::flags(const QModelIndex &index) const
     }
 
     return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
+}
+
+void ParameterTreeModel::writeTreeToXml(QXmlStreamWriter &writer)
+{
+    ParameterTreeNodeFactory factory;
+    writer.writeStartDocument();
+    writer.writeStartElement("ParameterTree");
+    static_cast<XmlTreeNode*>(rootNode())->writeBranchToXml(writer, factory);
+    writer.writeEndElement();
+    writer.writeEndDocument();
+}
+
+bool ParameterTreeModel::readTreeFromXml(QXmlStreamReader &reader)
+{
+
+    if (!reader.readNextStartElement())
+        return false;
+    if (reader.name() != "ParameterTree")
+        return false;
+
+    ParameterTreeNodeFactory factory;
+    XmlTreeNode * loadRoot = XmlTreeNode::readBranchFromXml(reader, factory);
+
+    for(int i=0; i < loadRoot->childCount(); i++)
+    {
+        insertBranche(rootNode(), -1, loadRoot->child(i));
+    }
+
+    return true;
 }

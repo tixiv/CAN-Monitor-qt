@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     ParameterTree/ParameterTreeModel.cpp \
     ParameterTree/ParameterGroupNode.cpp \
     ParameterTree/ParameterNode.cpp \
-    Commanders/ButtonEditDialog.cpp
+    Commanders/ButtonEditDialog.cpp \
+    ParameterTree/ParameterTreeNodeFactory.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -69,7 +70,8 @@ HEADERS  += MainWindow.h \
     ParameterTree/ParameterGroupNode.h \
     ParameterTree/ParameterTreeNode.h \
     ParameterTree/ParameterNode.h \
-    Commanders/ButtonEditDialog.h
+    Commanders/ButtonEditDialog.h \
+    ParameterTree/ParameterTreeNodeFactory.h
 
 
 

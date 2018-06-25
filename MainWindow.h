@@ -48,10 +48,13 @@ private slots:
     void on_actionEnableDecoded_Data_triggered(bool checked);
     void on_actionEnableFormat_triggered(bool checked);
 
-    void on_actionPCM_Commander_triggered();
+    void on_actionSetCommanderDirectory_triggered();
+
+    void on_actionNewCommander_triggered();
 
 protected:
     void closeEvent(QCloseEvent *event) override;
+    void populateCommanders();
 
 private:
     Ui::MainWindow *ui;

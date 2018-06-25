@@ -61,7 +61,7 @@ QMimeData *TreeModel::mimeData(const QModelIndexList &indexes) const
 
 bool TreeModel::canDropMimeData(const QMimeData *mimeData, Qt::DropAction action, int row, int column, const QModelIndex &parent) const
 {
-    Q_UNUSED(column); Q_UNUSED(row);
+    Q_UNUSED(column); Q_UNUSED(row); Q_UNUSED(parent);
     return (mimeData->hasFormat(s_treeNodeMimeType) && action == Qt::MoveAction);
 }
 

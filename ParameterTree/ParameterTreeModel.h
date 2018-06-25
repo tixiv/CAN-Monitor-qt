@@ -17,6 +17,9 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
 
+    void writeTreeToXml(QXmlStreamWriter &writer);
+    bool readTreeFromXml(QXmlStreamReader &reader);
+
 private:
 
     struct ColumnRole {

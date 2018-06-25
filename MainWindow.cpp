@@ -307,7 +307,19 @@ void MainWindow::on_actionEnableDecoded_Data_triggered(bool checked)
 void MainWindow::on_actionEnableFormat_triggered(bool checked)
 { ui->treeView->setColumnHidden(7,!checked); }
 
-void MainWindow::on_actionPCM_Commander_triggered()
+void MainWindow::populateCommanders()
+{
+
+}
+
+void MainWindow::on_actionSetCommanderDirectory_triggered()
+{
+    QString dir = QFileDialog::getExistingDirectory (this, "Select Commanders Directory", QString(), 0);
+    QSettings().setValue("commanders/path", dir);
+    populateCommanders();
+}
+
+void MainWindow::on_actionNewCommander_triggered()
 {
     auto dlg = new CommanderDialog(this);
     m_commanderDialog = dlg;

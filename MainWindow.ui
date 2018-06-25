@@ -161,7 +161,9 @@
     <property name="title">
      <string>Commander</string>
     </property>
-    <addaction name="actionPCM_Commander"/>
+    <addaction name="separator"/>
+    <addaction name="actionSetCommanderDirectory"/>
+    <addaction name="actionNewCommander"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -290,6 +292,16 @@
   <action name="actionPCM_Commander">
    <property name="text">
     <string>PCM Commander</string>
+   </property>
+  </action>
+  <action name="actionSetCommanderDirectory">
+   <property name="text">
+    <string>Set Commander Directory</string>
+   </property>
+  </action>
+  <action name="actionNewCommander">
+   <property name="text">
+    <string>New Commander</string>
    </property>
   </action>
  </widget>

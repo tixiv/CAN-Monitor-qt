@@ -4,12 +4,25 @@
 #include "ParameterTree/ParameterNode.h"
 #include "ButtonEditDialog.h"
 #include <QMenu>
+#include <QFileDialog>
+#include <QSettings>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
+#include <QMessageBox>
 
-CommanderDialog::CommanderDialog(QWidget *parent) :
+
+CommanderDialog::CommanderDialog(QWidget *parent, QString name) :
     QMainWindow(parent),
     ui(new Ui::CommanderDialog)
 {
     ui->setupUi(this);
+
+    if(name != "")
+        m_name = name;
+    else
+        m_name = "New Commander";
+
+    setObjectName(m_name);
 
     m_model = new ParameterTreeModel();
     ui->treeView->setModel(m_model);
@@ -142,4 +155,41 @@ void CommanderDialog::on_actionMoveButtonDown_triggered()
     auto b = m_commanderButtons.at(index);
     deleteButton(index);
     insertButton(index+1, b.d);
+}
+
+bool CommanderDialog::saveInteractive()
+{
+    QString path = QSettings().value("commanders/path").toString();
+    path += "/" + m_name + ".xml";
+
+    QString filename = QFileDialog::getSaveFileName(this,
+                                           tr("Save Tree"), path,
+                                           tr("Xml files (*.xml)"));
+
+    if(filename == "")
+        return false;
+
+    QFile file(filename);
+    if(file.open(QIODevice::WriteOnly))
+    {
+        QXmlStreamWriter xmlWriter(&file);
+        xmlWriter.setAutoFormatting(true);
+        m_model->writeTreeToXml(xmlWriter);
+        file.close();
+        m_model->isUserModified = false;
+        QSettings().setValue("main/lastTreeFile", filename);
+        return true;
+    }else{
+        QMessageBox::warning(0, tr("CAN Monitor"),
+                             tr("The file\"") + filename + tr("\"could not be opened.\n") +
+                             tr("The error message was: ") + file.errorString(),
+                             QMessageBox::Ok);
+        return false;
+    }
+
+}
+
+void CommanderDialog::on_actionSaveAs_triggered()
+{
+    saveInteractive();
 }

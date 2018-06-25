@@ -18,7 +18,7 @@ class CommanderDialog : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit CommanderDialog(QWidget *parent = 0);
+    explicit CommanderDialog(QWidget *parent = 0, QString name = "");
     ~CommanderDialog();
 
 private slots:
@@ -39,8 +39,12 @@ private slots:
 
     void on_actionMoveButtonDown_triggered();
 
+    void on_actionSaveAs_triggered();
+
 private:
     Ui::CommanderDialog *ui;
+
+    QString m_name;
 
     ParameterTreeModel * m_model;
 
@@ -66,6 +70,8 @@ private:
     int getIndexOfButton(QWidget *w);
     void insertButton(int index, CommanderButtonData d);
     void deleteButton(int index);
+
+    bool saveInteractive();
 
 };
 
