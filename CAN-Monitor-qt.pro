@@ -12,7 +12,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = CAN-Monitor-qt
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
     MainWindow.cpp \
     Tree/TreeModel.cpp \
@@ -38,7 +37,8 @@ SOURCES += main.cpp\
     CanTree/CanTreeNodeFactory.cpp \
     ParameterTree/ParameterTreeModel.cpp \
     ParameterTree/ParameterGroupNode.cpp \
-    ParameterTree/ParameterNode.cpp
+    ParameterTree/ParameterNode.cpp \
+    Commanders/ButtonEditDialog.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -68,7 +68,8 @@ HEADERS  += MainWindow.h \
     ParameterTree/ParameterTreeModel.h \
     ParameterTree/ParameterGroupNode.h \
     ParameterTree/ParameterTreeNode.h \
-    ParameterTree/ParameterNode.h
+    ParameterTree/ParameterNode.h \
+    Commanders/ButtonEditDialog.h
 
 
 
@@ -76,6 +77,7 @@ FORMS    += MainWindow.ui \
     CanAdapter/SlcanControlWidget.ui \
     TransmitWidget.ui \
     CanAdapter/TestingControlWidget.ui \
-    Commanders/CommanderDialog.ui
+    Commanders/CommanderDialog.ui \
+    Commanders/ButtonEditDialog.ui
 
 RC_ICONS = canMonitorIcon.ico

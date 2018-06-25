@@ -148,6 +148,16 @@
     <string>Edit Button</string>
    </property>
   </action>
+  <action name="actionMoveButtonUp">
+   <property name="text">
+    <string>Move Up</string>
+   </property>
+  </action>
+  <action name="actionMoveButtonDown">
+   <property name="text">
+    <string>Move Down</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

@@ -1,10 +1,13 @@
 #ifndef COMMANDERDIALOG_H
 #define COMMANDERDIALOG_H
 
+#include "ButtonEditDialog.h"
 #include <QDialog>
 #include <QModelIndex>
 
 class ParameterTreeModel;
+class QXmlStreamReader;
+class QXmlStreamWriter;
 
 namespace Ui {
 class CommanderDialog;
@@ -32,6 +35,10 @@ private slots:
 
     void on_actionEditButton_triggered();
 
+    void on_actionMoveButtonUp_triggered();
+
+    void on_actionMoveButtonDown_triggered();
+
 private:
     Ui::CommanderDialog *ui;
 
@@ -42,8 +49,23 @@ private:
     }m_TreeMenuContext;
 
     struct{
-        QWidget * clickedWidget;
+        int clickedIndex = -1;
     }m_buttonMenuContext;
+
+    class CommanderButton
+    {
+    public:
+        QPushButton * button;
+        CommanderButtonData d;
+
+        void readFromXml(QXmlStreamReader &reader);
+        void writeToXml(QXmlStreamWriter &writer) const;
+    };
+
+    QList<CommanderButton> m_commanderButtons;
+    int getIndexOfButton(QWidget *w);
+    void insertButton(int index, CommanderButtonData d);
+    void deleteButton(int index);
 
 };
 
