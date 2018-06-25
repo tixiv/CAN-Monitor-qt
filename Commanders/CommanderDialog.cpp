@@ -6,7 +6,7 @@
 #include <QMenu>
 
 CommanderDialog::CommanderDialog(QWidget *parent) :
-    QDialog(parent),
+    QMainWindow(parent),
     ui(new Ui::CommanderDialog)
 {
     ui->setupUi(this);

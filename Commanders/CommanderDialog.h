@@ -2,7 +2,7 @@
 #define COMMANDERDIALOG_H
 
 #include "ButtonEditDialog.h"
-#include <QDialog>
+#include <QMainWindow>
 #include <QModelIndex>
 
 class ParameterTreeModel;
@@ -13,7 +13,7 @@ namespace Ui {
 class CommanderDialog;
 }
 
-class CommanderDialog : public QDialog
+class CommanderDialog : public QMainWindow
 {
     Q_OBJECT
 

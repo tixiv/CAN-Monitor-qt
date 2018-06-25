@@ -82,7 +82,7 @@ private:
     void loadTree(QString &filename);
     bool saveTreeInteractive();
 
-    QDialog * m_commanderDialog = 0;
+    QMainWindow * m_commanderDialog = 0;
 };
 
 #endif // MAINWINDOW_H

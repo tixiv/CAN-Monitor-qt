@@ -39,7 +39,6 @@ void ButtonEditDialog::done(int r)
 {
     if(QDialog::Accepted == r)  // ok was pressed
     {
-        bool ok;
         dialogData.text = ui->textEdit->text();
         if(!checkIntLineEdit(ui->CanIdEdit, &dialogData.canId, 16)) return;
         if(!checkIntLineEdit(ui->CommandEdit, &dialogData.command, 16)) return;
