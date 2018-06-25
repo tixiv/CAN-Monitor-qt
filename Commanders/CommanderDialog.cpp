@@ -16,16 +16,17 @@ CommanderDialog::CommanderDialog(QWidget *parent, QString name) :
     ui(new Ui::CommanderDialog)
 {
     ui->setupUi(this);
+    m_model = new ParameterTreeModel();
+    ui->treeView->setModel(m_model);
 
     if(name != "")
         m_name = name;
     else
         m_name = "New Commander";
 
-    setObjectName(m_name);
+    load();
 
-    m_model = new ParameterTreeModel();
-    ui->treeView->setModel(m_model);
+    setObjectName(m_name);
 
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onTreeViewContextMenu(const QPoint &)));
@@ -157,6 +158,51 @@ void CommanderDialog::on_actionMoveButtonDown_triggered()
     insertButton(index+1, b.d);
 }
 
+void CommanderDialog::saveButtons(QXmlStreamWriter &writer)
+{
+    writer.writeStartElement("commanderButtons");
+    foreach(auto b, m_commanderButtons)
+    {
+        writer.writeStartElement("Button");
+        b.d.writeToXml(writer);
+        writer.writeEndElement();
+    }
+    writer.writeEndElement();
+}
+
+void CommanderDialog::loadButtons(QXmlStreamReader &reader)
+{
+    if (!reader.readNextStartElement())
+        return;
+    if (reader.name() != "commanderButtons")
+        return;
+    while(reader.readNextStartElement())
+    {
+        if(reader.name() == "Button")
+        {
+            CommanderButtonData d;
+            d.readFromXml(reader);
+            insertButton(-1, d);
+        }
+    }
+}
+
+void CommanderDialog::load()
+{
+    QString path = QSettings().value("commanders/path").toString();
+    path += "/" + m_name + ".xml";
+
+    QFile file(path);
+    if(file.open(QIODevice::ReadOnly)){
+        QXmlStreamReader xmlReader(&file);
+        m_model->readTreeFromXml(xmlReader);
+        loadButtons(xmlReader);
+        loadButtons(xmlReader);
+        loadButtons(xmlReader);
+        file.close();
+    }
+}
+
 bool CommanderDialog::saveInteractive()
 {
     QString path = QSettings().value("commanders/path").toString();
@@ -174,10 +220,14 @@ bool CommanderDialog::saveInteractive()
     {
         QXmlStreamWriter xmlWriter(&file);
         xmlWriter.setAutoFormatting(true);
+        xmlWriter.writeStartDocument();
+
         m_model->writeTreeToXml(xmlWriter);
+        saveButtons(xmlWriter);
+
+        xmlWriter.writeEndDocument();
         file.close();
         m_model->isUserModified = false;
-        QSettings().setValue("main/lastTreeFile", filename);
         return true;
     }else{
         QMessageBox::warning(0, tr("CAN Monitor"),
@@ -193,3 +243,5 @@ void CommanderDialog::on_actionSaveAs_triggered()
 {
     saveInteractive();
 }
+
+

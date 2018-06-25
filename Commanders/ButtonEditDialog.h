@@ -3,6 +3,9 @@
 
 #include <QDialog>
 
+class QXmlStreamReader;
+class QXmlStreamWriter;
+
 namespace Ui {
 class ButtonEditDialog;
 }
@@ -13,6 +16,10 @@ struct CommanderButtonData {
     uint8_t command = 0;
     uint8_t subCommand = 0;
     int32_t value = 0;
+    QString saveRange;
+
+    void readFromXml(QXmlStreamReader &reader);
+    void writeToXml(QXmlStreamWriter &writer) const;
 };
 
 class ButtonEditDialog : public QDialog

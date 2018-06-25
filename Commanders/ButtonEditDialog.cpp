@@ -1,5 +1,7 @@
 #include "ButtonEditDialog.h"
 #include "ui_ButtonEditDialog.h"
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 
 ButtonEditDialog::ButtonEditDialog(QWidget *parent) :
     QDialog(parent),
@@ -53,4 +55,24 @@ void ButtonEditDialog::done(int r)
         QDialog::done(r);
         return;
     }
+}
+
+void CommanderButtonData::writeToXml(QXmlStreamWriter &writer) const
+{
+    writer.writeAttribute("text", text);
+    writer.writeAttribute("canId", QString().number((uint)canId, 16));
+    writer.writeAttribute("command", QString().number((uint)command, 16));
+    writer.writeAttribute("subCommand", QString().number((uint)subCommand, 16));
+    writer.writeAttribute("value", QString().number(value));
+    writer.writeAttribute("saveRange", saveRange);
+}
+
+void CommanderButtonData::readFromXml(QXmlStreamReader &reader)
+{
+    text = reader.attributes().value("text").toString();
+    canId = reader.attributes().value("canId").toString().toInt(0,16);
+    command = reader.attributes().value("command").toString().toInt(0,16);
+    subCommand = reader.attributes().value("subCommand").toString().toInt(0,16);
+    value = reader.attributes().value("value").toString().toInt();
+    saveRange = reader.attributes().value("saveRange").toString();
 }

@@ -61,9 +61,6 @@ private:
     public:
         QPushButton * button;
         CommanderButtonData d;
-
-        void readFromXml(QXmlStreamReader &reader);
-        void writeToXml(QXmlStreamWriter &writer) const;
     };
 
     QList<CommanderButton> m_commanderButtons;
@@ -73,6 +70,9 @@ private:
 
     bool saveInteractive();
 
+    void saveButtons(QXmlStreamWriter &writer);
+    void loadButtons(QXmlStreamReader &reader);
+    void load();
 };
 
 #endif // COMMANDERDIALOG_H

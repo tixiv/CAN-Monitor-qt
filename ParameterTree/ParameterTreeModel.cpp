@@ -76,11 +76,9 @@ Qt::ItemFlags ParameterTreeModel::flags(const QModelIndex &index) const
 void ParameterTreeModel::writeTreeToXml(QXmlStreamWriter &writer)
 {
     ParameterTreeNodeFactory factory;
-    writer.writeStartDocument();
     writer.writeStartElement("ParameterTree");
     static_cast<XmlTreeNode*>(rootNode())->writeBranchToXml(writer, factory);
     writer.writeEndElement();
-    writer.writeEndDocument();
 }
 
 bool ParameterTreeModel::readTreeFromXml(QXmlStreamReader &reader)
