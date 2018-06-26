@@ -114,7 +114,9 @@ void CommanderDialog::on_actionAddButton_triggered()
     auto dialog = new ButtonEditDialog();
     int res = dialog->exec();
     if(res == QDialog::Accepted){
-        insertButton(m_buttonMenuContext.clickedIndex, dialog->dialogData);
+        int index = m_buttonMenuContext.clickedIndex;
+        if(index != -1) index++;
+        insertButton(index, dialog->dialogData);
     }
 }
 
