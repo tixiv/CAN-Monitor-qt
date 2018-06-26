@@ -91,6 +91,7 @@ bool ParameterTreeModel::readTreeFromXml(QXmlStreamReader &reader)
 
     ParameterTreeNodeFactory factory;
     XmlTreeNode * loadRoot = XmlTreeNode::readBranchFromXml(reader, factory);
+    reader.readNextStartElement(); // exit "ParameterTree"
 
     for(int i=0; i < loadRoot->childCount(); i++)
     {

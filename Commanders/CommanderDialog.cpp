@@ -9,6 +9,8 @@
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QMessageBox>
+#include <QDebug>
+
 
 
 CommanderDialog::CommanderDialog(QWidget *parent, QString name) :
@@ -182,6 +184,7 @@ void CommanderDialog::loadButtons(QXmlStreamReader &reader)
         {
             CommanderButtonData d;
             d.readFromXml(reader);
+
             insertButton(-1, d);
         }
     }
@@ -194,11 +197,12 @@ void CommanderDialog::load()
 
     QFile file(path);
     if(file.open(QIODevice::ReadOnly)){
-        QXmlStreamReader xmlReader(&file);
-        m_model->readTreeFromXml(xmlReader);
-        loadButtons(xmlReader);
-        loadButtons(xmlReader);
-        loadButtons(xmlReader);
+        QXmlStreamReader reader(&file);
+        if(reader.readNextStartElement() && reader.name() == "Commander")
+        {
+            m_model->readTreeFromXml(reader);
+            loadButtons(reader);
+        }
         file.close();
     }
 }
@@ -218,14 +222,14 @@ bool CommanderDialog::saveInteractive()
     QFile file(filename);
     if(file.open(QIODevice::WriteOnly))
     {
-        QXmlStreamWriter xmlWriter(&file);
-        xmlWriter.setAutoFormatting(true);
-        xmlWriter.writeStartDocument();
-
-        m_model->writeTreeToXml(xmlWriter);
-        saveButtons(xmlWriter);
-
-        xmlWriter.writeEndDocument();
+        QXmlStreamWriter writer(&file);
+        writer.setAutoFormatting(true);
+        writer.writeStartDocument();
+        writer.writeStartElement("Commander");
+        m_model->writeTreeToXml(writer);
+        saveButtons(writer);
+        writer.writeEndElement();
+        writer.writeEndDocument();
         file.close();
         m_model->isUserModified = false;
         return true;

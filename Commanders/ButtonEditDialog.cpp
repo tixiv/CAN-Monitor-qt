@@ -75,4 +75,5 @@ void CommanderButtonData::readFromXml(QXmlStreamReader &reader)
     subCommand = reader.attributes().value("subCommand").toString().toInt(0,16);
     value = reader.attributes().value("value").toString().toInt();
     saveRange = reader.attributes().value("saveRange").toString();
+    reader.readElementText();
 }
