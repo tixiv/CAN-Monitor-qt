@@ -22,13 +22,14 @@ CommanderDialog::CommanderDialog(QWidget *parent, QString name) :
     ui->treeView->setModel(m_model);
 
     if(name != "")
+    {
         m_name = name;
+        load();
+    }
     else
         m_name = "New Commander";
 
-    load();
-
-    setObjectName(m_name);
+    setWindowTitle(m_name);
 
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onTreeViewContextMenu(const QPoint &)));
@@ -245,6 +246,12 @@ bool CommanderDialog::saveInteractive()
 void CommanderDialog::on_actionSaveAs_triggered()
 {
     saveInteractive();
+}
+
+void CommanderDialog::closeEvent(QCloseEvent *event)
+{
+    (void)event;
+    deleteLater();
 }
 
 

@@ -44,6 +44,8 @@ private slots:
 private:
     Ui::CommanderDialog *ui;
 
+    void closeEvent(QCloseEvent *event) override;
+
     QString m_name;
 
     ParameterTreeModel * m_model;

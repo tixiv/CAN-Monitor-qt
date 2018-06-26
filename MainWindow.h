@@ -52,6 +52,8 @@ private slots:
 
     void on_actionNewCommander_triggered();
 
+    void actionCommanderTriggered();
+    void commanderWindowClosed(QObject *foo);
 protected:
     void closeEvent(QCloseEvent *event) override;
     void populateCommanders();
@@ -85,7 +87,7 @@ private:
     void loadTree(QString &filename);
     bool saveTreeInteractive();
 
-    QMainWindow * m_commanderDialog = 0;
+    void openCommander(QString name);
 };
 
 #endif // MAINWINDOW_H

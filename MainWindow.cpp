@@ -12,6 +12,8 @@
 #include "CanAdapter/CanAdapterFactory.h"
 #include "WidgetUtils/MenuOpenKeeper.h"
 #include "Commanders/CommanderDialog.h"
+#include <QDirIterator>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -60,6 +62,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_tickTimer.start();
 
     connect(ui->transmitWidget, SIGNAL(onTransmit(can_message_t)), this, SLOT(onTransmit(can_message_t)));
+
+    populateCommanders();
 }
 
 MainWindow::~MainWindow()
@@ -309,19 +313,53 @@ void MainWindow::on_actionEnableFormat_triggered(bool checked)
 
 void MainWindow::populateCommanders()
 {
+    ui->menuCommander->clear();
+    QString dir = QSettings().value("commanders/path").toString();
+    if(dir != "")
+    {
+        QDirIterator it(dir, QStringList() << "*.xml", QDir::Files);
+        while (it.hasNext()){
+            it.next();
+            QAction *action = new QAction(it.fileInfo().baseName(), this);
+            ui->menuCommander->addAction(action);
+            connect(action, SIGNAL(triggered(bool)), this, SLOT(actionCommanderTriggered()));
+        }
+    }
+    ui->menuCommander->addSeparator();
+    ui->menuCommander->addAction(ui->actionSetCommanderDirectory);
+    ui->menuCommander->addAction(ui->actionNewCommander);
+}
 
+void MainWindow::commanderWindowClosed(QObject* foo)
+{
+    (void)foo;
+    populateCommanders();
+}
+
+void MainWindow::openCommander(QString name)
+{
+    auto dlg = new CommanderDialog(this, name);
+    connect(dlg, SIGNAL(destroyed(QObject*)), this, SLOT(commanderWindowClosed(QObject*)));
+    dlg->show();
+}
+
+void MainWindow::actionCommanderTriggered()
+{
+    openCommander(static_cast<QAction*>(sender())->text());
 }
 
 void MainWindow::on_actionSetCommanderDirectory_triggered()
 {
-    QString dir = QFileDialog::getExistingDirectory (this, "Select Commanders Directory", QString(), 0);
-    QSettings().setValue("commanders/path", dir);
-    populateCommanders();
+    QString dir = QSettings().value("commanders/path").toString();
+    QString newDir = QFileDialog::getExistingDirectory (this, "Select Commanders Directory", dir, 0);
+    if(newDir != "")
+    {
+        QSettings().setValue("commanders/path", newDir);
+        populateCommanders();
+    }
 }
 
 void MainWindow::on_actionNewCommander_triggered()
 {
-    auto dlg = new CommanderDialog(this);
-    m_commanderDialog = dlg;
-    dlg->show();
+    openCommander("");
 }
