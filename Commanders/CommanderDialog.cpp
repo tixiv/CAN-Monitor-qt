@@ -184,7 +184,6 @@ void CommanderDialog::loadButtons(QXmlStreamReader &reader)
         {
             CommanderButtonData d;
             d.readFromXml(reader);
-
             insertButton(-1, d);
         }
     }

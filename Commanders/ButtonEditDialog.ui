@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>302</width>
+    <width>307</width>
     <height>220</height>
    </rect>
   </property>
@@ -72,7 +72,7 @@
     </widget>
    </item>
    <item row="6" column="0">
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="saveCommandRangeLabel">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -82,7 +82,7 @@
     </widget>
    </item>
    <item row="6" column="1">
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="QLineEdit" name="saveCommandRangeEdit">
      <property name="enabled">
       <bool>false</bool>
      </property>
