@@ -70,7 +70,7 @@ private:
     void insertButton(int index, CommanderButtonData d);
     void deleteButton(int index);
 
-    bool saveInteractive();
+    bool saveCommander(bool interactive);
 
     void saveButtons(QXmlStreamWriter &writer);
     void loadButtons(QXmlStreamReader &reader);

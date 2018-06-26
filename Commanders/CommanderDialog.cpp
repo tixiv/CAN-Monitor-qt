@@ -209,17 +209,25 @@ void CommanderDialog::load()
     }
 }
 
-bool CommanderDialog::saveInteractive()
+bool CommanderDialog::saveCommander(bool interactive)
 {
     QString path = QSettings().value("commanders/path").toString();
+    if(path == "") interactive = true;
     path += "/" + m_name + ".xml";
 
-    QString filename = QFileDialog::getSaveFileName(this,
-                                           tr("Save Tree"), path,
-                                           tr("Xml files (*.xml)"));
-
-    if(filename == "")
-        return false;
+    QString filename;
+    if(interactive)
+    {
+        filename = QFileDialog::getSaveFileName(this,
+                                       tr("Save Tree"), path,
+                                       tr("Xml files (*.xml)"));
+        if(filename == "")
+            return false;
+    }
+    else
+    {
+        filename = path;
+    }
 
     QFile file(filename);
     if(file.open(QIODevice::WriteOnly))
@@ -242,12 +250,16 @@ bool CommanderDialog::saveInteractive()
                              QMessageBox::Ok);
         return false;
     }
-
 }
 
 void CommanderDialog::on_actionSaveAs_triggered()
 {
-    saveInteractive();
+    saveCommander(true);
+}
+
+void CommanderDialog::on_actionSave_Commander_triggered()
+{
+    saveCommander(false);
 }
 
 void CommanderDialog::closeEvent(QCloseEvent *event)
@@ -255,5 +267,6 @@ void CommanderDialog::closeEvent(QCloseEvent *event)
     (void)event;
     deleteLater();
 }
+
 
 
