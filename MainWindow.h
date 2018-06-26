@@ -51,7 +51,9 @@ private:
 
     QList<CanAdapter *>m_canAdapters;
 
-    CanHub canHub;
+    CanHub m_canHub;
+    CanHandle * m_guiCanHandle;
+    CanHandle * m_adapterCanHandle;
 
     void changeCanAdpapter(CanAdapter * ca);
 
@@ -99,6 +101,7 @@ private slots:
     void commanderWindowClosed(QObject *foo);
 
 
+    void canAdapterTransmit(can_message_t cmsg);
 };
 
 #endif // MAINWINDOW_H

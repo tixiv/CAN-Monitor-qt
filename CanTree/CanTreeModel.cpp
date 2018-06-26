@@ -108,17 +108,17 @@ void CanTreeModel::emitDataChanged(TreeNode * node, int columnLeft, int columnRi
     }
 }
 
-void CanTreeModel::inputMessage(const can_message_t * cmsg){
-    uint32_t uid = CanUniqueID(cmsg).val;
+void CanTreeModel::inputMessage(can_message_t cmsg){
+    uint32_t uid = CanUniqueID(&cmsg).val;
 
     if(map.contains(uid)){
         MessageTreeNode * node = map[uid];
-        node->update(cmsg);
+        node->update(&cmsg);
         emitDataChanged(node, 2, columnCount()-2);
     }
     else
     {
-        MessageTreeNode * node = new MessageTreeNode(cmsg);
+        MessageTreeNode * node = new MessageTreeNode(&cmsg);
         map[uid] = node;
         insertBranche(rootNode(), -1, node);
     }

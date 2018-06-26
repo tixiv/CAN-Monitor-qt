@@ -61,7 +61,13 @@ MainWindow::MainWindow(QWidget *parent) :
     m_tickTimer.setInterval(20);
     m_tickTimer.start();
 
-    connect(ui->transmitWidget, SIGNAL(canTransmit(can_message_t)), this, SLOT(canTransmit(can_message_t)));
+    m_guiCanHandle = m_canHub.getNewHandle();
+    m_adapterCanHandle = m_canHub.getNewHandle(CanHub::f_isCanAdapter);
+
+    connect(ui->transmitWidget, SIGNAL(onTransmit(can_message_t)), this, SLOT(canTransmit(can_message_t)));
+    connect(m_guiCanHandle, SIGNAL(received(can_message_t)), m_model, SLOT(inputMessage(can_message_t)));
+
+    connect(m_adapterCanHandle, SIGNAL(received(can_message_t)), this, SLOT(canAdapterTransmit(can_message_t)));
 
     populateCommanders();
 }
@@ -139,6 +145,8 @@ void MainWindow::headerSectionClicked(int index)
     }
 }
 
+// ************** Receive and transmit of can adapter ***
+// should be moved there
 void MainWindow::tickTimerTimeout()
 {
     if(!m_canAdapter)
@@ -146,13 +154,22 @@ void MainWindow::tickTimerTimeout()
 
     can_message_t cmsg;
     while(m_canAdapter->receive(&cmsg)){
-        m_model->inputMessage(&cmsg);
+        m_adapterCanHandle->transmit(cmsg);
     }
 }
 
-void MainWindow::canTransmit(can_message_t cmsg)
+void MainWindow::canAdapterTransmit(can_message_t cmsg)
 {
     m_canAdapter->transmit(&cmsg);
+}
+// ******************************************************
+
+
+
+void MainWindow::canTransmit(can_message_t cmsg)
+{
+    m_guiCanHandle->transmit(cmsg);
+
 }
 
 bool MainWindow::saveTreeInteractive()

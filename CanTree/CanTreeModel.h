@@ -17,6 +17,8 @@ struct CanUniqueID
 
 class CanTreeModel : public TreeModel
 {
+    Q_OBJECT
+
 public:
     CanTreeModel();
 
@@ -27,13 +29,13 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
 
-
-    void inputMessage(const can_message_t * cmsg);
-
     void writeTreeToXml(QXmlStreamWriter &writer);
     bool readTreeFromXml(QXmlStreamReader &reader);
 
     void brancheGoingToBeDeleted(TreeNode * node) override;
+
+public slots:
+    void inputMessage(can_message_t cmsg);
 
 private:
     struct ColumnRole {

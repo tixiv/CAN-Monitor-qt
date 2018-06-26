@@ -37,7 +37,7 @@ void CanHub::transmit(CanHandle *from, const can_message_t &cmsg)
     foreach(auto handle, m_handles)
     {
         if ( handle->m_flags & f_getAllMessages ||
-             (handle != from && (from->m_flags & f_isCanAdapter || handle->m_flags & f_getAllOtherMessages)) )
+             (handle != from && (from->m_flags & f_isCanAdapter || handle->m_flags & (f_getAllOtherMessages|f_isCanAdapter))) )
         {
             handle->putReceiveMessage(cmsg);
         }
