@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QModelIndex>
 #include "CanAdapter/CanAdapter.h"
+#include "CanHub/CanHub.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,40 +24,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private slots:
-    void onCustomContextMenu(const QPoint &point);
-
-    void on_actionAdd_Group_triggered();
-    void tickTimerTimeout();
-    void onTransmit(can_message_t cmsg);
-    void headerSectionClicked(int index);
-
-    void on_actionSave_Tree_triggered();
-    void on_actionLoad_Tree_triggered();
-    void on_canAdapterComboBox_currentTextChanged(const QString &arg1);
-    void on_actionDeleteTreeNodes_triggered();
-
-    void on_actionAbout_triggered();
-
-    void on_actionSort_Items_Live_triggered(bool checked);
-
-    void on_actionEnableID_triggered(bool checked);
-    void on_actionEnableDLC_triggered(bool checked);
-    void on_actionEnableCount_triggered(bool checked);
-    void on_actionEnablePeriod_triggered(bool checked);
-    void on_actionEnableRaw_Data_triggered(bool checked);
-    void on_actionEnableDecoded_Data_triggered(bool checked);
-    void on_actionEnableFormat_triggered(bool checked);
-
-    void on_actionSetCommanderDirectory_triggered();
-
-    void on_actionNewCommander_triggered();
-
-    void actionCommanderTriggered();
-    void commanderWindowClosed(QObject *foo);
 protected:
     void closeEvent(QCloseEvent *event) override;
-    void populateCommanders();
 
 private:
     Ui::MainWindow *ui;
@@ -82,12 +51,54 @@ private:
 
     QList<CanAdapter *>m_canAdapters;
 
+    CanHub canHub;
+
     void changeCanAdpapter(CanAdapter * ca);
 
     void loadTree(QString &filename);
     bool saveTreeInteractive();
 
     void openCommander(QString name);
+    void populateCommanders();
+
+signals:
+    void canReceived(can_message_t cmsg);
+
+public slots:
+    void canTransmit(can_message_t cmsg);
+
+private slots:
+    void onCustomContextMenu(const QPoint &point);
+
+    void on_actionAdd_Group_triggered();
+    void tickTimerTimeout();
+    void headerSectionClicked(int index);
+
+    void on_actionSave_Tree_triggered();
+    void on_actionLoad_Tree_triggered();
+    void on_canAdapterComboBox_currentTextChanged(const QString &arg1);
+    void on_actionDeleteTreeNodes_triggered();
+
+    void on_actionAbout_triggered();
+
+    void on_actionSort_Items_Live_triggered(bool checked);
+
+    void on_actionEnableID_triggered(bool checked);
+    void on_actionEnableDLC_triggered(bool checked);
+    void on_actionEnableCount_triggered(bool checked);
+    void on_actionEnablePeriod_triggered(bool checked);
+    void on_actionEnableRaw_Data_triggered(bool checked);
+    void on_actionEnableDecoded_Data_triggered(bool checked);
+    void on_actionEnableFormat_triggered(bool checked);
+
+    void on_actionSetCommanderDirectory_triggered();
+
+    void on_actionNewCommander_triggered();
+
+    void actionCommanderTriggered();
+    void commanderWindowClosed(QObject *foo);
+
+
 };
 
 #endif // MAINWINDOW_H

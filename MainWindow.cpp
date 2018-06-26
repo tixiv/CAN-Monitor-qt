@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_tickTimer.setInterval(20);
     m_tickTimer.start();
 
-    connect(ui->transmitWidget, SIGNAL(onTransmit(can_message_t)), this, SLOT(onTransmit(can_message_t)));
+    connect(ui->transmitWidget, SIGNAL(canTransmit(can_message_t)), this, SLOT(canTransmit(can_message_t)));
 
     populateCommanders();
 }
@@ -150,7 +150,7 @@ void MainWindow::tickTimerTimeout()
     }
 }
 
-void MainWindow::onTransmit(can_message_t cmsg)
+void MainWindow::canTransmit(can_message_t cmsg)
 {
     m_canAdapter->transmit(&cmsg);
 }
