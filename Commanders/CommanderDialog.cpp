@@ -76,7 +76,7 @@ void CommanderDialog::on_actionAddParameter_triggered()
 
 void CommanderDialog::on_actionDelete_triggered()
 {
-
+    m_model->deleteBranches(ui->treeView->selectionModel()->selectedIndexes());
 }
 
 void CommanderDialog::onButtonContextMenu(const QPoint &point)
@@ -163,6 +163,22 @@ void CommanderDialog::on_actionMoveButtonDown_triggered()
     insertButton(index+1, b.d);
 }
 
+void CommanderDialog::saveProperties(QXmlStreamWriter &writer)
+{
+    writer.writeStartElement("Properties");
+    m_properties.writeToXml(writer);
+    writer.writeEndElement();
+}
+
+void CommanderDialog::loadProperties(QXmlStreamReader &reader)
+{
+    if (!reader.readNextStartElement())
+        return;
+    if (reader.name() != "Properties")
+        return;
+    m_properties.readFromXml(reader);
+}
+
 void CommanderDialog::saveButtons(QXmlStreamWriter &writer)
 {
     writer.writeStartElement("commanderButtons");
@@ -204,6 +220,7 @@ void CommanderDialog::load()
         {
             m_model->readTreeFromXml(reader);
             loadButtons(reader);
+            loadProperties(reader);
         }
         file.close();
     }
@@ -238,6 +255,7 @@ bool CommanderDialog::saveCommander(bool interactive)
         writer.writeStartElement("Commander");
         m_model->writeTreeToXml(writer);
         saveButtons(writer);
+        saveProperties(writer);
         writer.writeEndElement();
         writer.writeEndDocument();
         file.close();
@@ -268,5 +286,12 @@ void CommanderDialog::closeEvent(QCloseEvent *event)
     deleteLater();
 }
 
-
-
+void CommanderDialog::on_actionSetProperties_triggered()
+{
+    auto dialog = new CommanderPropertiesDialog();
+    dialog->dialogData = m_properties;
+    int res = dialog->exec();
+    if(res == QDialog::Accepted){
+        m_properties = dialog->dialogData;
+    }
+}

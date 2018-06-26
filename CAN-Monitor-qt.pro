@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     ParameterTree/ParameterGroupNode.cpp \
     ParameterTree/ParameterNode.cpp \
     Commanders/ButtonEditDialog.cpp \
-    ParameterTree/ParameterTreeNodeFactory.cpp
+    ParameterTree/ParameterTreeNodeFactory.cpp \
+    Commanders/CommanderPropertiesDialog.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -71,7 +72,8 @@ HEADERS  += MainWindow.h \
     ParameterTree/ParameterTreeNode.h \
     ParameterTree/ParameterNode.h \
     Commanders/ButtonEditDialog.h \
-    ParameterTree/ParameterTreeNodeFactory.h
+    ParameterTree/ParameterTreeNodeFactory.h \
+    Commanders/CommanderPropertiesDialog.h
 
 
 
@@ -80,6 +82,7 @@ FORMS    += MainWindow.ui \
     TransmitWidget.ui \
     CanAdapter/TestingControlWidget.ui \
     Commanders/CommanderDialog.ui \
-    Commanders/ButtonEditDialog.ui
+    Commanders/ButtonEditDialog.ui \
+    Commanders/CommanderPropertiesDialog.ui
 
 RC_ICONS = canMonitorIcon.ico

@@ -2,6 +2,7 @@
 #define COMMANDERDIALOG_H
 
 #include "ButtonEditDialog.h"
+#include "CommanderPropertiesDialog.h"
 #include <QMainWindow>
 #include <QModelIndex>
 
@@ -41,6 +42,10 @@ private slots:
 
     void on_actionSaveAs_triggered();
 
+    void on_actionSave_Commander_triggered();
+
+    void on_actionSetProperties_triggered();
+
 private:
     Ui::CommanderDialog *ui;
 
@@ -65,6 +70,7 @@ private:
         CommanderButtonData d;
     };
 
+    CommanderProperties m_properties;
     QList<CommanderButton> m_commanderButtons;
     int getIndexOfButton(QWidget *w);
     void insertButton(int index, CommanderButtonData d);
@@ -75,6 +81,8 @@ private:
     void saveButtons(QXmlStreamWriter &writer);
     void loadButtons(QXmlStreamReader &reader);
     void load();
+    void saveProperties(QXmlStreamWriter &writer);
+    void loadProperties(QXmlStreamReader &reader);
 };
 
 #endif // COMMANDERDIALOG_H
