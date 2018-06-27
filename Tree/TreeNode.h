@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QVariant>
+#include <functional>
 
 
 class TreeNode
@@ -21,6 +22,8 @@ public:
     void insertChild(int pos, TreeNode *child);
 
     virtual bool acceptsChildren() const;
+
+    void for_tree(std::function<void(TreeNode *)> f);
 private:
     QVector<TreeNode*> m_childNodes;
     TreeNode *m_parentNode;

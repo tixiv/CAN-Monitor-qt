@@ -150,18 +150,15 @@ bool CanTreeModel::linkNodesAndRemoveDuplicates(TreeNode * node)
 
 void CanTreeModel::unlinkNodes(TreeNode * node)
 {
-    MessageTreeNode *mtn = dynamic_cast<MessageTreeNode *>(node);
-
-    if(mtn){
-        uint32_t uid = CanUniqueID(mtn->getId(), mtn->getIDE(), mtn->getRTR()).val;
-        if(map.contains(uid))
-            map.remove(uid);
-    }
-
-    for(int i=0; i<node->childCount(); i++)
-    {
-        unlinkNodes(node->child(i));
-    }
+    auto map = &this->map;
+    node->for_tree( [map](TreeNode * tn) -> void{
+        if(auto mtn = dynamic_cast<MessageTreeNode*>(tn))
+        {
+            uint32_t uid = CanUniqueID(mtn->getId(), mtn->getIDE(), mtn->getRTR()).val;
+            if(map->contains(uid))
+                map->remove(uid);
+        }
+    });
 }
 
 void CanTreeModel::writeTreeToXml(QXmlStreamWriter &writer)

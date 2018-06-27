@@ -56,3 +56,11 @@ bool TreeNode::acceptsChildren() const
 {
     return false;
 }
+
+void TreeNode::for_tree(std::function<void (TreeNode *)> f)
+{
+    f(this);
+    foreach (auto node, m_childNodes) {
+        node->for_tree(f);
+    }
+}
