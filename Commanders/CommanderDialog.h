@@ -5,6 +5,7 @@
 #include "CommanderPropertiesDialog.h"
 #include <QMainWindow>
 #include <QModelIndex>
+#include "CanHub/CanHub.h"
 
 class ParameterTreeModel;
 class QXmlStreamReader;
@@ -19,7 +20,7 @@ class CommanderDialog : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit CommanderDialog(QWidget *parent = 0, QString name = "");
+    explicit CommanderDialog(QWidget *parent, CanHub * canhub, QString name = "");
     ~CommanderDialog();
 
 private slots:
@@ -46,12 +47,15 @@ private slots:
 
     void on_actionSetProperties_triggered();
 
+    void onCommanderButtonClicked();
 private:
     Ui::CommanderDialog *ui;
 
     void closeEvent(QCloseEvent *event) override;
 
     QString m_name;
+
+    CanHandle * m_canHandle;
 
     ParameterTreeModel * m_model;
 
@@ -72,7 +76,7 @@ private:
 
     CommanderProperties m_properties;
     QList<CommanderButton> m_commanderButtons;
-    int getIndexOfButton(QWidget *w);
+    int getIndexOfButton(QObject *w);
     void insertButton(int index, CommanderButtonData d);
     void deleteButton(int index);
 
@@ -83,6 +87,7 @@ private:
     void load();
     void saveProperties(QXmlStreamWriter &writer);
     void loadProperties(QXmlStreamReader &reader);
+    void transmitCanMessage(int id, uint8_t command, uint8_t subCommand, int32_t value);
 };
 
 #endif // COMMANDERDIALOG_H

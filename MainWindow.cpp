@@ -355,7 +355,7 @@ void MainWindow::commanderWindowClosed(QObject* foo)
 
 void MainWindow::openCommander(QString name)
 {
-    auto dlg = new CommanderDialog(this, name);
+    auto dlg = new CommanderDialog(this, &m_canHub, name);
     connect(dlg, SIGNAL(destroyed(QObject*)), this, SLOT(commanderWindowClosed(QObject*)));
     dlg->show();
 }

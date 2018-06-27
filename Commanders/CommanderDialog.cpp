@@ -13,7 +13,7 @@
 
 
 
-CommanderDialog::CommanderDialog(QWidget *parent, QString name) :
+CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name) :
     QMainWindow(parent),
     ui(new Ui::CommanderDialog)
 {
@@ -31,16 +31,19 @@ CommanderDialog::CommanderDialog(QWidget *parent, QString name) :
 
     setWindowTitle(m_name);
 
+    m_canHandle = canHub->getNewHandle();
+
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onTreeViewContextMenu(const QPoint &)));
 
     ui->customButtonGroupbox->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customButtonGroupbox, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onButtonContextMenu(const QPoint &)));
-
 }
 
 CommanderDialog::~CommanderDialog()
 {
+    delete m_canHandle;
+    m_canHandle = 0;
     delete ui;
 }
 
@@ -58,7 +61,7 @@ void CommanderDialog::onTreeViewContextMenu(const QPoint &point)
     contextMenu.exec(ui->treeView->mapToGlobal(point));
 }
 
-int CommanderDialog::getIndexOfButton(QWidget *w)
+int CommanderDialog::getIndexOfButton(QObject *w)
 {
 
     for(int i=0; i< m_commanderButtons.length(); i++)
@@ -107,6 +110,7 @@ void CommanderDialog::insertButton(int index, CommanderButtonData d)
     b.button = new QPushButton(b.d.text);
     m_commanderButtons.insert(index, b);
     ui->customButtonVerticalLayout->insertWidget(index, b.button);
+    connect(b.button, SIGNAL(clicked(bool)), this, SLOT(onCommanderButtonClicked()));
 }
 
 void CommanderDialog::on_actionAddButton_triggered()
@@ -162,6 +166,32 @@ void CommanderDialog::on_actionMoveButtonDown_triggered()
     deleteButton(index);
     insertButton(index+1, b.d);
 }
+
+void CommanderDialog::transmitCanMessage(int id, uint8_t command, uint8_t subCommand, int32_t value)
+{
+    can_message_t cmsg;
+    cmsg.IDE = 0;
+    cmsg.RTR = 0;
+    cmsg.dlc = 8;
+    cmsg.id = id;
+    cmsg.data[0] = 0x37;
+    cmsg.data[1] = 0x13;
+    cmsg.data[2] = command;
+    cmsg.data[3] = subCommand;
+    cmsg.data[4] = value >>  0;
+    cmsg.data[5] = value >>  8;
+    cmsg.data[6] = value >> 16;
+    cmsg.data[7] = value >> 24;
+    m_canHandle->transmit(cmsg);
+}
+
+void CommanderDialog::onCommanderButtonClicked()
+{
+    int index = getIndexOfButton(sender());
+    auto b = m_commanderButtons.at(index);
+    transmitCanMessage(b.d.canId, b.d.command, b.d.subCommand, b.d.value);
+}
+
 
 void CommanderDialog::saveProperties(QXmlStreamWriter &writer)
 {
