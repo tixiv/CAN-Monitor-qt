@@ -48,6 +48,7 @@ private slots:
     void on_actionSetProperties_triggered();
 
     void onCommanderButtonClicked();
+    void onCanReceived(can_message_t cmsg);
 private:
     Ui::CommanderDialog *ui;
 

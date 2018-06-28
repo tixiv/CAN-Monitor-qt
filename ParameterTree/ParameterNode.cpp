@@ -75,3 +75,17 @@ void ParameterNode::readDataFromXml(QXmlStreamReader &reader)
     m_subCommand = reader.attributes().value("subCommand").toString().toInt(0,16);
     m_unit = reader.attributes().value("unit").toString();
 }
+
+bool ParameterNode::processMessage(uint8_t command, uint8_t subCommand, int32_t value)
+{
+    if(command == m_command && subCommand == m_subCommand)
+    {
+        m_value = value;
+        m_valueRead = true;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}

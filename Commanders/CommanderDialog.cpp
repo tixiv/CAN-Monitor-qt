@@ -32,6 +32,7 @@ CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name)
     setWindowTitle(m_name);
 
     m_canHandle = canHub->getNewHandle();
+    connect(m_canHandle, SIGNAL(received(can_message_t)), this, SLOT(onCanReceived(can_message_t)));
 
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onTreeViewContextMenu(const QPoint &)));
@@ -324,4 +325,15 @@ void CommanderDialog::on_actionSetProperties_triggered()
     if(res == QDialog::Accepted){
         m_properties = dialog->dialogData;
     }
+}
+
+void CommanderDialog::onCanReceived(can_message_t cmsg)
+{
+    int dw = 0;
+    dw |= ((int)cmsg.data[4]) <<  0;
+    dw |= ((int)cmsg.data[5]) <<  8;
+    dw |= ((int)cmsg.data[6]) << 16;
+    dw |= ((int)cmsg.data[7]) << 24;
+
+    m_model->inputMessage(cmsg.data[2], cmsg.data[3], dw);
 }

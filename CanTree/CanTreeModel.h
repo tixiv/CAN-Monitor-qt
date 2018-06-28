@@ -49,8 +49,6 @@ private:
 
     bool linkNodesAndRemoveDuplicates(TreeNode * node);
     void unlinkNodes(TreeNode * node);
-
-    void emitDataChanged(TreeNode * node, int columnLeft, int columnRight);
 };
 
 #endif // CANTREEMODEL_H

@@ -14,6 +14,8 @@ public:
     void writeDataToXml(QXmlStreamWriter &writer) const override;
     void readDataFromXml(QXmlStreamReader &reader) override;
 
+    bool processMessage(uint8_t command, uint8_t subCommand, int32_t value);
+
 private:
     QVariant m_name;
 

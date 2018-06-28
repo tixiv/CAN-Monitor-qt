@@ -264,3 +264,26 @@ int TreeModel::rowCount(const QModelIndex &parent) const
     TreeNode *parentNode = nodeForIndex(parent);
     return parentNode->childCount();
 }
+
+void TreeModel::emitDataChanged(TreeNode * node, int columnLeft, int columnRight)
+{
+    bool emitAllAtOnce = false;
+    if(emitAllAtOnce)
+    {
+        // this would be the official Qt way to do this,
+        // but sadly Qt's implementation redraws the complete
+        // View at the moment (QT 5.11.1) if more than one cell is
+        // changed at once.
+        QModelIndex miLeft = indexForNode(node, columnLeft);
+        QModelIndex miRight = indexForNode(node, columnRight);
+        emit dataChanged(miLeft, miRight);
+    }
+    else for(int i=columnLeft; i<=columnRight; i++)
+    {
+        // emiting the signals one cell at a time actually gives a
+        // nice performance bonus as not the complete view needs
+        // to be redrawn when one message changes.
+        QModelIndex idx = indexForNode(node, i);
+        emit dataChanged(idx, idx);
+    }
+}

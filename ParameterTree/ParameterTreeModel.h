@@ -20,6 +20,7 @@ public:
     void writeTreeToXml(QXmlStreamWriter &writer);
     bool readTreeFromXml(QXmlStreamReader &reader);
 
+    void inputMessage(uint8_t command, uint8_t subCommand, int32_t value);
 private:
 
     struct ColumnRole {

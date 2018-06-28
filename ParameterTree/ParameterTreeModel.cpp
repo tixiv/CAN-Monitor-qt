@@ -1,5 +1,6 @@
 #include "ParameterTreeModel.h"
 #include "ParameterGroupNode.h"
+#include "ParameterNode.h"
 #include "ParameterTreeNodeFactory.h"
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
@@ -99,4 +100,19 @@ bool ParameterTreeModel::readTreeFromXml(QXmlStreamReader &reader)
     }
 
     return true;
+}
+
+void ParameterTreeModel::inputMessage(uint8_t command, uint8_t subCommand, int32_t value)
+{
+    QList<TreeNode*> changed;
+    rootNode()->for_tree([=,&changed](TreeNode *node){
+        if(auto pn = dynamic_cast<ParameterNode*>(node))
+        {
+            if(pn->processMessage(command, subCommand, value))
+                changed.append(node);
+        }
+    });
+    foreach (auto node, changed) {
+        emitDataChanged(node, 0, columnCount()-1);
+    }
 }

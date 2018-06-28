@@ -48,6 +48,7 @@ protected:
     QModelIndex indexForNode(TreeNode * node, int coumn=0) const;
     TreeNode * nodeForIndex(const QModelIndex &index) const;
 
+    void emitDataChanged(TreeNode * node, int columnLeft, int columnRight);
 private:
     TreeNode *m_rootNode;
 };
