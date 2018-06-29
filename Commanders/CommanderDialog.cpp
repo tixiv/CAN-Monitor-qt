@@ -22,6 +22,7 @@ CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name)
 
     m_model = new ParameterTreeModel();
     ui->treeView->setModel(m_model);
+    ui->treeView->setColumnWidth(0,180);
 
     if(name != "")
     {
@@ -34,6 +35,8 @@ CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name)
         m_name = "New Commander";
         setEditMode(true);
     }
+
+    ui->treeView->expandAll();
 
 
     setWindowTitle(m_name);
