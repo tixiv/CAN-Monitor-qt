@@ -82,6 +82,8 @@ private:
         CommanderButtonData d;
     };
 
+    bool isUserModified = false;
+
     CommanderProperties m_properties;
     QList<CommanderButton> m_commanderButtons;
     int getIndexOfButton(QObject *w);

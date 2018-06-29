@@ -48,6 +48,7 @@ bool ParameterNode::setData(parameterColumnFunction pcf, const QVariant &value)
             if(ok){
                 m_newValue = val;
                 m_newValueSet = true;
+                m_needsSave = true;
             }
         }
         break;
@@ -90,6 +91,11 @@ bool ParameterNode::processMessage(uint8_t command, uint8_t subCommand, int32_t 
     }
 }
 
+void ParameterNode::setSaved()
+{
+    m_needsSave = false;
+}
+
 ParameterNode::ParameterData ParameterNode::getParameterData()
 {
     ParameterData pd;
@@ -99,5 +105,6 @@ ParameterNode::ParameterData ParameterNode::getParameterData()
     pd.valueRead = m_valueRead;
     pd.newValue = m_newValue;
     pd.newValueSet = m_newValueSet;
+    pd.needsSave = m_needsSave;
     return pd;
 }

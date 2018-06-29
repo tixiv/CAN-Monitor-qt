@@ -125,6 +125,7 @@ void CommanderDialog::on_actionAddButton_triggered()
         int index = m_buttonMenuContext.clickedIndex;
         if(index != -1) index++;
         insertButton(index, dialog->dialogData);
+        isUserModified = true;
     }
 }
 
@@ -141,6 +142,7 @@ void CommanderDialog::deleteButton(int index)
 void CommanderDialog::on_actionDeleteButton_triggered()
 {
     deleteButton(m_buttonMenuContext.clickedIndex);
+    isUserModified = true;
 }
 
 void CommanderDialog::on_actionEditButton_triggered()
@@ -152,6 +154,7 @@ void CommanderDialog::on_actionEditButton_triggered()
         CommanderButton * b = &m_commanderButtons[m_buttonMenuContext.clickedIndex];
         b->d= dialog->dialogData;
         b->button->setText(b->d.text);
+        isUserModified = true;
     }
 }
 
@@ -161,6 +164,7 @@ void CommanderDialog::on_actionMoveButtonUp_triggered()
     auto b = m_commanderButtons.at(index);
     deleteButton(index);
     insertButton(index-1, b.d);
+    isUserModified = true;
 }
 
 void CommanderDialog::on_actionMoveButtonDown_triggered()
@@ -169,6 +173,7 @@ void CommanderDialog::on_actionMoveButtonDown_triggered()
     auto b = m_commanderButtons.at(index);
     deleteButton(index);
     insertButton(index+1, b.d);
+    isUserModified = true;
 }
 
 void CommanderDialog::transmitCanMessage(uint8_t command, uint8_t subCommand, int32_t value, bool write)
@@ -198,13 +203,28 @@ void CommanderDialog::onCommanderButtonClicked()
     auto b = m_commanderButtons.at(index);
     if(b.d.asksAreYouSure)
     {
-        int res = QMessageBox::question(0, m_name,
+        int res = QMessageBox::question(this, m_name,
                               b.d.text + ":\n" + tr("Are you sure ?"),
                               QMessageBox::Yes | QMessageBox::No);
         if(res != QMessageBox::Yes)
             return;
     }
+
     transmitCanMessage(b.d.command, b.d.subCommand, b.d.value, true);
+
+    if(b.d.isSaveButton)
+    {
+        auto saveCommands = b.d.getSaveCommands();
+        m_model->rootNode()->for_tree([&saveCommands](TreeNode * node){
+            auto pn = dynamic_cast<ParameterNode*>(node);
+            if(pn)
+            {
+                auto pd = pn->getParameterData();
+                if(saveCommands.contains(pd.command))
+                    pn->setSaved();
+            }
+        });
+    }
 }
 
 
@@ -305,9 +325,10 @@ bool CommanderDialog::saveCommander(bool interactive)
         writer.writeEndDocument();
         file.close();
         m_model->isUserModified = false;
+        isUserModified = false;
         return true;
     }else{
-        QMessageBox::warning(0, tr("CAN Monitor"),
+        QMessageBox::warning(this, tr("CAN Monitor"),
                              tr("The file\"") + filename + tr("\"could not be opened.\n") +
                              tr("The error message was: ") + file.errorString(),
                              QMessageBox::Ok);
@@ -325,12 +346,6 @@ void CommanderDialog::on_actionSave_Commander_triggered()
     saveCommander(false);
 }
 
-void CommanderDialog::closeEvent(QCloseEvent *event)
-{
-    (void)event;
-    deleteLater();
-}
-
 void CommanderDialog::on_actionSetProperties_triggered()
 {
     auto dialog = new CommanderPropertiesDialog();
@@ -338,6 +353,7 @@ void CommanderDialog::on_actionSetProperties_triggered()
     int res = dialog->exec();
     if(res == QDialog::Accepted){
         m_properties = dialog->dialogData;
+        isUserModified = true;
     }
 }
 
@@ -398,4 +414,76 @@ void CommanderDialog::on_writeButton_clicked()
             }
         }
     });
+}
+
+void CommanderDialog::closeEvent(QCloseEvent *event)
+ {
+    if(m_model->isUserModified || isUserModified){
+        QMessageBox msgBox;
+        msgBox.setText("The Commander has been modified.");
+        msgBox.setInformativeText("Do you want to save your changes?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+
+        switch (ret) {
+            case QMessageBox::Save:
+                if (!saveCommander(false))
+                    goto ignore;
+                break;
+            case QMessageBox::Discard:
+                break;
+            case QMessageBox::Cancel:
+                goto ignore;
+                break;
+        }
+    }
+
+    {
+        QStringList parmNames;
+        foreach (auto b, m_commanderButtons) {
+            if(b.d.isSaveButton)
+            {
+                auto saveCommands = b.d.getSaveCommands();
+                m_model->rootNode()->for_tree([&saveCommands,&parmNames](TreeNode * node){
+                    auto pn = dynamic_cast<ParameterNode*>(node);
+                    if(pn)
+                    {
+                        auto pd = pn->getParameterData();
+                        if(pd.needsSave && saveCommands.contains(pd.command))
+                            parmNames.append(pn->getData(pcf_name,Qt::DisplayRole).toString());
+                    }
+                });
+            }
+        }
+        if(!parmNames.empty())
+        {
+            QString text = "The following parameters have been modified and not saved:\n";
+            foreach (auto parm, parmNames) {
+                text += parm + "\n";
+            }
+            QMessageBox msgBox;
+            msgBox.setText(text);
+            msgBox.setInformativeText("Do you really want to qout the commander?");
+            msgBox.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Cancel);
+            int ret = msgBox.exec();
+
+            switch (ret) {
+                case QMessageBox::Discard:
+                    break;
+                case QMessageBox::Cancel:
+                    goto ignore;
+                    break;
+            }
+        }
+    }
+
+    event->accept();
+    deleteLater();
+
+ignore:
+    event->ignore();
+    return;
+
 }

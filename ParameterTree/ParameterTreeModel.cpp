@@ -49,14 +49,15 @@ bool ParameterTreeModel::setData(const QModelIndex &index, const QVariant &value
     if (!index.isValid() || role != Qt::EditRole)
         return false;
 
-    isUserModified = true;
-
     ParameterTreeNode *node = static_cast<ParameterTreeNode*>(nodeForIndex(index));
     auto pcf = m_columnFunctions.at(index.column()).df;
     if(node->setData(pcf, value))
     {
         if(pcf == pcf_newValue)
             emit newValueEdited(node);
+        else
+            isUserModified = true;
+
         emit(dataChanged(index, index));
         return true;
     }

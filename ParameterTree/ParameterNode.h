@@ -16,6 +16,8 @@ public:
 
     bool processMessage(uint8_t command, uint8_t subCommand, int32_t value);
 
+    void setSaved();
+
     struct ParameterData
     {
         uint8_t command;
@@ -24,6 +26,7 @@ public:
         bool valueRead;
         int32_t newValue;
         bool newValueSet;
+        bool needsSave;
     };
     ParameterData getParameterData();
 
@@ -40,7 +43,7 @@ private:
     bool m_newValueSet = false;
     int32_t m_newValue = 0;
 
-    bool m_newValueSaved = false;
+    bool m_needsSave = false;
 
     QVariant m_unit;
 
