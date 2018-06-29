@@ -70,6 +70,11 @@ Qt::ItemFlags ParameterTreeModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return Qt::ItemIsDropEnabled;
 
+    int max_flags = -1;
+    if (!dynamic_cast<ParameterNode *>(nodeForIndex(index)) &&
+        m_columnFunctions.at(index.column()).df != pcf_name)
+        max_flags &= Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
+
     Qt::ItemFlags flags = 0;
     if((m_editModeActive &&  m_columnFunctions.at(index.column()).df != pcf_value)
             || m_columnFunctions.at(index.column()).df == pcf_newValue)
@@ -80,7 +85,7 @@ Qt::ItemFlags ParameterTreeModel::flags(const QModelIndex &index) const
     if(m_editModeActive)
         flags |= Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsSelectable;
 
-    return flags | Qt::ItemIsEnabled;
+    return (flags | Qt::ItemIsEnabled) & max_flags;
 }
 
 void ParameterTreeModel::writeTreeToXml(QXmlStreamWriter &writer)

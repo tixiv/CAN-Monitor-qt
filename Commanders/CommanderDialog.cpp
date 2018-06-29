@@ -2,6 +2,7 @@
 #include "ui_CommanderDialog.h"
 #include "ParameterTree/ParameterTreeModel.h"
 #include "ParameterTree/ParameterNode.h"
+#include "ParameterTree/ParameterGroupNode.h"
 #include "ButtonEditDialog.h"
 #include <QMenu>
 #include <QFileDialog>
@@ -62,6 +63,7 @@ void CommanderDialog::onTreeViewContextMenu(const QPoint &point)
 
     QMenu contextMenu(this);
     contextMenu.addAction(ui->actionAddParameter);
+    contextMenu.addAction(ui->actionAddGroup);
     if(!selectedIndexes.empty())
         contextMenu.addAction(ui->actionDelete);
 
@@ -82,6 +84,11 @@ int CommanderDialog::getIndexOfButton(QObject *w)
 void CommanderDialog::on_actionAddParameter_triggered()
 {
     m_model->addNode(m_TreeMenuContext.clickedIndex, new ParameterNode("New Parameter"));
+}
+
+void CommanderDialog::on_actionAddGroup_triggered()
+{
+    m_model->addNode(m_TreeMenuContext.clickedIndex, new ParameterGroupNode("New Group"));
 }
 
 void CommanderDialog::on_actionDelete_triggered()

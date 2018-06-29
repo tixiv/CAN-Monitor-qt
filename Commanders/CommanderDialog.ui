@@ -215,6 +215,11 @@
     <string>Save as...</string>
    </property>
   </action>
+  <action name="actionAddGroup">
+   <property name="text">
+    <string>Add Group</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

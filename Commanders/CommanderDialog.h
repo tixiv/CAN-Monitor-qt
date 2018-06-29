@@ -58,6 +58,8 @@ private slots:
 
     void on_actionEditMode_triggered(bool checked);
 
+    void on_actionAddGroup_triggered();
+
 private:
     Ui::CommanderDialog *ui;
 
