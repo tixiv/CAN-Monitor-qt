@@ -196,6 +196,14 @@ void CommanderDialog::onCommanderButtonClicked()
 {
     int index = getIndexOfButton(sender());
     auto b = m_commanderButtons.at(index);
+    if(b.d.asksAreYouSure)
+    {
+        int res = QMessageBox::question(0, m_name,
+                              b.d.text + ":\n" + tr("Are you sure ?"),
+                              QMessageBox::Yes | QMessageBox::No);
+        if(res != QMessageBox::Yes)
+            return;
+    }
     transmitCanMessage(b.d.command, b.d.subCommand, b.d.value, true);
 }
 

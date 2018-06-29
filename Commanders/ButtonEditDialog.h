@@ -16,6 +16,7 @@ struct CommanderButtonData {
     uint8_t subCommand = 0;
     int32_t value = 0;
     bool isSaveButton = false;
+    bool asksAreYouSure = false;
     QString saveRange;
 
     void readFromXml(QXmlStreamReader &reader);

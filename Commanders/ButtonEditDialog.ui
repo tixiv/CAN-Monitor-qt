@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>307</width>
-    <height>194</height>
+    <height>236</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,7 +61,7 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="saveCommandRangeLabel">
      <property name="enabled">
       <bool>false</bool>
@@ -71,20 +71,27 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <widget class="QLineEdit" name="saveCommandRangeEdit">
      <property name="enabled">
       <bool>false</bool>
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="7" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QCheckBox" name="areYouSureCheckbox">
+     <property name="text">
+      <string>Asks &quot;Are you sure?&quot;</string>
      </property>
     </widget>
    </item>
