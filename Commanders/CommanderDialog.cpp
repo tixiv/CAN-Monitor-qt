@@ -467,7 +467,7 @@ void CommanderDialog::closeEvent(QCloseEvent *event)
             }
             QMessageBox msgBox;
             msgBox.setText(text);
-            msgBox.setInformativeText("Do you really want to qout the commander?");
+            msgBox.setInformativeText("Do you really want to quit the commander?");
             msgBox.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel);
             msgBox.setDefaultButton(QMessageBox::Cancel);
             int ret = msgBox.exec();
@@ -515,5 +515,4 @@ void CommanderDialog::setEditMode(bool active)
 void CommanderDialog::on_actionEditMode_triggered(bool checked)
 {
     setEditMode(checked);
-
 }

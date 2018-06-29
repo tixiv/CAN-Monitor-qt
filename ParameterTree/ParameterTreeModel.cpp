@@ -77,7 +77,10 @@ Qt::ItemFlags ParameterTreeModel::flags(const QModelIndex &index) const
             flags = Qt::ItemIsEditable ;
     }
 
-    return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
+    if(m_editModeActive)
+        flags |= Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsSelectable;
+
+    return flags | Qt::ItemIsEnabled;
 }
 
 void ParameterTreeModel::writeTreeToXml(QXmlStreamWriter &writer)
