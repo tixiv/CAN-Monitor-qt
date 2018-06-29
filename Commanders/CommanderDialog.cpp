@@ -335,13 +335,17 @@ void CommanderDialog::on_actionSetProperties_triggered()
 
 void CommanderDialog::onCanReceived(can_message_t cmsg)
 {
-    int dw = 0;
-    dw |= ((int)cmsg.data[4]) <<  0;
-    dw |= ((int)cmsg.data[5]) <<  8;
-    dw |= ((int)cmsg.data[6]) << 16;
-    dw |= ((int)cmsg.data[7]) << 24;
+    if(cmsg.id == m_properties.canIdRead && cmsg.dlc == 8 &&
+            cmsg.data[0] == 0x37 && cmsg.data[1] == 0x13)
+    {
+        int dw = 0;
+        dw |= ((int)cmsg.data[4]) <<  0;
+        dw |= ((int)cmsg.data[5]) <<  8;
+        dw |= ((int)cmsg.data[6]) << 16;
+        dw |= ((int)cmsg.data[7]) << 24;
 
-    m_model->inputMessage(cmsg.data[2], cmsg.data[3], dw);
+        m_model->inputMessage(cmsg.data[2]-1, cmsg.data[3], dw);
+    }
 }
 
 void CommanderDialog::newValueEdited(ParameterTreeNode* node)
@@ -367,6 +371,23 @@ void CommanderDialog::on_readButton_clicked()
         {
             auto pd = pn->getParameterData();
             transmitCanMessage(pd.command, pd.subCommand, 0, false); // request value
+        }
+    });
+}
+
+void CommanderDialog::on_writeButton_clicked()
+{
+    m_model->rootNode()->for_tree([this](TreeNode * node){
+        auto pn = dynamic_cast<ParameterNode*>(node);
+        if(pn)
+        {
+            auto pd = pn->getParameterData();
+            if(pd.newValueSet &&
+                    (!pd.valueRead || pd.value != pd.newValue) )
+            {
+                transmitCanMessage(pd.command, pd.subCommand, pd.newValue, true); // write the parameter
+                transmitCanMessage(pd.command, pd.subCommand, 0, false); // and read it back
+            }
         }
     });
 }

@@ -54,6 +54,8 @@ private slots:
     void onCanReceived(can_message_t cmsg);
     void on_readButton_clicked();
 
+    void on_writeButton_clicked();
+
 private:
     Ui::CommanderDialog *ui;
 
