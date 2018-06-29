@@ -18,6 +18,7 @@ CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name)
     ui(new Ui::CommanderDialog)
 {
     ui->setupUi(this);
+
     m_model = new ParameterTreeModel();
     ui->treeView->setModel(m_model);
 
@@ -33,6 +34,8 @@ CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name)
 
     m_canHandle = canHub->getNewHandle();
     connect(m_canHandle, SIGNAL(received(can_message_t)), this, SLOT(onCanReceived(can_message_t)));
+
+    connect(m_model, SIGNAL(newValueEdited(ParameterTreeNode*)), this, SLOT(newValueEdited(ParameterTreeNode*)));
 
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onTreeViewContextMenu(const QPoint &)));
@@ -168,16 +171,19 @@ void CommanderDialog::on_actionMoveButtonDown_triggered()
     insertButton(index+1, b.d);
 }
 
-void CommanderDialog::transmitCanMessage(int id, uint8_t command, uint8_t subCommand, int32_t value)
+void CommanderDialog::transmitCanMessage(uint8_t command, uint8_t subCommand, int32_t value, bool write)
 {
     can_message_t cmsg;
     cmsg.IDE = 0;
     cmsg.RTR = 0;
     cmsg.dlc = 8;
-    cmsg.id = id;
+    cmsg.id = m_properties.canIdWrite;
     cmsg.data[0] = 0x37;
     cmsg.data[1] = 0x13;
-    cmsg.data[2] = command;
+    if(write)
+        cmsg.data[2] = command;
+    else
+        cmsg.data[2] = command + 1;
     cmsg.data[3] = subCommand;
     cmsg.data[4] = value >>  0;
     cmsg.data[5] = value >>  8;
@@ -190,7 +196,7 @@ void CommanderDialog::onCommanderButtonClicked()
 {
     int index = getIndexOfButton(sender());
     auto b = m_commanderButtons.at(index);
-    transmitCanMessage(b.d.canId, b.d.command, b.d.subCommand, b.d.value);
+    transmitCanMessage(b.d.command, b.d.subCommand, b.d.value, true);
 }
 
 
@@ -336,4 +342,19 @@ void CommanderDialog::onCanReceived(can_message_t cmsg)
     dw |= ((int)cmsg.data[7]) << 24;
 
     m_model->inputMessage(cmsg.data[2], cmsg.data[3], dw);
+}
+
+void CommanderDialog::newValueEdited(ParameterTreeNode* node)
+{
+    ParameterNode * pn;
+    if(ui->autoWriteCheckBox->isChecked() &&
+            (pn = dynamic_cast<ParameterNode*>(node)) )
+    {
+        auto pd = pn->getParameterData();
+        if(pd.newValueSet)
+        {
+            transmitCanMessage(pd.command, pd.subCommand, pd.newValue, true); // write the parameter
+            transmitCanMessage(pd.command, pd.subCommand, 0, false); // and read it back
+        }
+    }
 }

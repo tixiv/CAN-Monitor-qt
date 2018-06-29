@@ -68,6 +68,9 @@
              <property name="text">
               <string>Auto write</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>

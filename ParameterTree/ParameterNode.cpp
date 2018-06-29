@@ -89,3 +89,15 @@ bool ParameterNode::processMessage(uint8_t command, uint8_t subCommand, int32_t 
         return false;
     }
 }
+
+ParameterNode::ParameterData ParameterNode::getParameterData()
+{
+    ParameterData pd;
+    pd.command = m_command;
+    pd.subCommand = m_subCommand;
+    pd.value = m_value;
+    pd.valueRead = m_valueRead;
+    pd.newValue = m_newValue;
+    pd.newValueSet = m_newValueSet;
+    return pd;
+}

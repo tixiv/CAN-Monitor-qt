@@ -5,8 +5,12 @@
 #include "ParameterTreeNode.h"
 #include <QStringList>
 
+class CanHandle;
+
 class ParameterTreeModel : public TreeModel
 {
+    Q_OBJECT
+
 public:
     ParameterTreeModel();
 
@@ -21,8 +25,10 @@ public:
     bool readTreeFromXml(QXmlStreamReader &reader);
 
     void inputMessage(uint8_t command, uint8_t subCommand, int32_t value);
-private:
+signals:
+    void newValueEdited(ParameterTreeNode * node);
 
+private:
     struct ColumnRole {
         ColumnRole(parameterColumnFunction df, const char * name):df(df), name(name){}
         parameterColumnFunction df;

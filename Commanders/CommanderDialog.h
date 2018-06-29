@@ -10,6 +10,7 @@
 class ParameterTreeModel;
 class QXmlStreamReader;
 class QXmlStreamWriter;
+class ParameterTreeNode;
 
 namespace Ui {
 class CommanderDialog;
@@ -26,6 +27,8 @@ public:
 private slots:
     void onTreeViewContextMenu(const QPoint &point);
     void onButtonContextMenu(const QPoint &point);
+
+    void newValueEdited(ParameterTreeNode* node);
 
     void on_actionAddParameter_triggered();
 
@@ -88,7 +91,7 @@ private:
     void load();
     void saveProperties(QXmlStreamWriter &writer);
     void loadProperties(QXmlStreamReader &reader);
-    void transmitCanMessage(int id, uint8_t command, uint8_t subCommand, int32_t value);
+    void transmitCanMessage(uint8_t command, uint8_t subCommand, int32_t value, bool write);
 };
 
 #endif // COMMANDERDIALOG_H

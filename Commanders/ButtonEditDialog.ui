@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>307</width>
-    <height>220</height>
+    <height>194</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,53 +25,43 @@
     <widget class="QLineEdit" name="textEdit"/>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>CAN ID (HEX)</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="CanIdEdit"/>
-   </item>
-   <item row="2" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Command (HEX)</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="1" column="1">
     <widget class="QLineEdit" name="CommandEdit"/>
    </item>
-   <item row="3" column="0">
+   <item row="2" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
       <string>Sub Command(HEX)</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="2" column="1">
     <widget class="QLineEdit" name="SubCommandEdit"/>
    </item>
-   <item row="4" column="0">
+   <item row="3" column="0">
     <widget class="QLabel" name="label_5">
      <property name="text">
       <string>Value (DEC)</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="3" column="1">
     <widget class="QLineEdit" name="ValueEdit"/>
    </item>
-   <item row="5" column="0">
+   <item row="4" column="0">
     <widget class="QCheckBox" name="isSaveButtonCheckBox">
      <property name="text">
       <string>Is Save Button</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="saveCommandRangeLabel">
      <property name="enabled">
       <bool>false</bool>
@@ -81,14 +71,14 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="5" column="1">
     <widget class="QLineEdit" name="saveCommandRangeEdit">
      <property name="enabled">
       <bool>false</bool>
      </property>
     </widget>
    </item>
-   <item row="7" column="1">
+   <item row="6" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

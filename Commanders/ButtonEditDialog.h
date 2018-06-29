@@ -12,7 +12,6 @@ class ButtonEditDialog;
 
 struct CommanderButtonData {
     QString text;
-    uint32_t canId = 0;
     uint8_t command = 0;
     uint8_t subCommand = 0;
     int32_t value = 0;
