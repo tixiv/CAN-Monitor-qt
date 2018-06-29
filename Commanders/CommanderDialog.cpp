@@ -358,3 +358,15 @@ void CommanderDialog::newValueEdited(ParameterTreeNode* node)
         }
     }
 }
+
+void CommanderDialog::on_readButton_clicked()
+{
+    m_model->rootNode()->for_tree([this](TreeNode * node){
+        auto pn = dynamic_cast<ParameterNode*>(node);
+        if(pn)
+        {
+            auto pd = pn->getParameterData();
+            transmitCanMessage(pd.command, pd.subCommand, 0, false); // request value
+        }
+    });
+}
