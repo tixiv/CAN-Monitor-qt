@@ -56,6 +56,8 @@ private slots:
 
     void on_writeButton_clicked();
 
+    void on_actionEditMode_triggered(bool checked);
+
 private:
     Ui::CommanderDialog *ui;
 
@@ -98,6 +100,7 @@ private:
     void saveProperties(QXmlStreamWriter &writer);
     void loadProperties(QXmlStreamReader &reader);
     void transmitCanMessage(uint8_t command, uint8_t subCommand, int32_t value, bool write);
+    void setEditMode(bool active);
 };
 
 #endif // COMMANDERDIALOG_H

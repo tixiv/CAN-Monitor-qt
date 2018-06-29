@@ -26,9 +26,14 @@ CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name)
     {
         m_name = name;
         load();
+        setEditMode(false);
     }
     else
+    {
         m_name = "New Commander";
+        setEditMode(true);
+    }
+
 
     setWindowTitle(m_name);
 
@@ -37,10 +42,8 @@ CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name)
 
     connect(m_model, SIGNAL(newValueEdited(ParameterTreeNode*)), this, SLOT(newValueEdited(ParameterTreeNode*)));
 
-    ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onTreeViewContextMenu(const QPoint &)));
 
-    ui->customButtonGroupbox->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customButtonGroupbox, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onButtonContextMenu(const QPoint &)));
 }
 
@@ -485,5 +488,32 @@ void CommanderDialog::closeEvent(QCloseEvent *event)
 ignore:
     event->ignore();
     return;
+
+}
+
+
+void CommanderDialog::setEditMode(bool active)
+{
+    ui->actionEditMode->setChecked(active);
+    if(active)
+    {
+        ui->customButtonGroupbox->setContextMenuPolicy(Qt::CustomContextMenu);
+        ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    }
+    else
+    {
+        ui->customButtonGroupbox->setContextMenuPolicy(Qt::NoContextMenu);
+        ui->treeView->setContextMenuPolicy(Qt::NoContextMenu);
+    }
+    ui->treeView->setColumnHidden(1,!active);
+    ui->treeView->setColumnHidden(2,!active);
+    m_model->setEditMode(active);
+}
+
+
+void CommanderDialog::on_actionEditMode_triggered(bool checked)
+{
+    setEditMode(checked);
 
 }

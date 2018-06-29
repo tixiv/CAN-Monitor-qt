@@ -71,8 +71,10 @@ Qt::ItemFlags ParameterTreeModel::flags(const QModelIndex &index) const
         return Qt::ItemIsDropEnabled;
 
     Qt::ItemFlags flags = 0;
-    if(m_columnFunctions.at(index.column()).df != pcf_value){
-        flags = Qt::ItemIsEditable ;
+    if((m_editModeActive &&  m_columnFunctions.at(index.column()).df != pcf_value)
+            || m_columnFunctions.at(index.column()).df == pcf_newValue)
+    {
+            flags = Qt::ItemIsEditable ;
     }
 
     return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
@@ -119,4 +121,9 @@ void ParameterTreeModel::inputMessage(uint8_t command, uint8_t subCommand, int32
     foreach (auto node, changed) {
         emitDataChanged(node, 0, columnCount()-1);
     }
+}
+
+void ParameterTreeModel::setEditMode(bool active)
+{
+    m_editModeActive = active;
 }

@@ -25,6 +25,7 @@ public:
     bool readTreeFromXml(QXmlStreamReader &reader);
 
     void inputMessage(uint8_t command, uint8_t subCommand, int32_t value);
+    void setEditMode(bool active);
 signals:
     void newValueEdited(ParameterTreeNode * node);
 
@@ -36,6 +37,7 @@ private:
     };
     QVector<ColumnRole> m_columnFunctions;
 
+    bool m_editModeActive = false;
 };
 
 #endif // PARAMETERTREEMODEL_H
