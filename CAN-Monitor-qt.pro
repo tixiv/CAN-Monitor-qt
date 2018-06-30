@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     Commanders/ButtonEditDialog.cpp \
     ParameterTree/ParameterTreeNodeFactory.cpp \
     Commanders/CommanderPropertiesDialog.cpp \
-    CanHub/CanHub.cpp
+    CanHub/CanHub.cpp \
+    CanAdapter/PollingCanAdapter.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -75,7 +76,8 @@ HEADERS  += MainWindow.h \
     Commanders/ButtonEditDialog.h \
     ParameterTree/ParameterTreeNodeFactory.h \
     Commanders/CommanderPropertiesDialog.h \
-    CanHub/CanHub.h
+    CanHub/CanHub.h \
+    CanAdapter/PollingCanAdapter.h
 
 
 

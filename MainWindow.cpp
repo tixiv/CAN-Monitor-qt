@@ -57,17 +57,10 @@ MainWindow::MainWindow(QWidget *parent) :
     if(path != "")
         loadTree(path);
 
-    connect(&m_tickTimer, SIGNAL(timeout()), this, SLOT(tickTimerTimeout()));
-    m_tickTimer.setInterval(20);
-    m_tickTimer.start();
-
     m_guiCanHandle = m_canHub.getNewHandle();
-    m_adapterCanHandle = m_canHub.getNewHandle(CanHub::f_isCanAdapter);
 
     connect(ui->transmitWidget, SIGNAL(onTransmit(can_message_t)), this, SLOT(canTransmit(can_message_t)));
     connect(m_guiCanHandle, SIGNAL(received(can_message_t)), m_model, SLOT(inputMessage(can_message_t)));
-
-    connect(m_adapterCanHandle, SIGNAL(received(can_message_t)), this, SLOT(canAdapterTransmit(can_message_t)));
 
     populateCommanders();
 }
@@ -144,27 +137,6 @@ void MainWindow::headerSectionClicked(int index)
         break;
     }
 }
-
-// ************** Receive and transmit of can adapter ***
-// should be moved there
-void MainWindow::tickTimerTimeout()
-{
-    if(!m_canAdapter)
-        return;
-
-    can_message_t cmsg;
-    while(m_canAdapter->receive(&cmsg)){
-        m_adapterCanHandle->transmit(cmsg);
-    }
-}
-
-void MainWindow::canAdapterTransmit(can_message_t cmsg)
-{
-    m_canAdapter->transmit(&cmsg);
-}
-// ******************************************************
-
-
 
 void MainWindow::canTransmit(can_message_t cmsg)
 {
@@ -292,7 +264,7 @@ void  MainWindow::changeCanAdpapter(CanAdapter * ca)
 
 void MainWindow::on_canAdapterComboBox_currentTextChanged(const QString &adapterName)
 {
-    CanAdapter * ca = CanAdapterFactory::createAdapter(adapterName);
+    CanAdapter * ca = CanAdapterFactory::createAdapter(adapterName, m_canHub);
     if(ca) {
         changeCanAdpapter(ca);
         QSettings().setValue("main/CanAdapter", adapterName);

@@ -2,7 +2,8 @@
 #include "TestingControlWidget.h"
 #include <QCoreApplication>
 
-CanAdapterTesting::CanAdapterTesting()
+CanAdapterTesting::CanAdapterTesting(CanHub &canHub)
+    : PollingCanAdapter(canHub)
 {
 }
 

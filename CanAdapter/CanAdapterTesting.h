@@ -1,15 +1,15 @@
 #ifndef CANADAPTERTESTING_H
 #define CANADAPTERTESTING_H
 
-#include "CanAdapter.h"
+#include "PollingCanAdapter.h"
 #include <QElapsedTimer>
 
-class CanAdapterTesting : public CanAdapter
+class CanAdapterTesting : public PollingCanAdapter
 {
     Q_OBJECT
 
 public:
-    CanAdapterTesting();
+    CanAdapterTesting(CanHub &canHub);
     ~CanAdapterTesting() override;
 
     bool open() override;

@@ -5,8 +5,8 @@
 #include "lib-slcan/slcan.h"
 #include "SlcanControlWidget.h"
 
-CanAdapterLawicel::CanAdapterLawicel()
-    : m_portName("COM4"), m_uartBaudRate(1000000), m_openState(osClosed)
+CanAdapterLawicel::CanAdapterLawicel(CanHub &canHub)
+    : PollingCanAdapter(canHub), m_portName("COM4"), m_uartBaudRate(1000000), m_openState(osClosed)
 {
     connect(&m_openTimer, &QTimer::timeout, this, &CanAdapterLawicel::openTimerTimeout);
 }

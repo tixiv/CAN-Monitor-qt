@@ -4,14 +4,14 @@
 #include <QString>
 #include <QSerialPort>
 #include <QTimer>
-#include "CanAdapter.h"
+#include "PollingCanAdapter.h"
 
-class CanAdapterLawicel : public CanAdapter
+class CanAdapterLawicel : public PollingCanAdapter
 {
     Q_OBJECT
 
 public:
-    CanAdapterLawicel();
+    CanAdapterLawicel(CanHub &canHub);
     ~CanAdapterLawicel() override;
 
     bool open() override;

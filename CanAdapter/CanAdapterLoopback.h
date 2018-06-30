@@ -1,14 +1,14 @@
 #ifndef CANADAPTERLOOPBACK_H
 #define CANADAPTERLOOPBACK_H
 
-#include "CanAdapter.h"
+#include "PollingCanAdapter.h"
 
-class CanAdapterLoopback : public CanAdapter
+class CanAdapterLoopback : public PollingCanAdapter
 {
     Q_OBJECT
 
 public:
-    CanAdapterLoopback();
+    CanAdapterLoopback(CanHub &canHub);
     ~CanAdapterLoopback() override;
 
     bool open() override;

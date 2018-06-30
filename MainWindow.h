@@ -47,13 +47,8 @@ private:
     CanAdapter * m_canAdapter = 0;
     QWidget * m_canAdpterControlWidget = 0;
 
-    QTimer m_tickTimer;
-
-    QList<CanAdapter *>m_canAdapters;
-
     CanHub m_canHub;
     CanHandle * m_guiCanHandle;
-    CanHandle * m_adapterCanHandle;
 
     QList<CommanderDialog *> m_openCommanders;
 
@@ -75,7 +70,6 @@ private slots:
     void onCustomContextMenu(const QPoint &point);
 
     void on_actionAdd_Group_triggered();
-    void tickTimerTimeout();
     void headerSectionClicked(int index);
 
     void on_actionSave_Tree_triggered();
@@ -101,9 +95,6 @@ private slots:
 
     void actionCommanderTriggered();
     void commanderWindowClosed(QObject *foo);
-
-
-    void canAdapterTransmit(can_message_t cmsg);
 };
 
 #endif // MAINWINDOW_H

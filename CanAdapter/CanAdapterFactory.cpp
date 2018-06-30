@@ -12,10 +12,10 @@ QStringList CanAdapterFactory::getAdapterNames()
             << "Testing";
 }
 
-CanAdapter * CanAdapterFactory::createAdapter(QString name)
+CanAdapter * CanAdapterFactory::createAdapter(QString name, CanHub &canHub)
 {
-    if(name == "Loopback")             return new CanAdapterLoopback();
-    if(name == "SL-Can / Lawicel")     return new CanAdapterLawicel();
-    if(name == "Testing")              return new CanAdapterTesting();
+    if(name == "Loopback")             return new CanAdapterLoopback(canHub);
+    if(name == "SL-Can / Lawicel")     return new CanAdapterLawicel(canHub);
+    if(name == "Testing")              return new CanAdapterTesting(canHub);
     return 0;
 }

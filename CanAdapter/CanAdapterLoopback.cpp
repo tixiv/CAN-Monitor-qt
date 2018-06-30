@@ -1,6 +1,7 @@
 #include "CanAdapterLoopback.h"
 
-CanAdapterLoopback::CanAdapterLoopback()
+CanAdapterLoopback::CanAdapterLoopback(CanHub &canHub)
+    : PollingCanAdapter(canHub)
 {
 
 }
