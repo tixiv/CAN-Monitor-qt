@@ -6,13 +6,18 @@
 #include "SlcanControlWidget.h"
 
 CanAdapterLawicel::CanAdapterLawicel(CanHub &canHub)
-    : PollingCanAdapter(canHub), m_portName("COM4"), m_uartBaudRate(1000000), m_openState(osClosed)
+    : m_portName("COM4"), m_uartBaudRate(1000000), m_openState(osClosed)
 {
-    connect(&m_openTimer, &QTimer::timeout, this, &CanAdapterLawicel::openTimerTimeout);
+    m_canHandle = canHub.getNewHandle(CanHub::f_isCanAdapter);
+
+    connect(m_canHandle, SIGNAL(received(can_message_t)), this, SLOT(transmit(can_message_t)));
+    connect(&m_openTimer, SIGNAL(timeout()), this, SLOT(openTimerTimeout()));
+    connect(&m_port, SIGNAL(readyRead()), this, SLOT(readBytesReady()) );
 }
 
 CanAdapterLawicel::~CanAdapterLawicel(){
     close();
+    delete m_canHandle;
 }
 
 bool CanAdapterLawicel::open()
@@ -74,12 +79,14 @@ void CanAdapterLawicel::close()
     }
 }
 
-bool CanAdapterLawicel::transmit(const can_message_t * cmsg)
+void CanAdapterLawicel::transmit(can_message_t cmsg)
 {
+    if(m_openState != osOpen)
+        return;
+
     char str [50];
-    slcan_string_from_can_message(str, cmsg);
+    slcan_string_from_can_message(str, &cmsg);
     m_port.write(str);
-    return true;
 }
 
 bool CanAdapterLawicel::receive(can_message_t * cmsg)
@@ -98,6 +105,14 @@ bool CanAdapterLawicel::receive(can_message_t * cmsg)
     m_buffer.remove(0, r+1);
 
     return slcan_can_message_from_string(cmsg, line.toStdString().c_str());
+}
+
+void CanAdapterLawicel::readBytesReady()
+{
+    can_message_t cmsg;
+    while(receive(&cmsg)){
+        m_canHandle->transmit(cmsg);
+    }
 }
 
 bool CanAdapterLawicel::isOpen()

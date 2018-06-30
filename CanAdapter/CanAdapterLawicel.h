@@ -6,7 +6,7 @@
 #include <QTimer>
 #include "PollingCanAdapter.h"
 
-class CanAdapterLawicel : public PollingCanAdapter
+class CanAdapterLawicel : public CanAdapter
 {
     Q_OBJECT
 
@@ -16,9 +16,6 @@ public:
 
     bool open() override;
     void close() override;
-
-    bool transmit(const can_message_t * cmsg) override;
-    bool receive(can_message_t * cmsg) override;
 
     bool isOpen() override;
 
@@ -39,7 +36,15 @@ private slots:
     void openClicked(QString portName, CanAdapterLawicel::OpenMode mode, int baud);
     void closeClicked();
 
+    void transmit(can_message_t cmsg);
+
+    void readBytesReady();
+
 private:
+    CanHandle * m_canHandle;
+
+    bool receive(can_message_t * cmsg);
+
     QSerialPort m_port;
     QTimer m_openTimer;
 
