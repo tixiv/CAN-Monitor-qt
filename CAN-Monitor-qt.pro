@@ -6,6 +6,9 @@
 
 QT       += core gui
 QT       += serialport
+QT       += network widgets
+requires(qtConfig(udpsocket))
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
