@@ -38,7 +38,6 @@ CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name)
 
     ui->treeView->expandAll();
 
-
     setWindowTitle(m_name);
 
     m_canHandle = canHub->getNewHandle();
@@ -494,6 +493,7 @@ void CommanderDialog::closeEvent(QCloseEvent *event)
 
     event->accept();
     deleteLater();
+    return;
 
 ignore:
     event->ignore();

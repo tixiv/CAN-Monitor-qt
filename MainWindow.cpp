@@ -236,6 +236,12 @@ void MainWindow::on_actionLoad_Tree_triggered()
 
 void MainWindow::closeEvent(QCloseEvent *event)
  {
+    foreach (auto commander, m_openCommanders) {
+        commander->closeEvent(event);
+        if(!event->isAccepted())
+            return;
+    }
+
     if(!m_model->isUserModified){
         event->accept();
         return;
@@ -347,9 +353,10 @@ void MainWindow::populateCommanders()
     ui->menuCommander->addAction(ui->actionNewCommander);
 }
 
-void MainWindow::commanderWindowClosed(QObject* foo)
+void MainWindow::commanderWindowClosed(QObject* o)
 {
-    (void)foo;
+    auto closedCommander = static_cast<CommanderDialog*>(o);
+    m_openCommanders.removeOne(closedCommander);
     populateCommanders();
 }
 
@@ -357,6 +364,7 @@ void MainWindow::openCommander(QString name)
 {
     auto dlg = new CommanderDialog(this, &m_canHub, name);
     connect(dlg, SIGNAL(destroyed(QObject*)), this, SLOT(commanderWindowClosed(QObject*)));
+    m_openCommanders.append(dlg);
     dlg->show();
 }
 

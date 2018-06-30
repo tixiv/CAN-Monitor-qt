@@ -14,7 +14,7 @@ class MainWindow;
 class QSortFilterProxyModel;
 class CanTreeModel;
 class CanAdapter;
-class QDialog;
+class CommanderDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -54,6 +54,8 @@ private:
     CanHub m_canHub;
     CanHandle * m_guiCanHandle;
     CanHandle * m_adapterCanHandle;
+
+    QList<CommanderDialog *> m_openCommanders;
 
     void changeCanAdpapter(CanAdapter * ca);
 

@@ -24,6 +24,9 @@ public:
     explicit CommanderDialog(QWidget *parent, CanHub * canhub, QString name = "");
     ~CommanderDialog();
 
+    void closeEvent(QCloseEvent *event) override;
+
+
 private slots:
     void onTreeViewContextMenu(const QPoint &point);
     void onButtonContextMenu(const QPoint &point);
@@ -63,7 +66,6 @@ private slots:
 private:
     Ui::CommanderDialog *ui;
 
-    void closeEvent(QCloseEvent *event) override;
 
     QString m_name;
 
