@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     ParameterTree/ParameterTreeNodeFactory.cpp \
     Commanders/CommanderPropertiesDialog.cpp \
     CanHub/CanHub.cpp \
-    CanAdapter/PollingCanAdapter.cpp
+    CanAdapter/PollingCanAdapter.cpp \
+    CanAdapter/CanAdapterTritium.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -77,7 +78,8 @@ HEADERS  += MainWindow.h \
     ParameterTree/ParameterTreeNodeFactory.h \
     Commanders/CommanderPropertiesDialog.h \
     CanHub/CanHub.h \
-    CanAdapter/PollingCanAdapter.h
+    CanAdapter/PollingCanAdapter.h \
+    CanAdapter/CanAdapterTritium.h
 
 
 
