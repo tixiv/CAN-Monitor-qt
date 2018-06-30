@@ -129,6 +129,7 @@ void CanAdapterTritium::processDatagrams()
 
 void CanAdapterTritium::transmit(can_message_t cmsg)
 {
+    (void)cmsg;
 }
 
 bool CanAdapterTritium::isOpen()
@@ -137,6 +138,7 @@ bool CanAdapterTritium::isOpen()
 }
 
 QWidget * CanAdapterTritium::getControlWidget(QWidget *parent){
+    (void)parent;
     return 0;
 }
 
