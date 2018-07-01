@@ -11,8 +11,7 @@
 #include <QXmlStreamReader>
 #include <QMessageBox>
 #include <QDebug>
-
-
+#include "Tree/ComboBoxDelegate.h"
 
 CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name) :
     QMainWindow(parent),
@@ -23,6 +22,11 @@ CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name)
     m_model = new ParameterTreeModel();
     ui->treeView->setModel(m_model);
     ui->treeView->setColumnWidth(0,180);
+
+    auto accessDelegate = new ComboBoxDelegate(0, ParameterNode::accessStrings);
+    ui->treeView->setItemDelegateForColumn(3, accessDelegate);
+
+    //auto typeDelegate = new ComboBoxDelegate(0, )
 
     if(name != "")
     {
@@ -406,7 +410,8 @@ void CommanderDialog::on_readButton_clicked()
         if(pn)
         {
             auto pd = pn->getParameterData();
-            transmitCanMessage(pd.command, pd.subCommand, 0, false); // request value
+            if(pd.accessMode != ParameterNode::a_writeOnly)
+                transmitCanMessage(pd.command, pd.subCommand, 0, false); // request value
         }
     });
 }

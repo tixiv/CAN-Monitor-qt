@@ -18,6 +18,13 @@ public:
 
     void setSaved();
 
+    enum AccessMode
+    {
+        a_readWrite = 0,
+        a_readOnly = 1,
+        a_writeOnly = 2,
+    };
+
     struct ParameterData
     {
         uint8_t command;
@@ -27,10 +34,13 @@ public:
         int32_t newValue;
         bool newValueSet;
         bool needsSave;
+        AccessMode accessMode;
     };
     ParameterData getParameterData();
 
+    static const QStringList accessStrings;
 
+    Qt::ItemFlags getFlags(parameterColumnFunction pcf, bool editMode) const override;
 private:
     QVariant m_name;
 
@@ -46,6 +56,8 @@ private:
     bool m_needsSave = false;
 
     QVariant m_unit;
+
+    AccessMode m_accessMode = a_readWrite;
 
 };
 

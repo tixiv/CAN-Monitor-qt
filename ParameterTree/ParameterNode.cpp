@@ -2,6 +2,12 @@
 
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
+#include <QColor>
+
+const QStringList ParameterNode::accessStrings = QStringList()
+    << "Read/Write"
+    << "Read only"
+    << "Write only";
 
 ParameterNode::ParameterNode(QVariant name)
 {
@@ -10,12 +16,22 @@ ParameterNode::ParameterNode(QVariant name)
 
 QVariant ParameterNode::getData(parameterColumnFunction pcf, int role) const
 {
-    (void) role;
+
+    if(role == Qt::BackgroundRole)
+    {
+        if( (pcf == pcf_newValue && m_accessMode == a_readOnly)||
+            (pcf == pcf_value && m_accessMode == a_writeOnly) )
+            return QVariant(QColor(Qt::lightGray));
+        else
+            return QVariant();
+    }
+
     switch(pcf)
     {
     case pcf_name: return m_name;
     case pcf_command: return QString().number((uint)m_command, 16);
     case pcf_subCommand: return QString().number((uint)m_subCommand, 16);
+    case pcf_access: return accessStrings.at(m_accessMode);
     case pcf_value:
         if(m_valueRead)
             return QString().number(m_value);
@@ -34,6 +50,20 @@ QVariant ParameterNode::getData(parameterColumnFunction pcf, int role) const
     return QVariant();
 }
 
+Qt::ItemFlags ParameterNode::getFlags(parameterColumnFunction pcf, bool editMode) const
+{
+    if(pcf == pcf_newValue)
+        return m_accessMode != a_readOnly ? Qt::ItemIsEditable : Qt::NoItemFlags;
+
+    if(editMode)
+    {
+        if(pcf != pcf_value)
+            return Qt::ItemIsEditable;
+    }
+
+    return Qt::NoItemFlags;
+}
+
 bool ParameterNode::setData(parameterColumnFunction pcf, const QVariant &value)
 {
     switch(pcf)
@@ -41,6 +71,7 @@ bool ParameterNode::setData(parameterColumnFunction pcf, const QVariant &value)
     case pcf_name: m_name = value; break;
     case pcf_command: m_command = value.toString().toInt(0,16); break;
     case pcf_subCommand: m_subCommand = value.toString().toInt(0,16); break;
+    case pcf_access: m_accessMode = (AccessMode)accessStrings.indexOf(value.toString()); break;
     case pcf_newValue:
         {
             bool ok = false;
@@ -65,6 +96,7 @@ void ParameterNode::writeDataToXml(QXmlStreamWriter &writer) const
     writer.writeAttribute("name", m_name.toString());
     writer.writeAttribute("command", QString().number((uint)m_command, 16));
     writer.writeAttribute("subCommand", QString().number((uint)m_subCommand, 16));
+    writer.writeAttribute("accessMode", QString().number(m_accessMode));
     writer.writeAttribute("unit", m_unit.toString());
 
 }
@@ -74,6 +106,7 @@ void ParameterNode::readDataFromXml(QXmlStreamReader &reader)
     m_name = reader.attributes().value("name").toString();
     m_command = reader.attributes().value("command").toString().toInt(0,16);
     m_subCommand = reader.attributes().value("subCommand").toString().toInt(0,16);
+    m_accessMode = (AccessMode)reader.attributes().value("accessMode").toString().toInt();
     m_unit = reader.attributes().value("unit").toString();
 }
 
@@ -106,5 +139,6 @@ ParameterNode::ParameterData ParameterNode::getParameterData()
     pd.newValue = m_newValue;
     pd.newValueSet = m_newValueSet;
     pd.needsSave = m_needsSave;
+    pd.accessMode = m_accessMode;
     return pd;
 }

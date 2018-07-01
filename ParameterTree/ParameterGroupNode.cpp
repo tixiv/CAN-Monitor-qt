@@ -15,7 +15,9 @@ bool ParameterGroupNode::acceptsChildren() const
 
 QVariant ParameterGroupNode::getData(parameterColumnFunction pcf, int role) const
 {
-    (void) role;
+    if(role == Qt::BackgroundRole)
+        return QVariant();
+
     if(pcf == pcf_name){
         return m_name;
     }else{
@@ -31,6 +33,14 @@ bool ParameterGroupNode::setData(parameterColumnFunction pcf, const QVariant &va
     }else{
         return false;
     }
+}
+
+Qt::ItemFlags ParameterGroupNode::getFlags(parameterColumnFunction pcf, bool editMode) const
+{
+    if(pcf == pcf_name && editMode)
+        return Qt::ItemIsEditable;
+
+    return 0;
 }
 
 void ParameterGroupNode::writeDataToXml(QXmlStreamWriter &writer) const

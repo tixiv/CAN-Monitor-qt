@@ -12,6 +12,7 @@ ParameterTreeModel::ParameterTreeModel()
         ColumnRole(pcf_name,        "Name"),
         ColumnRole(pcf_command,     "Command"),
         ColumnRole(pcf_subCommand,  "Subcommand"),
+        ColumnRole(pcf_access,      "Access"),
         ColumnRole(pcf_value,       "Value"),
         ColumnRole(pcf_newValue,    "New Value"),
         ColumnRole(pcf_unit,        "Unit"),
@@ -36,7 +37,7 @@ QVariant ParameterTreeModel::headerData(int section, Qt::Orientation orientation
 
 QVariant ParameterTreeModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::UserRole))
+    if (!index.isValid() || (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::UserRole && role != Qt::BackgroundRole))
         return QVariant();
 
     ParameterTreeNode *node = static_cast<ParameterTreeNode*>(nodeForIndex(index));
@@ -70,22 +71,13 @@ Qt::ItemFlags ParameterTreeModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return Qt::ItemIsDropEnabled;
 
-    int max_flags = -1;
-    if (!dynamic_cast<ParameterNode *>(nodeForIndex(index)) &&
-        m_columnFunctions.at(index.column()).df != pcf_name)
-        max_flags &= Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
-
-    Qt::ItemFlags flags = 0;
-    if((m_editModeActive &&  m_columnFunctions.at(index.column()).df != pcf_value)
-            || m_columnFunctions.at(index.column()).df == pcf_newValue)
-    {
-            flags = Qt::ItemIsEditable ;
-    }
+    // get is editable flag
+    Qt::ItemFlags flags = static_cast<ParameterTreeNode*>(nodeForIndex(index))->getFlags(m_columnFunctions.at(index.column()).df, m_editModeActive);
 
     if(m_editModeActive)
         flags |= Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsSelectable;
 
-    return (flags | Qt::ItemIsEnabled) & max_flags;
+    return flags | Qt::ItemIsEnabled;
 }
 
 void ParameterTreeModel::writeTreeToXml(QXmlStreamWriter &writer)

@@ -15,6 +15,7 @@ public:
     void writeDataToXml(QXmlStreamWriter &writer) const override;
     void readDataFromXml(QXmlStreamReader &reader) override;
 
+    Qt::ItemFlags getFlags(parameterColumnFunction pcf, bool editMode) const override;
 private:
     QVariant m_name;
 };
