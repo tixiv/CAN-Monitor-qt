@@ -43,6 +43,7 @@ public:
     Qt::ItemFlags getFlags(parameterColumnFunction pcf, bool editMode) const override;
 private:
     QVariant m_name;
+    QVariant m_format;
 
     uint8_t m_command = 0;
     uint8_t m_subCommand = 0;
@@ -58,7 +59,6 @@ private:
     QVariant m_unit;
 
     AccessMode m_accessMode = a_readWrite;
-
 };
 
 #endif // PARAMETERNODE_H

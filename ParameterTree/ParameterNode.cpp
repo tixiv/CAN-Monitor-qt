@@ -32,6 +32,7 @@ QVariant ParameterNode::getData(parameterColumnFunction pcf, int role) const
     case pcf_command: return QString().number((uint)m_command, 16);
     case pcf_subCommand: return QString().number((uint)m_subCommand, 16);
     case pcf_access: return accessStrings.at(m_accessMode);
+    case pcf_format: return m_format;
     case pcf_value:
         if(m_valueRead)
             return QString().number(m_value);
@@ -72,6 +73,7 @@ bool ParameterNode::setData(parameterColumnFunction pcf, const QVariant &value)
     case pcf_command: m_command = value.toString().toInt(0,16); break;
     case pcf_subCommand: m_subCommand = value.toString().toInt(0,16); break;
     case pcf_access: m_accessMode = (AccessMode)accessStrings.indexOf(value.toString()); break;
+    case pcf_format: m_format = value; break;
     case pcf_newValue:
         {
             bool ok = false;
@@ -97,6 +99,7 @@ void ParameterNode::writeDataToXml(QXmlStreamWriter &writer) const
     writer.writeAttribute("command", QString().number((uint)m_command, 16));
     writer.writeAttribute("subCommand", QString().number((uint)m_subCommand, 16));
     writer.writeAttribute("accessMode", QString().number(m_accessMode));
+    writer.writeAttribute("format", m_format.toString());
     writer.writeAttribute("unit", m_unit.toString());
 
 }
@@ -107,6 +110,7 @@ void ParameterNode::readDataFromXml(QXmlStreamReader &reader)
     m_command = reader.attributes().value("command").toString().toInt(0,16);
     m_subCommand = reader.attributes().value("subCommand").toString().toInt(0,16);
     m_accessMode = (AccessMode)reader.attributes().value("accessMode").toString().toInt();
+    m_format = reader.attributes().value("format").toString();
     m_unit = reader.attributes().value("unit").toString();
 }
 

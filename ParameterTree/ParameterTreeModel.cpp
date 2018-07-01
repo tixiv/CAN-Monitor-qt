@@ -10,9 +10,10 @@ ParameterTreeModel::ParameterTreeModel()
 {
     m_columnFunctions = {
         ColumnRole(pcf_name,        "Name"),
-        ColumnRole(pcf_command,     "Command"),
-        ColumnRole(pcf_subCommand,  "Subcommand"),
+        ColumnRole(pcf_command,     "Command (HEX)"),
+        ColumnRole(pcf_subCommand,  "Subcommand (HEX)"),
         ColumnRole(pcf_access,      "Access"),
+        ColumnRole(pcf_format,      "Format"),
         ColumnRole(pcf_value,       "Value"),
         ColumnRole(pcf_newValue,    "New Value"),
         ColumnRole(pcf_unit,        "Unit"),

@@ -9,6 +9,7 @@ enum parameterColumnFunction
     pcf_command,
     pcf_subCommand,
     pcf_access,
+    pcf_format,
     pcf_value,
     pcf_newValue,
     pcf_unit,

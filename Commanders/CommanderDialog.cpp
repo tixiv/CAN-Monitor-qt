@@ -523,6 +523,8 @@ void CommanderDialog::setEditMode(bool active)
     }
     ui->treeView->setColumnHidden(1,!active);
     ui->treeView->setColumnHidden(2,!active);
+    ui->treeView->setColumnHidden(3,!active);
+    ui->treeView->setColumnHidden(4,!active);
     m_model->setEditMode(active);
 }
 
