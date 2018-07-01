@@ -1,5 +1,5 @@
 #include "ParameterNode.h"
-
+#include "Format/format.h"
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QColor>
@@ -35,14 +35,14 @@ QVariant ParameterNode::getData(parameterColumnFunction pcf, int role) const
     case pcf_format: return m_format;
     case pcf_value:
         if(m_valueRead)
-            return QString().number(m_value);
+            return format(m_format.toString(), m_value);
         else
             return QVariant();
     case pcf_newValue:
         if(m_newValueSet)
-            return QString().number(m_newValue);
+            return format(m_format.toString(), m_newValue);
         else if(role == Qt::EditRole && m_valueRead)
-            return QString().number(m_value);
+            return format(m_format.toString(), m_value);
         else
             return QVariant();
     case pcf_unit: return m_unit;

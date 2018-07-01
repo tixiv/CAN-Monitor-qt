@@ -144,3 +144,20 @@ QString format(const QString &format, const uint8_t data[8], double * firstNumOu
     }
     return str;
 }
+
+QString format(const QString &format, int32_t val)
+{
+    QString output;
+    const uint8_t * data = (const uint8_t *) &val;
+    if(format == "")
+        formatOne(output, "s32", data, 0, 0);
+    else
+        formatOne(output, format, data, 0, 0);
+
+    return output;
+}
+
+int32_t parseFormatted(const QString &format, const QString &str)
+{
+
+}
