@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     CanHub/CanHub.cpp \
     CanAdapter/PollingCanAdapter.cpp \
     CanAdapter/CanAdapterTritium.cpp \
-    Tree/ComboBoxDelegate.cpp
+    Tree/ComboBoxDelegate.cpp \
+    Format/format.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -84,7 +85,8 @@ HEADERS  += MainWindow.h \
     CanHub/CanHub.h \
     CanAdapter/PollingCanAdapter.h \
     CanAdapter/CanAdapterTritium.h \
-    Tree/ComboBoxDelegate.h
+    Tree/ComboBoxDelegate.h \
+    Format/format.h
 
 
 
