@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QModelIndex>
 #include "CanHub/CanHub.h"
+#include "ParameterTree/ParameterNode.h"
 
 class ParameterTreeModel;
 class QXmlStreamReader;
@@ -105,6 +106,7 @@ private:
     void loadProperties(QXmlStreamReader &reader);
     void transmitCanMessage(uint8_t command, uint8_t subCommand, int32_t value, bool write);
     void setEditMode(bool active);
+    void requestValue(ParameterNode::ParameterData &pd);
 };
 
 #endif // COMMANDERDIALOG_H

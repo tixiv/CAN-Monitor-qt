@@ -41,6 +41,24 @@ static float readFloat(const uint8_t * p)
     return u.f;
 }
 
+static void writeFloat(uint8_t *p, float f)
+{
+    *((float *) p) = f;
+}
+
+static void writeInt(uint8_t *p, int32_t val, int numBytes, bool bigEndian)
+{
+    for(int i=0; i<numBytes; i++)
+    {
+        if(bigEndian)
+            p[numBytes-i-1] = val;
+        else
+            p[i] = val;
+        val >>= 8;
+    }
+}
+
+
 // Example of format strings:
 // "u16 0.1:%0.1f"
 // "u8"
@@ -96,9 +114,10 @@ static bool parseOne(ParsedFormat &pf, const QString &format)
             QRegularExpression re("f(.*)");
             QRegularExpressionMatch match = re.match(parts[0]);
             if(match.hasMatch()){
+                pf.isFloat = true;
                 pf.numBytes = 4;
-                multiplierPart = match.captured(1);
                 pf.numDigits = 2; // 2 default digits for float
+                multiplierPart = match.captured(1);
             }else{
                 return false;
             }
@@ -211,7 +230,38 @@ QString format(const QString &format, int32_t val)
     return output;
 }
 
-int32_t parseFormatted(const QString &format, const QString &str)
+int32_t parseFormatted(const QString &format, const QString &str, bool *ok)
 {
+    volatile int32_t val = 0;
+    uint8_t * data = (uint8_t *)&val;
+    const QString * f = &format;
 
+    QString s32("s32");
+    if(format == "")
+        f = &s32;
+
+    bool numOk;
+    double num = str.toDouble(&numOk);
+
+    ParsedFormat pf;
+    if(numOk && parseOne(pf, *f))
+    {
+        num /= pf.multiplier;
+
+        if(pf.isFloat)
+        {
+            writeFloat(data, num);
+        }
+        else
+        {
+            writeInt(data, num, pf.numBytes, pf.isBigEndian);
+        }
+        if(ok)
+            *ok = true;
+    }else{
+        if(ok)
+            *ok = false;
+    }
+
+    return val;
 }

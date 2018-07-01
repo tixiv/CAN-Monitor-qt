@@ -77,7 +77,7 @@ bool ParameterNode::setData(parameterColumnFunction pcf, const QVariant &value)
     case pcf_newValue:
         {
             bool ok = false;
-            int32_t val = value.toString().toInt(&ok);
+            int32_t val = parseFormatted(m_format.toString(), value.toString(), &ok);
             if(ok){
                 m_newValue = val;
                 m_newValueSet = true;

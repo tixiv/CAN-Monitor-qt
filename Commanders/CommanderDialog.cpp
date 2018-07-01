@@ -398,9 +398,15 @@ void CommanderDialog::newValueEdited(ParameterTreeNode* node)
         if(pd.newValueSet)
         {
             transmitCanMessage(pd.command, pd.subCommand, pd.newValue, true); // write the parameter
-            transmitCanMessage(pd.command, pd.subCommand, 0, false); // and read it back
+            requestValue(pd); // and read it back
         }
     }
+}
+
+void CommanderDialog::requestValue(ParameterNode::ParameterData & pd)
+{
+    if(pd.accessMode != ParameterNode::a_writeOnly)
+        transmitCanMessage(pd.command, pd.subCommand, 0, false); // request value
 }
 
 void CommanderDialog::on_readButton_clicked()
@@ -410,8 +416,7 @@ void CommanderDialog::on_readButton_clicked()
         if(pn)
         {
             auto pd = pn->getParameterData();
-            if(pd.accessMode != ParameterNode::a_writeOnly)
-                transmitCanMessage(pd.command, pd.subCommand, 0, false); // request value
+            requestValue(pd);
         }
     });
 }
@@ -427,7 +432,7 @@ void CommanderDialog::on_writeButton_clicked()
                     (!pd.valueRead || pd.value != pd.newValue) )
             {
                 transmitCanMessage(pd.command, pd.subCommand, pd.newValue, true); // write the parameter
-                transmitCanMessage(pd.command, pd.subCommand, 0, false); // and read it back
+                requestValue(pd); // and read it back
             }
         }
     });
