@@ -4,10 +4,12 @@
 #include "CanAdapter.h"
 #include <QHostAddress>
 #include <QUdpSocket>
+#include <QTimer>
 
 class CanHub;
 class CanHandle;
 class TritiumMessage;
+class TritiumHeader;
 
 class CanAdapterTritium : public CanAdapter
 {
@@ -24,6 +26,9 @@ public:
 
     QWidget * getControlWidget(QWidget *parent = 0) override;
 
+signals:
+    void updateStatus(QString text);
+
 private slots:
     void openClicked();
     void closeClicked();
@@ -31,16 +36,21 @@ private slots:
     void transmit(can_message_t cmsg);
 
     void processDatagrams();
+    void statusTimerTimeout();
 private:
     CanHandle * m_canHandle;
+
+    bool m_isOpen = false;
 
     QUdpSocket m_udpSocket;
     QHostAddress m_groupAddress;
     int m_port;
-    void processMessage(TritiumMessage &message);
+    void processMessage(const TritiumMessage &message, const TritiumHeader &header, const QHostAddress &sourceAddress);
     void generateClientIdentifier();
 
     char m_clientIdentifier[7] = {0};
+
+    QTimer m_statusTimer;
 };
 
 #endif // CANADAPTERTRITIUM_H

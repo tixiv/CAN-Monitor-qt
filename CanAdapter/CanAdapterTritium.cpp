@@ -4,6 +4,7 @@
 #include "SlcanControlWidget.h"
 #include <QDebug>
 #include <QRandomGenerator>
+#include "TritiumControlWidget.h"
 
 // Implements the Tritium Ethernet to CAN bridge used for their
 // (Solar Car) racing products, like e.g. the WS22 motor inverter
@@ -17,25 +18,20 @@ CanAdapterTritium::CanAdapterTritium(CanHub &canHub)
     m_canHandle = canHub.getNewHandle(CanHub::f_isCanAdapter);
     generateClientIdentifier();
 
+    m_statusTimer.setSingleShot(true);
+    connect(&m_statusTimer, SIGNAL(timeout()), this, SLOT(statusTimerTimeout()));
+    m_statusTimer.start(2000);
+
     connect(m_canHandle, SIGNAL(received(can_message_t)), this, SLOT(transmit(can_message_t)));
-    open();
+
+    m_udpSocket.bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
+    m_udpSocket.joinMulticastGroup(m_groupAddress);
+    connect(&m_udpSocket, SIGNAL(readyRead()), this, SLOT(processDatagrams()));
 }
 
 CanAdapterTritium::~CanAdapterTritium(){
     close();
     delete m_canHandle;
-}
-
-bool CanAdapterTritium::open()
-{
-    m_udpSocket.bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
-    m_udpSocket.joinMulticastGroup(m_groupAddress);
-    connect(&m_udpSocket, SIGNAL(readyRead()), this, SLOT(processDatagrams()));
-    return true;
-}
-
-void CanAdapterTritium::close()
-{
 }
 
 void CanAdapterTritium::generateClientIdentifier()
@@ -108,23 +104,38 @@ static void encodeCanMessage(char * data, const can_message_t & cmsg)
     memcpy(&data[6], cmsg.data, cmsg.dlc);
 }
 
-void CanAdapterTritium::processMessage(TritiumMessage &message)
+void CanAdapterTritium::statusTimerTimeout()
+{
+    emit(updateStatus("Receiving no CAN Bridge on network"));
+}
+
+void CanAdapterTritium::processMessage(const TritiumMessage &message, const TritiumHeader &header, const QHostAddress &sourceAddress)
 {
     if(message.H) // heartbeat
     {
+        int baud = message.data[0] << 8;
+        baud |= message.data[1];
+
+        emit(updateStatus("CAN Bridge at " + sourceAddress.toString() +
+                          "  Bus=" + QString().number(header.busNumber) +
+                          "  Baud=" + QString().number(baud) + "k" ));
+        m_statusTimer.start(2000);
     }
     else if(message.S) // setting
     {
     }
     else // CAN message
     {
-        can_message_t cmsg;
-        cmsg.IDE = message.E;
-        cmsg.RTR = message.R;
-        cmsg.id = message.id;
-        cmsg.dlc = message.dlc;
-        memcpy(cmsg.data, message.data, 8);
-        m_canHandle->transmit(cmsg);
+        if(m_isOpen)
+        {
+            can_message_t cmsg;
+            cmsg.IDE = message.E;
+            cmsg.RTR = message.R;
+            cmsg.id = message.id;
+            cmsg.dlc = message.dlc;
+            memcpy(cmsg.data, message.data, 8);
+            m_canHandle->transmit(cmsg);
+        }
     }
 }
 
@@ -134,7 +145,8 @@ void CanAdapterTritium::processDatagrams()
 
     while (m_udpSocket.hasPendingDatagrams()) {
         data.resize(int(m_udpSocket.pendingDatagramSize()));
-        m_udpSocket.readDatagram(data.data(), data.size());
+        QHostAddress sourceAddress;
+        m_udpSocket.readDatagram(data.data(), data.size(), &sourceAddress);
         // qDebug() << data.toHex();
         if(data.length() < 30) // minimum datagram length
             continue;
@@ -144,12 +156,16 @@ void CanAdapterTritium::processDatagrams()
         if(!decodeHeader(header, d))
             continue;
 
+        // don't feed on our own milk
+        if(memcmp(header.clientIdentifier, m_clientIdentifier, sizeof(m_clientIdentifier)) == 0)
+            continue;
+
         int offset = 16;
         int length = data.length() - 16;
         while (length >= 14) {
             TritiumMessage message;
             decodeMessage(message, &d[offset]);
-            processMessage(message);
+            processMessage(message, header, sourceAddress);
 
             offset += 14;
             length -= 14;
@@ -159,20 +175,36 @@ void CanAdapterTritium::processDatagrams()
 
 void CanAdapterTritium::transmit(can_message_t cmsg)
 {
-    QByteArray data(30, 0);
-    encodeHeader(data.data(), m_clientIdentifier, 13);
-    encodeCanMessage(data.data()+16, cmsg);
-    m_udpSocket.writeDatagram(data.data(), data.size(), m_groupAddress, m_port);
+    if(m_isOpen)
+    {
+        QByteArray data(30, 0);
+        encodeHeader(data.data(), m_clientIdentifier, 13);
+        encodeCanMessage(data.data()+16, cmsg);
+        m_udpSocket.writeDatagram(data.data(), data.size(), m_groupAddress, m_port);
+    }
+}
+
+QWidget * CanAdapterTritium::getControlWidget(QWidget *parent){
+    auto w = new TritiumControlWidget(parent);
+    connect(w, SIGNAL(openClicked()), this, SLOT(openClicked()));
+    connect(w, SIGNAL(closeClicked()), this, SLOT(closeClicked()));
+    connect(this, SIGNAL(updateStatus(QString)), w, SLOT(displayStatus(QString)));
+    return w;
+}
+
+bool CanAdapterTritium::open()
+{
+    m_isOpen = true;
+}
+
+void CanAdapterTritium::close()
+{
+    m_isOpen = false;
 }
 
 bool CanAdapterTritium::isOpen()
 {
-    return true;
-}
-
-QWidget * CanAdapterTritium::getControlWidget(QWidget *parent){
-    (void)parent;
-    return 0;
+    return m_isOpen;
 }
 
 void CanAdapterTritium::openClicked(){

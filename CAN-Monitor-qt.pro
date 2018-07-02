@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     CanAdapter/PollingCanAdapter.cpp \
     CanAdapter/CanAdapterTritium.cpp \
     Tree/ComboBoxDelegate.cpp \
-    Format/format.cpp
+    Format/format.cpp \
+    CanAdapter/TritiumControlWidget.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -86,7 +87,8 @@ HEADERS  += MainWindow.h \
     CanAdapter/PollingCanAdapter.h \
     CanAdapter/CanAdapterTritium.h \
     Tree/ComboBoxDelegate.h \
-    Format/format.h
+    Format/format.h \
+    CanAdapter/TritiumControlWidget.h
 
 
 
@@ -96,6 +98,7 @@ FORMS    += MainWindow.ui \
     CanAdapter/TestingControlWidget.ui \
     Commanders/CommanderDialog.ui \
     Commanders/ButtonEditDialog.ui \
-    Commanders/CommanderPropertiesDialog.ui
+    Commanders/CommanderPropertiesDialog.ui \
+    CanAdapter/TritiumControlWidget.ui
 
 RC_ICONS = canMonitorIcon.ico
