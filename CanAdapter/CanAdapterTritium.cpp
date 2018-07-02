@@ -3,7 +3,8 @@
 #include "lib-slcan/slcan.h"
 #include "SlcanControlWidget.h"
 #include <QDebug>
-#include <QRandomGenerator>
+#include <QCoreApplication>
+#include <QTime>
 #include "TritiumControlWidget.h"
 
 // Implements the Tritium Ethernet to CAN bridge used for their
@@ -36,8 +37,9 @@ CanAdapterTritium::~CanAdapterTritium(){
 
 void CanAdapterTritium::generateClientIdentifier()
 {
+    qsrand(QTime::currentTime().msec());
     for(int i=0; i<7; i++)
-        m_clientIdentifier[i] = QRandomGenerator::global()->bounded(256);
+        m_clientIdentifier[i] = qrand();
 }
 
 struct TritiumHeader
@@ -195,6 +197,7 @@ QWidget * CanAdapterTritium::getControlWidget(QWidget *parent){
 bool CanAdapterTritium::open()
 {
     m_isOpen = true;
+    return true;
 }
 
 void CanAdapterTritium::close()
