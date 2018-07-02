@@ -70,6 +70,8 @@ private:
 
     QString m_name;
 
+    bool m_createdNew = false;
+
     CanHandle * m_canHandle;
 
     ParameterTreeModel * m_model;

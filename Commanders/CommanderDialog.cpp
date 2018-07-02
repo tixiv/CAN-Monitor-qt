@@ -36,6 +36,7 @@ CommanderDialog::CommanderDialog(QWidget *parent, CanHub * canHub, QString name)
     }
     else
     {
+        m_createdNew = true;
         m_name = "New Commander";
         setEditMode(true);
     }
@@ -330,6 +331,9 @@ bool CommanderDialog::saveCommander(bool interactive)
     QFile file(filename);
     if(file.open(QIODevice::WriteOnly))
     {
+        m_name = QFileInfo(file).baseName();
+        setWindowTitle(m_name);
+
         QXmlStreamWriter writer(&file);
         writer.setAutoFormatting(true);
         writer.writeStartDocument();
@@ -359,7 +363,15 @@ void CommanderDialog::on_actionSaveAs_triggered()
 
 void CommanderDialog::on_actionSave_Commander_triggered()
 {
-    saveCommander(false);
+    if(m_createdNew)
+    {
+        if(saveCommander(true))
+            m_createdNew = false;
+    }
+    else
+    {
+        saveCommander(false);
+    }
 }
 
 void CommanderDialog::on_actionSetProperties_triggered()
