@@ -38,6 +38,9 @@ private:
     QHostAddress m_groupAddress;
     int m_port;
     void processMessage(TritiumMessage &message);
+    void generateClientIdentifier();
+
+    char m_clientIdentifier[7] = {0};
 };
 
 #endif // CANADAPTERTRITIUM_H

@@ -3,11 +3,19 @@
 #include "lib-slcan/slcan.h"
 #include "SlcanControlWidget.h"
 #include <QDebug>
+#include <QRandomGenerator>
+
+// Implements the Tritium Ethernet to CAN bridge used for their
+// (Solar Car) racing products, like e.g. the WS22 motor inverter
+// Protocoll:
+// https://tritium.com.au/includes/TRI82.007v4_Ethernet_Interface.pdf
+
 
 CanAdapterTritium::CanAdapterTritium(CanHub &canHub)
     : m_groupAddress(QStringLiteral("239.255.60.60")), m_port(4876)
 {
     m_canHandle = canHub.getNewHandle(CanHub::f_isCanAdapter);
+    generateClientIdentifier();
 
     connect(m_canHandle, SIGNAL(received(can_message_t)), this, SLOT(transmit(can_message_t)));
     open();
@@ -20,7 +28,7 @@ CanAdapterTritium::~CanAdapterTritium(){
 
 bool CanAdapterTritium::open()
 {
-    m_udpSocket.bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress);
+    m_udpSocket.bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
     m_udpSocket.joinMulticastGroup(m_groupAddress);
     connect(&m_udpSocket, SIGNAL(readyRead()), this, SLOT(processDatagrams()));
     return true;
@@ -30,6 +38,11 @@ void CanAdapterTritium::close()
 {
 }
 
+void CanAdapterTritium::generateClientIdentifier()
+{
+    for(int i=0; i<7; i++)
+        m_clientIdentifier[i] = QRandomGenerator::global()->bounded(256);
+}
 
 struct TritiumHeader
 {
@@ -48,9 +61,6 @@ struct TritiumMessage
     uint8_t data[8];
 };
 
-// Protocoll:
-// https://tritium.com.au/includes/TRI82.007v4_Ethernet_Interface.pdf
-
 static bool decodeHeader(TritiumHeader &h, const char * data)
 {
     if(memcmp(&data[1], "Tritiu", 6)) // check magic (first 6 bytes)
@@ -62,6 +72,14 @@ static bool decodeHeader(TritiumHeader &h, const char * data)
     memcpy(h.clientIdentifier, &data[9], 7);
 
     return true;
+}
+
+static void encodeHeader(char * data, const char * clientIdentifier, uint8_t busNumber)
+{
+    memcpy(data, "\x00Tritiu\x60", 8);
+    data[7] |= busNumber & 0x0f;
+    data[8] = 0;
+    memcpy(&data[9], clientIdentifier, 7);
 }
 
 static void decodeMessage(TritiumMessage &m, const char * data)
@@ -76,6 +94,18 @@ static void decodeMessage(TritiumMessage &m, const char * data)
     m.E = data[4] & 0x01 ? 1:0;
     m.dlc = data[5];
     memcpy(m.data, &data[6], 8);
+}
+
+static void encodeCanMessage(char * data, const can_message_t & cmsg)
+{
+    data[0] = cmsg.id >> 24;
+    data[1] = cmsg.id >> 16;
+    data[2] = cmsg.id >>  8;
+    data[3] = cmsg.id >>  0;
+    data[4]  = cmsg.IDE ? 0x01:0x00;
+    data[4] |= cmsg.RTR ? 0x02:0x00;
+    data[5] = cmsg.dlc;
+    memcpy(&data[6], cmsg.data, cmsg.dlc);
 }
 
 void CanAdapterTritium::processMessage(TritiumMessage &message)
@@ -129,7 +159,10 @@ void CanAdapterTritium::processDatagrams()
 
 void CanAdapterTritium::transmit(can_message_t cmsg)
 {
-    (void)cmsg;
+    QByteArray data(30, 0);
+    encodeHeader(data.data(), m_clientIdentifier, 13);
+    encodeCanMessage(data.data()+16, cmsg);
+    m_udpSocket.writeDatagram(data.data(), data.size(), m_groupAddress, m_port);
 }
 
 bool CanAdapterTritium::isOpen()
