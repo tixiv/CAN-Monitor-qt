@@ -3,6 +3,7 @@
 
 #include "CanHub/CanHub.h"
 #include "CanTable/CanTableModel.h"
+#include "util/rangeParse.h"
 
 TraceWindow::TraceWindow(QWidget *parent, CanHub &canHub) :
     QMainWindow(parent),
@@ -20,7 +21,8 @@ TraceWindow::TraceWindow(QWidget *parent, CanHub &canHub) :
 
 void TraceWindow::messageReceived(can_message_t cmsg)
 {
-    m_model->addNode(QModelIndex(), new CanTableNode(&cmsg));
+    if(m_recording && m_ids.contains(cmsg.id))
+        m_model->addNode(QModelIndex(), new CanTableNode(&cmsg));
 }
 
 TraceWindow::~TraceWindow()
@@ -28,4 +30,16 @@ TraceWindow::~TraceWindow()
     delete m_canHandle;
     delete ui;
     delete m_model;
+}
+
+void TraceWindow::on_recordPushButton_clicked(bool checked)
+{
+    if(checked)
+    {
+        m_ids = rangeParse(ui->identifiersEdit->text());
+        if(!m_ids.empty())
+            m_recording = true;
+    }
+    else
+        m_recording = false;
 }

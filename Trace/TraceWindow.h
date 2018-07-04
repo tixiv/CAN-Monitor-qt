@@ -2,6 +2,7 @@
 #define TRACEWINDOW_H
 
 #include <QMainWindow>
+#include <QSet>
 #include "lib-slcan/can_message.h"
 
 
@@ -23,10 +24,16 @@ public:
 
 private slots:
     void messageReceived(can_message_t cmsg);
+    void on_recordPushButton_clicked(bool checked);
+
 private:
     Ui::TraceWindow *ui;
     CanHandle * m_canHandle = 0;
     CanTableModel * m_model = 0;
+
+    bool m_recording;
+
+    QSet<int> m_ids;
 };
 
 #endif // TRACEWINDOW_H

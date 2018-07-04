@@ -3,6 +3,7 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QRegularExpression>
+#include "util/rangeParse.h"
 
 ButtonEditDialog::ButtonEditDialog(QWidget *parent) :
     QDialog(parent),
@@ -103,36 +104,11 @@ void CommanderButtonData::readFromXml(QXmlStreamReader &reader)
 
 QByteArray CommanderButtonData::getSaveCommands()
 {
-    auto strs = saveRange.split(',');
     QByteArray ba;
-
-    bool invalid=false;
-    foreach (auto str, strs) {
-        QRegularExpression re("([0-9a-fA-F]+)[-|:]?([0-9a-fA-F]*)");
-        QRegularExpressionMatch match = re.match(str);
-        if(match.hasMatch())
-        {
-            int begin = match.captured(1).toInt(0,16);
-            int end = begin;
-            if(match.captured(2) != "")
-                end = match.captured(2).toInt(0,16);
-            if(end < begin)
-                invalid = true;
-            else
-            {
-                for(int i=begin; i<=end; i+=2)
-                {
-                    ba.append((char)i);
-                }
-            }
-        }
-        else
-            invalid = true;
+    auto range = rangeParse(saveRange);
+    foreach (int x, range) {
+        ba.append((char)x);
     }
 
-    if(!invalid)
-        return ba;
-    else
-        return QByteArray();
-
+    return ba;
 }

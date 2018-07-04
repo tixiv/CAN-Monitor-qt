@@ -53,7 +53,8 @@ SOURCES += main.cpp\
     Trace/TraceWindow.cpp \
     CanTable/CanTableModel.cpp \
     CanTable/CanTableNode.cpp \
-    util/canMessageUtil.cpp
+    util/canMessageUtil.cpp \
+    util/rangeParse.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -96,7 +97,8 @@ HEADERS  += MainWindow.h \
     Trace/TraceWindow.h \
     CanTable/CanTableModel.h \
     CanTable/CanTableNode.h \
-    util/canMessageUtil.h
+    util/canMessageUtil.h \
+    util/rangeParse.h
 
 
 
