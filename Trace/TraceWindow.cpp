@@ -34,14 +34,11 @@ TraceWindow::~TraceWindow()
 
 void TraceWindow::on_recordPushButton_clicked(bool checked)
 {
+    m_recording = false;
     if(checked)
-    {
         m_ids = rangeParse(ui->identifiersEdit->text());
-        if(!m_ids.empty())
-            m_recording = true;
-    }
-    else
-        m_recording = false;
+
+    m_recording = checked;
 }
 
 void TraceWindow::on_clearButton_clicked()
