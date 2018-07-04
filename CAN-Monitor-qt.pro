@@ -49,7 +49,10 @@ SOURCES += main.cpp\
     CanAdapter/CanAdapterTritium.cpp \
     Tree/ComboBoxDelegate.cpp \
     Format/format.cpp \
-    CanAdapter/TritiumControlWidget.cpp
+    CanAdapter/TritiumControlWidget.cpp \
+    Trace/TraceWindow.cpp \
+    CanTable/CanTableModel.cpp \
+    CanTable/CanTableNode.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -88,7 +91,10 @@ HEADERS  += MainWindow.h \
     CanAdapter/CanAdapterTritium.h \
     Tree/ComboBoxDelegate.h \
     Format/format.h \
-    CanAdapter/TritiumControlWidget.h
+    CanAdapter/TritiumControlWidget.h \
+    Trace/TraceWindow.h \
+    CanTable/CanTableModel.h \
+    CanTable/CanTableNode.h
 
 
 
@@ -99,6 +105,7 @@ FORMS    += MainWindow.ui \
     Commanders/CommanderDialog.ui \
     Commanders/ButtonEditDialog.ui \
     Commanders/CommanderPropertiesDialog.ui \
-    CanAdapter/TritiumControlWidget.ui
+    CanAdapter/TritiumControlWidget.ui \
+    Trace/TraceWindow.ui
 
 RC_ICONS = canMonitorIcon.ico

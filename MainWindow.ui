@@ -165,8 +165,15 @@
     <addaction name="actionSetCommanderDirectory"/>
     <addaction name="actionNewCommander"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionTrace"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
+   <addaction name="menuTools"/>
    <addaction name="menuCommander"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -302,6 +309,11 @@
   <action name="actionNewCommander">
    <property name="text">
     <string>New Commander</string>
+   </property>
+  </action>
+  <action name="actionTrace">
+   <property name="text">
+    <string>Trace</string>
    </property>
   </action>
  </widget>

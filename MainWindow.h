@@ -95,6 +95,7 @@ private slots:
 
     void actionCommanderTriggered();
     void commanderWindowClosed(QObject *foo);
+    void on_actionTrace_triggered();
 };
 
 #endif // MAINWINDOW_H

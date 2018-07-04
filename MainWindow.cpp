@@ -14,6 +14,7 @@
 #include "Commanders/CommanderDialog.h"
 #include <QDirIterator>
 #include <QDebug>
+#include "Trace/TraceWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -359,4 +360,10 @@ void MainWindow::on_actionSetCommanderDirectory_triggered()
 void MainWindow::on_actionNewCommander_triggered()
 {
     openCommander("");
+}
+
+void MainWindow::on_actionTrace_triggered()
+{
+    auto w = new TraceWindow(this, m_canHub);
+    w->show();
 }
