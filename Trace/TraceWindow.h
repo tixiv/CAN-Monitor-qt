@@ -33,7 +33,7 @@ private:
     CanHandle * m_canHandle = 0;
     CanTableModel * m_model = 0;
 
-    bool m_recording;
+    bool m_recording = false;
 
     QSet<int> m_ids;
 };
