@@ -4,7 +4,10 @@ CanTableModel::CanTableModel()
     : TreeModel(new CanTableNode())
 {
     m_columnFunctions = {
-        ColumnRole(ctf_name,        "Name"),
+        ColumnRole(ctf_timestamp,        "Timestamp"),
+        ColumnRole(ctf_id,               "ID (Hex)"),
+        ColumnRole(ctf_dlc,              "DLC"),
+        ColumnRole(ctf_data,             "Data"),
     };
     m_columnCount = m_columnFunctions.count();
 }
@@ -40,11 +43,5 @@ Qt::ItemFlags CanTableModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return Qt::NoItemFlags;
 
-    Qt::ItemFlags flags = 0;
-    switch(m_columnFunctions.at(index.column()).cf){
-    case ctf_name:
-        break;
-    }
-
-    return flags | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }

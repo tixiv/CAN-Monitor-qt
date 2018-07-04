@@ -2,6 +2,7 @@
 #include "Format/format.h"
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
+#include "util/canMessageUtil.h"
 
 MessageTreeNode::MessageTreeNode()
     :CanTreeNode(), IDE(false), RTR(false), id(0)
@@ -16,23 +17,11 @@ MessageTreeNode::MessageTreeNode(const QString &name, int id, bool IDE, bool RTR
 MessageTreeNode::MessageTreeNode(const can_message_t * cmsg)
     :IDE(cmsg->IDE), RTR(cmsg->RTR), id(cmsg->id)
 {
-    initIdString();
+    m_idString = generateIdString(cmsg);
 
     m_name = "ID " + m_idString;
 
     update(cmsg);
-}
-
-void MessageTreeNode::initIdString()
-{
-    if(IDE) m_idString += "E";
-    if(RTR) m_idString += "R";
-    if(IDE || RTR) m_idString += " ";
-
-    if(IDE)
-        m_idString += QString().sprintf("%08X", id);
-    else
-        m_idString += QString().sprintf("%03X", id);
 }
 
 void MessageTreeNode::updateDataDecoded()
@@ -53,11 +42,8 @@ void MessageTreeNode::update(const can_message_t * cmsg)
     memcpy(data, cmsg->data, 8);
 
     m_dlcString = QString::number(dlc);
-    m_dataString = "";
 
-    if(!RTR) for(int i=0; i<dlc; i++){
-        m_dataString += QString().sprintf("%02X ", data[i]);
-    }
+    m_dataString = generateDataString(cmsg);
 
     m_count++;
     m_countString = QString::number(m_count);
@@ -131,5 +117,5 @@ void MessageTreeNode::readDataFromXml(QXmlStreamReader &reader)
     IDE = reader.attributes().value("IDE").toString() == "true";
     RTR = reader.attributes().value("RTR").toString() == "true";
     m_formatString = reader.attributes().value("format").toString();
-    initIdString();
+    m_idString = generateIdString(id, IDE, RTR);
 }

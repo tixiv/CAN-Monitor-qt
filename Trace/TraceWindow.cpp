@@ -11,21 +11,21 @@ TraceWindow::TraceWindow(QWidget *parent, CanHub &canHub) :
     ui->setupUi(this);
 
     m_model = new CanTableModel();
-    m_model->addNode(QModelIndex(), new CanTableNode());
-    m_model->addNode(QModelIndex(), new CanTableNode());
-    m_model->addNode(QModelIndex(), new CanTableNode());
-    m_model->addNode(QModelIndex(), new CanTableNode());
-    m_model->addNode(QModelIndex(), new CanTableNode());
     ui->tableView->setModel(m_model);
 
-    canHandle = canHub.getNewHandle();
+    m_canHandle = canHub.getNewHandle();
+    connect(m_canHandle, SIGNAL(received(can_message_t)), this, SLOT(messageReceived(can_message_t)));
 
+}
 
+void TraceWindow::messageReceived(can_message_t cmsg)
+{
+    m_model->addNode(QModelIndex(), new CanTableNode(&cmsg));
 }
 
 TraceWindow::~TraceWindow()
 {
-    delete canHandle;
+    delete m_canHandle;
     delete ui;
     delete m_model;
 }

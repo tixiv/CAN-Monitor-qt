@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     CanAdapter/TritiumControlWidget.cpp \
     Trace/TraceWindow.cpp \
     CanTable/CanTableModel.cpp \
-    CanTable/CanTableNode.cpp
+    CanTable/CanTableNode.cpp \
+    util/canMessageUtil.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -94,7 +95,8 @@ HEADERS  += MainWindow.h \
     CanAdapter/TritiumControlWidget.h \
     Trace/TraceWindow.h \
     CanTable/CanTableModel.h \
-    CanTable/CanTableNode.h
+    CanTable/CanTableNode.h \
+    util/canMessageUtil.h
 
 
 

@@ -2,6 +2,7 @@
 #define TRACEWINDOW_H
 
 #include <QMainWindow>
+#include "lib-slcan/can_message.h"
 
 
 class CanHub;
@@ -20,9 +21,11 @@ public:
     explicit TraceWindow(QWidget *parent, CanHub &canHub);
     ~TraceWindow();
 
+private slots:
+    void messageReceived(can_message_t cmsg);
 private:
     Ui::TraceWindow *ui;
-    CanHandle * canHandle = 0;
+    CanHandle * m_canHandle = 0;
     CanTableModel * m_model = 0;
 };
 
