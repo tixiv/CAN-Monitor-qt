@@ -96,13 +96,20 @@ bool CanAdapterLawicel::receive(can_message_t * cmsg)
 
     m_buffer.append(m_port.readAll());
 
-    int r = m_buffer.indexOf('\r');
-    if(r < 0)
-        return false;
 
-    // remove that part and get it to line
-    QString line = m_buffer.left(r);
-    m_buffer.remove(0, r+1);
+    QString line;
+    QChar cmd;
+    do{
+        // read a line from buffer
+        int r = m_buffer.indexOf('\r');
+        if(r < 0)
+            return false;
+
+        // remove that part and get it to line
+        line = m_buffer.left(r);
+        m_buffer.remove(0, r+1);
+        cmd = line.at(0);
+    }while(cmd != 't' && cmd != 'T' && cmd != 'r' && cmd != 'R');
 
     return slcan_can_message_from_string(cmsg, line.toStdString().c_str());
 }
