@@ -172,6 +172,15 @@ void TreeModel::deleteBranches(const QModelIndexList indexes)
     }
 }
 
+void TreeModel::deleteAll()
+{
+    int n;
+    while((n = rootNode()->childCount()))
+    {
+        deleteBranche(rootNode()->child(n-1));
+    }
+}
+
 void TreeModel::addNode(const QModelIndex parent, TreeNode *node)
 {
     TreeNode * parentNode = nodeForIndex(parent);

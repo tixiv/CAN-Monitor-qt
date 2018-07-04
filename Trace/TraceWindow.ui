@@ -28,6 +28,13 @@
        <widget class="QLineEdit" name="identifiersEdit"/>
       </item>
       <item>
+       <widget class="QPushButton" name="clearButton">
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="recordPushButton">
         <property name="text">
          <string>Record</string>

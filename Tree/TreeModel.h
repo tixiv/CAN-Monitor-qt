@@ -41,6 +41,7 @@ public:
     TreeNode * rootNode() const;
 
     bool isUserModified = false;
+    void deleteAll();
 protected:
     void insertBranche(TreeNode *parentNode, int row, TreeNode *node);
     void removeBranche(TreeNode *node);

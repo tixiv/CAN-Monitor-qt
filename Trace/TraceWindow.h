@@ -26,6 +26,8 @@ private slots:
     void messageReceived(can_message_t cmsg);
     void on_recordPushButton_clicked(bool checked);
 
+    void on_clearButton_clicked();
+
 private:
     Ui::TraceWindow *ui;
     CanHandle * m_canHandle = 0;

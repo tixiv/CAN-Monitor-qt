@@ -21,7 +21,7 @@ TraceWindow::TraceWindow(QWidget *parent, CanHub &canHub) :
 
 void TraceWindow::messageReceived(can_message_t cmsg)
 {
-    if(m_recording && m_ids.contains(cmsg.id))
+    if(m_recording && (m_ids.empty() || m_ids.contains(cmsg.id)))
         m_model->addNode(QModelIndex(), new CanTableNode(&cmsg));
 }
 
@@ -42,4 +42,9 @@ void TraceWindow::on_recordPushButton_clicked(bool checked)
     }
     else
         m_recording = false;
+}
+
+void TraceWindow::on_clearButton_clicked()
+{
+    m_model->deleteAll();
 }
