@@ -28,6 +28,8 @@ private slots:
 
     void on_clearButton_clicked();
 
+    void on_actionSave_Log_triggered();
+
 private:
     Ui::TraceWindow *ui;
     CanHandle * m_canHandle = 0;

@@ -4,6 +4,8 @@
 #include "Tree/XmlTreeNode.h"
 #include "lib-slcan/can_message.h"
 
+class QTextStream;
+
 enum CanTableColumnFunction
 {
     ctf_timestamp,
@@ -21,7 +23,9 @@ public:
     virtual void writeDataToXml(QXmlStreamWriter &writer) const;
     virtual void readDataFromXml(QXmlStreamReader &reader);
     bool acceptsChildren() const override;
+    void writeToStream(QTextStream &out);
 private:
+    QVariant m_timeStampString;
     QVariant m_idString;
     QVariant m_dlcString;
     QVariant m_dataString;

@@ -60,8 +60,20 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave_Log"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSave_Log">
+   <property name="text">
+    <string>Save Log</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
