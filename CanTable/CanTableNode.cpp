@@ -16,6 +16,7 @@ CanTableNode::CanTableNode(can_message_t * cmsg)
 
 QVariant CanTableNode::getData(CanTableColumnFunction cf, int role) const
 {
+    (void) role;
     switch(cf)
     {
     case ctf_timestamp: return m_timeStampString;
@@ -33,12 +34,12 @@ bool CanTableNode::acceptsChildren() const
 
 void CanTableNode::writeDataToXml(QXmlStreamWriter &writer) const
 {
-
+    (void) writer;
 }
 
 void CanTableNode::readDataFromXml(QXmlStreamReader &reader)
 {
-
+    (void) reader;
 }
 
 void CanTableNode::writeToStream(QTextStream &out)

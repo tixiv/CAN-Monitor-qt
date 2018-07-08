@@ -25,7 +25,11 @@ TraceWindow::TraceWindow(QWidget *parent, CanHub &canHub) :
 void TraceWindow::messageReceived(can_message_t cmsg)
 {
     if(m_recording && (m_ids.empty() || m_ids.contains(cmsg.id)))
+    {
         m_model->addNode(QModelIndex(), new CanTableNode(&cmsg));
+        if(ui->scrollToEndcheckBox->isChecked())
+            ui->tableView->scrollToBottom();
+    }
 }
 
 TraceWindow::~TraceWindow()
