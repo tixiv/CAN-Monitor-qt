@@ -3,7 +3,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QProcess>
-#include <QThread>
+#include <QMessageBox>
 
 Cansole::Cansole(QObject * parent, CanHub &canHub, int cansoleId)
     : QObject(parent), m_cansoleId(cansoleId)
@@ -18,9 +18,18 @@ Cansole::Cansole(QObject * parent, CanHub &canHub, int cansoleId)
 
     // Start Putty telnet
     m_puttyProcess = new QProcess(this);
-    QString cmd = QString("putty.exe -telnet -P %1 localhost").arg(m_tcpServer->serverPort());
+    QString cmd = QString("putty -telnet -P %1 localhost").arg(m_tcpServer->serverPort());
     connect(m_puttyProcess, SIGNAL(finished(int)), this, SLOT(deleteLater()));
     m_puttyProcess->start(cmd);
+    m_puttyProcess->waitForStarted();
+
+    if(m_puttyProcess->state() != QProcess::Running)
+    {
+        QMessageBox::warning(0, tr("CAN Monitor"),
+                             tr("Putty could not be started"),
+                             QMessageBox::Ok);
+        deleteLater();
+    }
 }
 
 Cansole::~Cansole()
