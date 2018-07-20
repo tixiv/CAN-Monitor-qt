@@ -54,7 +54,8 @@ SOURCES += main.cpp\
     CanTable/CanTableModel.cpp \
     CanTable/CanTableNode.cpp \
     util/canMessageUtil.cpp \
-    util/rangeParse.cpp
+    util/rangeParse.cpp \
+    Simulator/TritiumSimulatorWindow.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -98,7 +99,8 @@ HEADERS  += MainWindow.h \
     CanTable/CanTableModel.h \
     CanTable/CanTableNode.h \
     util/canMessageUtil.h \
-    util/rangeParse.h
+    util/rangeParse.h \
+    Simulator/TritiumSimulatorWindow.h
 
 
 
@@ -110,6 +112,7 @@ FORMS    += MainWindow.ui \
     Commanders/ButtonEditDialog.ui \
     Commanders/CommanderPropertiesDialog.ui \
     CanAdapter/TritiumControlWidget.ui \
-    Trace/TraceWindow.ui
+    Trace/TraceWindow.ui \
+    Simulator/TritiumSimulatorWindow.ui
 
 RC_ICONS = canMonitorIcon.ico

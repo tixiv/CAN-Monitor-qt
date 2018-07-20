@@ -170,6 +170,7 @@
      <string>Tools</string>
     </property>
     <addaction name="actionTrace"/>
+    <addaction name="actionTritium_Simulator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -314,6 +315,11 @@
   <action name="actionTrace">
    <property name="text">
     <string>Trace</string>
+   </property>
+  </action>
+  <action name="actionTritium_Simulator">
+   <property name="text">
+    <string>Tritium Simulator</string>
    </property>
   </action>
  </widget>

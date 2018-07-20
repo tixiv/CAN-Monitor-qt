@@ -15,6 +15,7 @@
 #include <QDirIterator>
 #include <QDebug>
 #include "Trace/TraceWindow.h"
+#include "Simulator/TritiumSimulatorWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -365,5 +366,11 @@ void MainWindow::on_actionNewCommander_triggered()
 void MainWindow::on_actionTrace_triggered()
 {
     auto w = new TraceWindow(this, m_canHub);
+    w->show();
+}
+
+void MainWindow::on_actionTritium_Simulator_triggered()
+{
+    auto w = new TritiumSimulatorWindow(this, m_canHub);
     w->show();
 }
