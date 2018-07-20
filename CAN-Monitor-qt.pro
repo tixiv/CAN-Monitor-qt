@@ -25,6 +25,7 @@ SOURCES += main.cpp\
     CanAdapter/CanAdapter.cpp \
     CanAdapter/CanAdapterLawicel.cpp \
     CanAdapter/SlcanControlWidget.cpp \
+    CanAdapter/ChinaControlWidget.cpp \
     CanAdapter/SerialPortComboBox.cpp \
     WidgetUtils/HexStringValidator.cpp \
     WidgetUtils/CustomLineEdit.cpp \
@@ -55,7 +56,8 @@ SOURCES += main.cpp\
     CanTable/CanTableNode.cpp \
     util/canMessageUtil.cpp \
     util/rangeParse.cpp \
-    Simulator/TritiumSimulatorWindow.cpp
+    Simulator/TritiumSimulatorWindow.cpp \
+    CanAdapter/CanAdapterChina.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -66,6 +68,7 @@ HEADERS  += MainWindow.h \
     CanAdapter/CanAdapter.h \
     CanAdapter/CanAdapterLawicel.h \
     CanAdapter/SlcanControlWidget.h \
+    CanAdapter/ChinaControlWidget.h \
     CanAdapter/SerialPortComboBox.h \
     WidgetUtils/HexStringValidator.h \
     WidgetUtils/CustomLineEdit.h \
@@ -100,12 +103,14 @@ HEADERS  += MainWindow.h \
     CanTable/CanTableNode.h \
     util/canMessageUtil.h \
     util/rangeParse.h \
-    Simulator/TritiumSimulatorWindow.h
+    Simulator/TritiumSimulatorWindow.h \
+    CanAdapter/CanAdapterChina.h
 
 
 
 FORMS    += MainWindow.ui \
     CanAdapter/SlcanControlWidget.ui \
+    CanAdapter/ChinaControlWidget.ui \
     TransmitWidget.ui \
     CanAdapter/TestingControlWidget.ui \
     Commanders/CommanderDialog.ui \
