@@ -4,6 +4,7 @@
 #include <QTcpSocket>
 #include <QProcess>
 #include <QMessageBox>
+#include <QThread>
 
 Cansole::Cansole(QObject * parent, CanHub &canHub, int cansoleId)
     : QObject(parent), m_cansoleId(cansoleId)
@@ -58,11 +59,12 @@ void Cansole::socketReadyRead()
 {
     QByteArray ba = m_tcpSocket->readAll();
 
+    // qDebug() << ba;
+
     // remove telnet control sequences
     while(ba[0] == 0xff)
         ba = ba.mid(3);
 
-    qDebug() << ba;
 
     while(ba.length() > 0)
     {
@@ -87,22 +89,20 @@ void Cansole::clientConected()
 {
     m_tcpSocket = m_tcpServer->nextPendingConnection();
     connect(m_tcpSocket, &QAbstractSocket::disconnected, this, &QObject::deleteLater);
+    connect(m_tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
 
-    QByteArray block;
-    QTextStream out(&block, QIODevice::WriteOnly);
+    QByteArray data;
 
     // Set terminal mode
-    out << "\xFF\xFB\x01"; // Telnet IAC WILL ECHO
-    out << "\xFF\xFB\x03"; // Telnet IAC WILL SUPPRESS_GO_AHEAD
-    out << "\xFF\xFC\x22"; // Telnet IAC WONT LINEMODE
+    data.append("\xFF\xFB\x01"); // Telnet IAC WILL ECHO
+    data.append("\xFF\xFB\x03"); // Telnet IAC WILL SUPPRESS_GO_AHEAD
+    data.append("\xFF\xFC\x22"); // Telnet IAC WONT LINEMODE
 
     // Set window title
-    out << "\033]0;" << QString().sprintf("Cansole %X" , m_cansoleId) << "\007";
+    data.append(QString().sprintf("\033]0;" "Cansole %X" "\007", m_cansoleId));
 
-    out.flush();
-    m_tcpSocket->write(block);
+    m_tcpSocket->write(data);
 
-    connect(m_tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
 
     m_isConnected = true;
 }
