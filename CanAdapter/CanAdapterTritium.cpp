@@ -82,16 +82,17 @@ static void encodeHeader(char * data, const char * clientIdentifier, uint8_t bus
 
 static void decodeMessage(TritiumMessage &m, const char * data)
 {
-    m.id  = data[0] << 24;
-    m.id |= data[1] << 16;
-    m.id |= data[2] <<  8;
-    m.id |= data[3] <<  0;
-    m.H = data[4] & 0x80 ? 1:0;
-    m.S = data[4] & 0x40 ? 1:0;
-    m.R = data[4] & 0x02 ? 1:0;
-    m.E = data[4] & 0x01 ? 1:0;
-    m.dlc = data[5];
-    memcpy(m.data, &data[6], 8);
+    const uint8_t * d = reinterpret_cast<const uint8_t *>(data);
+    m.id  = d[0] << 24;
+    m.id |= d[1] << 16;
+    m.id |= d[2] <<  8;
+    m.id |= d[3] <<  0;
+    m.H = d[4] & 0x80 ? 1:0;
+    m.S = d[4] & 0x40 ? 1:0;
+    m.R = d[4] & 0x02 ? 1:0;
+    m.E = d[4] & 0x01 ? 1:0;
+    m.dlc = d[5];
+    memcpy(m.data, &d[6], 8);
 }
 
 static void encodeCanMessage(char * data, const can_message_t & cmsg)
