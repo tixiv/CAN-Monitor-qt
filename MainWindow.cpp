@@ -16,7 +16,7 @@
 #include <QDebug>
 #include "Trace/TraceWindow.h"
 #include "Simulator/TritiumSimulatorWindow.h"
-#include "Cansole.h"
+#include "Cansole/Cansole.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -378,5 +378,5 @@ void MainWindow::on_actionTritium_Simulator_triggered()
 
 void MainWindow::on_actionOpen_Cansole_triggered()
 {
-    new Cansole(m_canHub, 0x780);
+    new Cansole(this, m_canHub, 0x780);
 }
