@@ -97,6 +97,7 @@ private slots:
     void commanderWindowClosed(QObject *foo);
     void on_actionTrace_triggered();
     void on_actionTritium_Simulator_triggered();
+    void on_actionOpen_Cansole_triggered();
 };
 
 #endif // MAINWINDOW_H

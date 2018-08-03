@@ -172,10 +172,17 @@
     <addaction name="actionTrace"/>
     <addaction name="actionTritium_Simulator"/>
    </widget>
+   <widget class="QMenu" name="menuCansole">
+    <property name="title">
+     <string>Cansole</string>
+    </property>
+    <addaction name="actionOpen_Cansole"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuTools"/>
    <addaction name="menuCommander"/>
+   <addaction name="menuCansole"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -320,6 +327,11 @@
   <action name="actionTritium_Simulator">
    <property name="text">
     <string>Tritium Simulator</string>
+   </property>
+  </action>
+  <action name="actionOpen_Cansole">
+   <property name="text">
+    <string>Open Cansole ...</string>
    </property>
   </action>
  </widget>

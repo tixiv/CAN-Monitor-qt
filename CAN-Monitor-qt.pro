@@ -57,7 +57,8 @@ SOURCES += main.cpp\
     util/canMessageUtil.cpp \
     util/rangeParse.cpp \
     Simulator/TritiumSimulatorWindow.cpp \
-    CanAdapter/CanAdapterChina.cpp
+    CanAdapter/CanAdapterChina.cpp \
+    Cansole/Cansole.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -104,7 +105,8 @@ HEADERS  += MainWindow.h \
     util/canMessageUtil.h \
     util/rangeParse.h \
     Simulator/TritiumSimulatorWindow.h \
-    CanAdapter/CanAdapterChina.h
+    CanAdapter/CanAdapterChina.h \
+    Cansole/Cansole.h
 
 
 
