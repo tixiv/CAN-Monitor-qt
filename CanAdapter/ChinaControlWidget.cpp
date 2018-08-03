@@ -6,12 +6,15 @@
 const QString ChinaControlWidget::m_settingsName = "CanAdapterChina";
 
 void ChinaControlWidget::populateCanBaudComboBox(QComboBox * cb){
+    cb->addItem("5");
     cb->addItem("10");
     cb->addItem("20");
     cb->addItem("50");
     cb->addItem("100");
     cb->addItem("125");
+    cb->addItem("200");
     cb->addItem("250");
+    cb->addItem("400");
     cb->addItem("500");
     cb->addItem("800");
     cb->addItem("1000");
