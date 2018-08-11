@@ -49,6 +49,12 @@ void SlcanControlWidget::openOperationEnded(bool success){
         m_open = true;
         ui->openButton->setText("Close");
     }
+    else
+    {
+        ui->comPortComboBox->setEnabled(true);
+        ui->canBaudComboBox->setEnabled(true);
+        ui->modeComboBox->setEnabled(true);
+    }
 }
 
 void SlcanControlWidget::on_openButton_clicked()
@@ -57,6 +63,9 @@ void SlcanControlWidget::on_openButton_clicked()
         m_open = false;
         ui->openButton->setText("Open");
         emit closeClicked();
+        ui->comPortComboBox->setEnabled(true);
+        ui->canBaudComboBox->setEnabled(true);
+        ui->modeComboBox->setEnabled(true);
     } else {
         QString comportName = ui->comPortComboBox->currentText();
         QString canKBaud = ui->canBaudComboBox->currentText();
@@ -69,5 +78,8 @@ void SlcanControlWidget::on_openButton_clicked()
         ui->openButton->setEnabled(false);
         CanAdapterLawicel::OpenMode om = (CanAdapterLawicel::OpenMode) mode;
         emit openClicked(comportName, om, canKBaud.toInt() * 1000);
+        ui->comPortComboBox->setEnabled(false);
+        ui->canBaudComboBox->setEnabled(false);
+        ui->modeComboBox->setEnabled(false);
     }
 }
