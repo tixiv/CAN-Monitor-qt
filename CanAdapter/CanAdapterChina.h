@@ -23,9 +23,10 @@ public:
     QWidget * getControlWidget(QWidget *parent = 0) override;
 
     enum OpenMode{
-        om_normal,
-        om_listeOnly,
-        om_loopback,
+        om_normal = 0,
+        om_loopback = 1,
+        om_listeOnly = 2,
+        om_listeOnlyLoopback = 3,
     };
 
 signals:
@@ -61,7 +62,7 @@ private:
         osOpen
     }m_openState;
 
-    QString m_buffer;
+    QByteArray m_buffer;
 };
 
 #endif // CANADAPTERCHINA_H
