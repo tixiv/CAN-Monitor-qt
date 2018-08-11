@@ -25,7 +25,7 @@ private:
     Ui::TritiumSimulatorWindow *ui;
     CanHandle * m_canHandle;
 
-    int m_baseId = 0x400;
+    uint32_t m_baseId = 0x400;
     QTimer m_tickTimer;
 };
 

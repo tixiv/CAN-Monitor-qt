@@ -25,7 +25,7 @@ private slots:
 private:
     CanHandle * m_canHandle = 0;
 
-    int m_cansoleId;
+    uint32_t m_cansoleId;
 
     QProcess * m_puttyProcess = 0;
     QTcpServer * m_tcpServer = 0;

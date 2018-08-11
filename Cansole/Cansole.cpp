@@ -62,7 +62,7 @@ void Cansole::socketReadyRead()
     // qDebug() << ba;
 
     // remove telnet control sequences
-    while(ba[0] == 0xff)
+    while((uint8_t)ba[0] == 0xff)
         ba = ba.mid(3);
 
 
