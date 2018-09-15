@@ -17,6 +17,7 @@
 #include "Trace/TraceWindow.h"
 #include "Simulator/TritiumSimulatorWindow.h"
 #include "Cansole/Cansole.h"
+#include "Cansole/cansoleIdDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -378,5 +379,13 @@ void MainWindow::on_actionTritium_Simulator_triggered()
 
 void MainWindow::on_actionOpen_Cansole_triggered()
 {
-    new Cansole(this, m_canHub, 0x780);
+    auto dialog = new CansoleIdDialog();
+    bool ok;
+    dialog->cansoleId = QSettings().value("cansole/lastId").toString().toInt(&ok, 16);
+    if(!ok) dialog->cansoleId = 0x780;
+    int res = dialog->exec();
+    if(res == QDialog::Accepted){
+        QSettings().setValue("cansole/lastId", QString().number(dialog->cansoleId, 16));
+        new Cansole(this, m_canHub, dialog->cansoleId);
+    }
 }

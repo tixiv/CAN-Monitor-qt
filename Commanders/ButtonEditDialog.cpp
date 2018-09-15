@@ -4,6 +4,7 @@
 #include <QXmlStreamWriter>
 #include <QRegularExpression>
 #include "util/rangeParse.h"
+#include "util/DialogUtil.h"
 
 ButtonEditDialog::ButtonEditDialog(QWidget *parent) :
     QDialog(parent),
@@ -34,27 +35,14 @@ void ButtonEditDialog::on_isSaveButtonCheckBox_toggled(bool checked)
     ui->saveCommandRangeLabel->setEnabled(checked);
 }
 
-template <typename T> static bool checkIntLineEdit(QLineEdit * le, T * result, int radix = 10)
-{
-    bool ok;
-    int r = le->text().toInt(&ok,radix);
-    if(!ok){
-        le->setFocus();
-        le->selectAll();
-    } else {
-        *result = r;
-    }
-    return ok;
-}
-
 void ButtonEditDialog::done(int r)
 {
     if(QDialog::Accepted == r)  // ok was pressed
     {
         dialogData.text = ui->textEdit->text();
-        if(!checkIntLineEdit(ui->CommandEdit, &dialogData.command, 16)) return;
-        if(!checkIntLineEdit(ui->SubCommandEdit, &dialogData.subCommand, 16)) return;
-        if(!checkIntLineEdit(ui->ValueEdit, &dialogData.value, 10)) return;
+        if(!DialogUtil::checkIntLineEdit(ui->CommandEdit, &dialogData.command, 16)) return;
+        if(!DialogUtil::checkIntLineEdit(ui->SubCommandEdit, &dialogData.subCommand, 16)) return;
+        if(!DialogUtil::checkIntLineEdit(ui->ValueEdit, &dialogData.value, 10)) return;
         dialogData.isSaveButton = ui->isSaveButtonCheckBox->isChecked();
         dialogData.asksAreYouSure = ui->areYouSureCheckbox->isChecked();
         dialogData.saveRange = ui->saveCommandRangeEdit->text();

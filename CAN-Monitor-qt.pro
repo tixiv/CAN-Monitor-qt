@@ -58,7 +58,9 @@ SOURCES += main.cpp\
     util/rangeParse.cpp \
     Simulator/TritiumSimulatorWindow.cpp \
     CanAdapter/CanAdapterChina.cpp \
-    Cansole/Cansole.cpp
+    Cansole/Cansole.cpp \
+    Cansole/CansoleIdDialog.cpp \
+    util/DialogUtil.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -106,7 +108,9 @@ HEADERS  += MainWindow.h \
     util/rangeParse.h \
     Simulator/TritiumSimulatorWindow.h \
     CanAdapter/CanAdapterChina.h \
-    Cansole/Cansole.h
+    Cansole/Cansole.h \
+    Cansole/CansoleIdDialog.h \
+    util/DialogUtil.h
 
 
 
@@ -120,6 +124,7 @@ FORMS    += MainWindow.ui \
     Commanders/CommanderPropertiesDialog.ui \
     CanAdapter/TritiumControlWidget.ui \
     Trace/TraceWindow.ui \
-    Simulator/TritiumSimulatorWindow.ui
+    Simulator/TritiumSimulatorWindow.ui \
+    Cansole/CansoleIdDialog.ui
 
 RC_ICONS = canMonitorIcon.ico
