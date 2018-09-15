@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QTime>
+#include <QNetworkInterface>
 #include "TritiumControlWidget.h"
 
 // Implements the Tritium Ethernet to CAN bridge used for their
@@ -25,9 +26,22 @@ CanAdapterTritium::CanAdapterTritium(CanHub &canHub)
 
     connect(m_canHandle, SIGNAL(received(can_message_t)), this, SLOT(transmit(can_message_t)));
 
-    m_udpSocket.bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
-    m_udpSocket.joinMulticastGroup(m_groupAddress);
     connect(&m_udpSocket, SIGNAL(readyRead()), this, SLOT(processDatagrams()));
+
+    if(!m_udpSocket.bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint))
+    {
+        qDebug()<<"failed to bind";
+        return;
+    }
+
+    if(!m_udpSocket.joinMulticastGroup(m_groupAddress))
+    {
+        qDebug()<<"failed to join multicast group";
+    }
+
+    // workaround to make socket really receive on static build
+    QByteArray data(0, (char)0);
+    m_udpSocket.writeDatagram(data.data(), data.size(), m_groupAddress, m_port);
 }
 
 CanAdapterTritium::~CanAdapterTritium(){
