@@ -60,7 +60,8 @@ SOURCES += main.cpp\
     CanAdapter/CanAdapterChina.cpp \
     Cansole/Cansole.cpp \
     Cansole/CansoleIdDialog.cpp \
-    util/DialogUtil.cpp
+    util/DialogUtil.cpp \
+    CanAdapter/CanAdapterPCAN.cpp
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -110,7 +111,8 @@ HEADERS  += MainWindow.h \
     CanAdapter/CanAdapterChina.h \
     Cansole/Cansole.h \
     Cansole/CansoleIdDialog.h \
-    util/DialogUtil.h
+    util/DialogUtil.h \
+    CanAdapter/CanAdapterPCAN.h
 
 
 
