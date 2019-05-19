@@ -100,8 +100,6 @@ CanAdapterPCAN::~CanAdapterPCAN(){
 
 void CanAdapterPCAN::tickTimerTimeout()
 {
-    can_message_t cmsg;
-
     TPCANStatus status = PCAN_ERROR_OK;
 
     while(status == PCAN_ERROR_OK){
@@ -171,6 +169,7 @@ bool CanAdapterPCAN::isOpen()
 }
 
 QWidget * CanAdapterPCAN::getControlWidget(QWidget *parent){
+    (void) parent;
     //auto controlWidget = new SlcanControlWidget(parent);
     //connect(controlWidget, SIGNAL(openClicked(QString, CanAdapterLawicel::OpenMode, int)), this, SLOT(openClicked(QString, CanAdapterLawicel::OpenMode, int)));
     //connect(controlWidget, SIGNAL(closeClicked()), this, SLOT(closeClicked()));
