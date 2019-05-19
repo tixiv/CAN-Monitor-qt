@@ -112,7 +112,7 @@ HEADERS  += MainWindow.h \
     Cansole/Cansole.h \
     Cansole/CansoleIdDialog.h \
     util/DialogUtil.h \
-    CanAdapter/CanAdapterPCAN.h
+    CanAdapter/CanAdapterPCAN.h \
 
 
 

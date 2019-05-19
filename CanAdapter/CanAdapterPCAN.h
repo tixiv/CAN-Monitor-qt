@@ -2,10 +2,13 @@
 #define CANADAPTERPCAN_H
 
 #include <QObject>
+#include <QLibrary>
+#include <QTimer>
 #include "CanAdapter.h"
 
 class CanHub;
 class CanHandle;
+struct LibraryCalls;
 
 class CanAdapterPCAN : public CanAdapter
 {
@@ -26,9 +29,19 @@ private slots:
 
     void transmit(can_message_t cmsg);
 
+    void tickTimerTimeout();
 private:
     CanHandle *m_canHandle;
 
+    bool loadPcanLibrary();
+
+    QLibrary m_lib;
+    struct LibraryCalls * calls = 0;
+
+    QTimer m_tickTimer;
+
+
+    bool initialize();
 };
 
 #endif // CANADAPTERPCAN_H
