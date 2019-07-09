@@ -17,7 +17,7 @@
 #include "Trace/TraceWindow.h"
 #include "Simulator/TritiumSimulatorWindow.h"
 #include "Cansole/Cansole.h"
-#include "Cansole/cansoleIdDialog.h"
+#include "Cansole/CansoleIdDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
