@@ -60,8 +60,9 @@ SOURCES += main.cpp\
     CanAdapter/CanAdapterChina.cpp \
     Cansole/Cansole.cpp \
     Cansole/CansoleIdDialog.cpp \
-    util/DialogUtil.cpp \
-    CanAdapter/CanAdapterPCAN.cpp
+    util/DialogUtil.cpp
+    # also look below for conditional compilation
+
 
 HEADERS  += MainWindow.h \
     Tree/TreeModel.h \
@@ -111,8 +112,8 @@ HEADERS  += MainWindow.h \
     CanAdapter/CanAdapterChina.h \
     Cansole/Cansole.h \
     Cansole/CansoleIdDialog.h \
-    util/DialogUtil.h \
-    CanAdapter/CanAdapterPCAN.h \
+    util/DialogUtil.h
+    # look beleow for conditional compilation
 
 
 
@@ -130,3 +131,20 @@ FORMS    += MainWindow.ui \
     Cansole/CansoleIdDialog.ui
 
 RC_ICONS = canMonitorIcon.ico
+
+
+# conditional compilation
+defined(exclude, var) {
+    contains(exclude, pcan) {
+        message( "excludes building PCAN adapter" )
+        excludePcan = 1
+    }
+}
+!defined(excludePcan, var) {
+    DEFINES += BUILD_PCAN
+    SOURCES += CanAdapter/CanAdapterPCAN.cpp
+    HEADERS += CanAdapter/CanAdapterPCAN.h
+}
+
+
+

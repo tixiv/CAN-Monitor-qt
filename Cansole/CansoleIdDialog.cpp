@@ -1,5 +1,5 @@
 #include "CansoleIdDialog.h"
-#include "ui_cansoleIdDialog.h"
+#include "ui_CansoleIdDialog.h"
 #include "util/DialogUtil.h"
 
 CansoleIdDialog::CansoleIdDialog(QWidget *parent) :

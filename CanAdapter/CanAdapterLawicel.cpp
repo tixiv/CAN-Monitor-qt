@@ -108,7 +108,8 @@ bool CanAdapterLawicel::receive(can_message_t * cmsg)
         // remove that part and get it to line
         line = m_buffer.left(r);
         m_buffer.remove(0, r+1);
-        cmd = line.at(0);
+        if (line.size() > 0)
+            cmd = line.at(0);
     }while(cmd != 't' && cmd != 'T' && cmd != 'r' && cmd != 'R');
 
     return slcan_can_message_from_string(cmsg, line.toStdString().c_str());
