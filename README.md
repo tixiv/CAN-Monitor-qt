@@ -57,9 +57,9 @@ Consider a CAN message with the data bytes 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0
 
 The first two bytes will be decoded by the two "u8" type specifiers and give "1,2".
 
-The next two bytes will be decoded by the "u16" type specifier and give 3*1 + 4*256 = 1027 (little edian)
+The next two bytes will be decoded by the "u16" type specifier and give 3\*1 + 4\*256 = 1027 (little edian)
 
-The next(last) 4 bytes will be decoded by the "U32" type specifier and give 5*1677216 + 6*65536 + 7*256 + 8 = 84281096
+The next(last) 4 bytes will be decoded by the "U32" type specifier and give 5\*1677216 + 6\*65536 + 7\*256 + 8 = 84281096
 
 So the complete decoded message will be "1,2,1027,84281096"
 
